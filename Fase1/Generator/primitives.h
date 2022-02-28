@@ -10,19 +10,13 @@ namespace generator{
     class point{
         public:
             float x, y, z;
-            void definePoint(float lx, float ly, float lz){
-                x = lx; y = ly; z = lz;
-            }
+            void definePoint(float, float, float);
     };
 
     class primitive{
         public:
             std::vector<point> vertices;
-            void addVertices(point a, point b, point c){
-                vertices.push_back(a);
-                vertices.push_back(b);
-                vertices.push_back(c);
-            }
+            void addVertices(point, point, point);
     };
 
     primitive drawPlane(float, float);

@@ -8,6 +8,16 @@
 #include <string>
 #include <iostream>
 
+void generator::primitive::addVertices(point a, point b, point c){
+    vertices.push_back(a);
+    vertices.push_back(b);
+    vertices.push_back(c);
+}
+
+void generator::point::definePoint(float lx, float ly, float lz){
+    x = lx; y = ly; z = lz;
+}
+
 /** como é construído no plano XZ, então y = 0 para qualquer ponto:
  >>> float lx -- comprimento lado x
  >>> float lz -- comprimento lado z
@@ -15,11 +25,8 @@
 generator::primitive generator::drawPlane(float lx,float lz){
 
     primitive plane;
-    point vert1;
-    point vert2;
-    point vert3;
-    float x = lx/2;
-    float z = lz/2;
+    point vert1, vert2, vert3;
+    float x = lx/2, z = lz/2;
 
     // quadrado inferior x > 0 && z > 0
     vert1.definePoint(x,0,z);
