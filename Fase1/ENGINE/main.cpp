@@ -6,7 +6,7 @@
 #else
 #endif
 
-#include <GL/glut.h>
+// #include <GL/glut.h>
 #include <math.h>
 
 //Variables for keyboard fuction
