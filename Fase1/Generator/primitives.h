@@ -7,7 +7,7 @@
 
 namespace generator{
 
-    class Point{
+    class point{
         public:
             float x, y, z;
             void definePoint(float lx, float ly, float lz){
@@ -15,8 +15,14 @@ namespace generator{
             }
     };
 
-    struct primitive{
-        std::vector<Point> vertices;
+    class primitive{
+        public:
+            std::vector<point> vertices;
+            void addVertices(point a, point b, point c){
+                vertices.push_back(a);
+                vertices.push_back(b);
+                vertices.push_back(c);
+            }
     };
 
     primitive drawPlane(float, float);
