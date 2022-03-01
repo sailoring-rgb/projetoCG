@@ -7,7 +7,11 @@
 #endif
 
 #include "primitives.h"
+#include <stdlib.h>
 #include <iostream>
+#include <fstream>
+#include <algorithm>
+#include "primitives.cpp"
 
 using namespace generator;
 using namespace std;
@@ -15,7 +19,6 @@ using namespace std;
 /**
 * Function that Iniciates the Generator
 */
-
 int main(int argc, char* argv[]){
     if (argc == 1) {
         cout << "Not enough arguments";
@@ -31,7 +34,7 @@ int main(int argc, char* argv[]){
     }
 
     if (!parseInput(primitive, params)) {
-        count << "Arguments for are invalid";
+        cout << "Arguments for are invalid";
     }
     return 1;
 }

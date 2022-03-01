@@ -11,6 +11,36 @@
 
 using namespace std;
 
+bool parseInput(string primitive, vector<string> params) {
+    bool ret;
+
+    if (primitive.compare("box") == 0) {
+        if (params.size() == 4 || params.size() == 5) {
+            ret = drawBox(params);
+        }
+        else ret = false;
+    }
+    else if (primitive.compare("cone") == 0) {
+        if (params.size() == 5) {
+            ret = generatCone(params);
+        }
+        else ret = false;
+    }
+    else if (primitive.compare("plane") == 0) {
+        if (params.size() == 4) {
+            ret = drawPlane(params);
+        }
+        else ret = false;
+    }
+    else if (primitive.compare("sphere") == 0) {
+        if (params.size() == 4) {
+            // ret = //funçãoparaespera(params);
+        }
+        else ret = false;
+    }
+    return ret;
+}
+
 void generator::primitive::addVertices(point a, point b, point c){
     vertices.push_back(a);
     vertices.push_back(b);
@@ -78,7 +108,7 @@ generator::primitive generator::drawPlane(float lx,float lz){
     return plane;
 }
 
-bool creatCone(vector<string> params) {
+bool generatCone(vector<string> params) {
     double radius = stod(params[0]);
     double height = stod(params[1]);
     int slices = stoi(params[2]);
