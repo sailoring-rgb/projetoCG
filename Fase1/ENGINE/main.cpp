@@ -1,3 +1,17 @@
+#define  _USE_MATH_DEFINES
+#include <math.h>
+#include <stdlib.h>
+#include <GL/glut.h>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <sstream>
+#include "Primitives.h"
+#include "Point.h"
+#include <cstring>
+#include <string>
+#include <algorithm>
+
 #ifdef __linux__
 #include <unistd.h>
 #elif _WIN32
@@ -6,8 +20,13 @@
 #else
 #endif
 
-// #include <GL/glut.h>
-#include <math.h>
+using namespace std;
+
+//Vetor para guardar nome de ficheiros
+vector<string> files;
+
+//Vetor para guardar todas as primitivas
+vector<Primitive> primitives;
 
 //Variables for keyboard fuction
 float r = 10.0f;
@@ -44,6 +63,66 @@ void changeSize(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
 }
 
+bool readFile(string file) {
+
+    ifstream Read3DFile(file);
+
+    if (!Read3DFile) {
+        return false;
+    }
+
+    string text3d;
+
+    getline(Read3DFile, text3d);
+    int vertices = stoi(text3d);
+
+    Primitive primitive;
+
+    for (int i = 0; i < vertices; i++) {
+        vector<float> tokens;
+
+        getline(Read3DFile, text3d);
+        stringstream check1(text3d);
+
+        string intermediate;
+
+        while (getline(check1, intermediate, ',')) {
+            tokens.push_back(stof(intermediate));
+        }
+
+        Point point;
+        point.setX(tokens[0]);
+        point.setY(tokens[1]);
+        point.setZ(tokens[2]);
+
+        primitive.addPoint(point);
+    }
+
+    primitives.push_back(primitive);
+
+    Read3DFile.close();
+
+    return true;
+}
+
+void draw() {
+    glBegin(GL_TRIANGLES);
+
+    for(int i = 0; i < primitives.size();i++)
+        for (int j = 0; j < primitives[i].getNrVertices(); j++) {
+            glColor3f(rand(), rand(), rand());
+
+            Point point = primitives[i].getPoint(j);
+
+            glVertex3f(point.getX(), point.getY(), point.getZ());
+        }
+    glEnd();
+}
+
+
+
+
+
 /**
  * Function that creates a scene.
  */
@@ -77,10 +156,36 @@ void renderScene(void) {
 
     //DRAW Instruction Here
     
+    draw();
 
     // End of frame
     glutSwapBuffers();
 }
+
+void camera(int key_code, int x, int y) {
+    float change = M_PI / 40;
+    switch (key_code) {
+        case GLUT_KEY_LEFT: {
+            beta -= change;
+            break;
+        }
+        case GLUT_KEY_RIGHT: {
+            beta += change;
+            break;
+        }
+        case GLUT_KEY_DOWN: {
+            if (alpha > -(M_PI / 2))alpha -= change;
+            break;
+        }
+        case GLUT_KEY_UP: {
+            if (alpha > (M_PI / 2))alpha += change;
+            break;
+        }
+    }
+    glutPostRedisplay();
+}
+
+
 
 bool initGlut(int argc, char** argv){
     
@@ -95,7 +200,7 @@ bool initGlut(int argc, char** argv){
     glutReshapeFunc(changeSize);
 
     // put here the registration of the keyboard callbacks
-    
+    glutSpecialFunc(camera);
 
     //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
@@ -104,4 +209,23 @@ bool initGlut(int argc, char** argv){
     // enter GLUT's main cycle
     glutMainLoop();
     return true;
+}
+
+/* Function para ler XML */
+bool parseDocument() {
+    //Falta fazer isto;
+}
+
+/*Main*/
+
+int main(int argc, char** argv) {
+    if (parseDocument()) {
+        if (!initGlut(argc, argv)) {
+            cout << "3d File Invalid";
+        }
+    }
+    else {
+        cout << "XML File Invalid";
+    }
+    return 1;
 }
