@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "generator.cpp"
 
 using namespace std;
 
@@ -28,7 +29,7 @@ bool parseInput(string primitive, vector<string> params) {
     }
     else if (primitive.compare("plane") == 0) {
         if (params.size() == 4) {
-            ret = drawPlane(params);
+            ret = generatPlane(params);
         }
         else ret = false;
     }
@@ -55,7 +56,7 @@ void generator::point::definePoint(float lx, float ly, float lz){
  >>> float lx -- comprimento lado x
  >>> float lz -- comprimento lado z
 */
-generator::primitive generator::drawPlane(float lx,float lz){
+generator::primitive generator::generatPlane(float lx,float lz){
 
     primitive plane;
     point vert1, vert2, vert3;
@@ -176,6 +177,6 @@ bool generatCone(vector<string> params) {
         }
     }
 
-    //writeInFile(res, file);
+    writeInFile(res, file);
     return true;
 }

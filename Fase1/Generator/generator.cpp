@@ -6,15 +6,56 @@
 #else
 #endif
 
-#include "primitives.h"
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
 #include <algorithm>
 #include "primitives.cpp"
+#include "tinyxml2.h"
 
+
+using namespace tinyxml2;
 using namespace generator;
 using namespace std;
+
+void writeInFile(string res, string file) {
+    //generats XML file using tinyxml2
+    char tmp[256];
+
+    getcwd(tmp, 256); //tmp which contains the directory
+
+    string path(tmp);
+
+    int found = path.find("GENERATOR"); // finds generator's localization
+
+    replace(path.begin(), path.end(), '\\', '/');
+    path.erase(path.begin() + found, path.end());
+
+    string pathXML = path + "MODELS/model.xml";
+
+    strcpy(tmp, pathXML.c_str());
+
+    string path3D = path + "MODELS/" + file;
+
+    ofstream File3D(path3D);
+
+    File3D << res;
+
+    File3D.close();
+
+    const char* c = file.c_str();
+
+    XMLDocument doc;
+    doc.LoadFile(tmp);
+    XMLNode* pRoot = doc.FirstChild();
+
+    XMLElement* pElement = doc.NewElement("model");
+    pElement->SetAttribute("file", c);
+
+    pRoot->InsertEndChild(pElement);
+
+    doc.SaveFile(tmp);
+}
 
 /**
 * Function that Iniciates the Generator
