@@ -10,9 +10,11 @@
 #include <iostream>
 
 using namespace generator;
+using namespace std;
 
 int main(int argc, char* argv[]){
     primitive a;
     a = drawPlane(3,3);
+    cout << "hello";
     return 0;
 }
