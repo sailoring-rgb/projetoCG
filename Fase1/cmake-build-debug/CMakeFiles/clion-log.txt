@@ -1,1 +1,0 @@
-CMakeLists.txt not found in /Users/annaphens/Desktop/college/CG/projetoCG/Fase1 Select CMakeLists.txt
