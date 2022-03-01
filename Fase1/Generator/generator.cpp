@@ -12,9 +12,26 @@
 using namespace generator;
 using namespace std;
 
+/**
+* Function that Iniciates the Generator
+*/
+
 int main(int argc, char* argv[]){
-    primitive a;
-    a = drawPlane(3,3);
-    cout << "hello";
-    return 0;
+    if (argc == 1) {
+        cout << "Not enough arguments";
+        return 1;
+    }
+    
+    string primitive(argv[1]);
+    vector<string> params;
+    transform(primitive.begin(), primitive.end(), primitive.begin(), ::tolower);
+
+    for (int i = 2; i < argc; i++) {
+        params.push_back(argv[i]);
+    }
+
+    if (!parseInput(primitive, params)) {
+        count << "Arguments for are invalid";
+    }
+    return 1;
 }
