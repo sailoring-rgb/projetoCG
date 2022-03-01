@@ -6,6 +6,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include "tinyxml2.h"
 #include "Primitives.h"
 #include "Point.h"
 #include <cstring>
@@ -20,6 +21,7 @@
 #else
 #endif
 
+using namespace tinyxml2;
 using namespace std;
 
 //Vetor para guardar nome de ficheiros
@@ -119,10 +121,6 @@ void draw() {
     glEnd();
 }
 
-
-
-
-
 /**
  * Function that creates a scene.
  */
@@ -188,6 +186,22 @@ void camera(int key_code, int x, int y) {
 
 
 bool initGlut(int argc, char** argv){
+
+    bool res;
+
+    char tmp[256];
+
+    getcwd(tmp, 256); //tmp que contem a diretoria
+
+    string path(tmp);
+
+    int found = path.find("ENGINE");
+
+    replace(path.begin(), path.end(), '\\', '/');
+    path.erase(path.begin() + found, path.end());
+
+    path = path + "MODELS/";
+
     
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
@@ -213,7 +227,42 @@ bool initGlut(int argc, char** argv){
 
 /* Function para ler XML */
 bool parseDocument() {
-    //Falta fazer isto;
+    bool res;
+
+    char tmp[256];
+
+    getcwd(tmp, 256); //tmp que contem a diretoria
+
+    string path(tmp);
+
+    int found = path.find("ENGINE");
+
+    replace(path.begin(), path.end(), '\\', '/');
+    path.erase(path.begin() + found, path.end());
+
+    path = path + "MODELS/model.xml";
+
+    strcpy(tmp, path.c_str());
+
+    XMLDocument doc;
+    doc.LoadFile(tmp);
+
+    XMLNode* scene = doc.FirstChild();
+    if (scene == nullptr) {
+        cout << "ERRO";
+        return false;
+    }
+
+    XMLElement* file = scene->FirstChildElement("model");
+
+    while (file != nullptr) {
+        const char* strfile;
+
+        strfile = file->Attribute("file");
+        string namefile = strfile;
+        file = file->NextSiblingElement();
+    }
+    return true;
 }
 
 /*Main*/
