@@ -5,8 +5,10 @@
 
 #endif //FASE1_PRIMITIVES_H
 
-namespace generator{
+using namespace std;
 
+namespace generator{
+/*
     class point{
         public:
             float x, y, z;
@@ -18,6 +20,10 @@ namespace generator{
             std::vector<point> vertices;
             void addVertices(point, point, point);
     };
-
-    primitive drawPlane(float, float);
+*/
+    bool parseInput(string, vector<string>);
+    bool generatePlane(vector<string>);
+    bool generateCone(vector<string>);
+    bool generateBox(vector<string>);
+    bool generateSphere(vector<string>);
 }

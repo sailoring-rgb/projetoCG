@@ -17,31 +17,32 @@ bool parseInput(string primitive, vector<string> params) {
 
     if (primitive.compare("box") == 0) {
         if (params.size() == 4 || params.size() == 5) {
-            ret = drawBox(params);
+            ret = generateBox(params);
         }
         else ret = false;
     }
     else if (primitive.compare("cone") == 0) {
         if (params.size() == 5) {
-            ret = generatCone(params);
+            ret = generateCone(params);
         }
         else ret = false;
     }
     else if (primitive.compare("plane") == 0) {
         if (params.size() == 4) {
-            ret = generatPlane(params);
+            ret = generatePlane(params);
         }
         else ret = false;
     }
     else if (primitive.compare("sphere") == 0) {
         if (params.size() == 4) {
-            // ret = //funçãoparaespera(params);
+            ret = generateSphere(params);
         }
         else ret = false;
     }
     return ret;
 }
 
+/*
 void generator::primitive::addVertices(point a, point b, point c){
     vertices.push_back(a);
     vertices.push_back(b);
@@ -52,73 +53,78 @@ void generator::point::definePoint(float lx, float ly, float lz){
     x = lx; y = ly; z = lz;
 }
 
-/** como é construído no plano XZ, então y = 0 para qualquer ponto:
- >>> float lx -- comprimento lado x
- >>> float lz -- comprimento lado z
 */
-generator::primitive generator::generatPlane(float lx,float lz){
+bool generatePlane(vector<string> params){
 
-    primitive plane;
-    point vert1, vert2, vert3;
-    float x = lx/2, z = lz/2;
+    string p1, p2, p3;
+    if (params[0] < 0 || params[1] < 0) return false;
+
+    float x = stof(params[0])/2, z = stof(params[1])/2;
+
+    string file = params[2];
+    int found = file.find(".3d");
+    if (found <= 0) return false;
+
+    // string que guarda os pontos que estruturam a figura
+    string res = to_string((2 * slices * stack) * 3) + "\n";
 
     // quadrado inferior x > 0 && z > 0
-    vert1.definePoint(x,0,z);
-    vert2.definePoint(x,0,0);
-    vert3.definePoint(0,0,0);
-    plane.addVertices(vert1,vert2,vert3);
+    p1 = to_string(x) + "," + to_string(0) + "," + to_string(z) + "\n";
+    p2 = to_string(x) + "," + to_string(0) + "," + to_string(0) + "\n";
+    p3 = to_string(0) + "," + to_string(0) + "," + to_string(0) + "\n";
+    res = res + p1 + p2 + p3;
 
-    vert1.definePoint(0,0,0);
-    vert2.definePoint(0,0,z);
-    vert3.definePoint(x,0,z);
-    plane.addVertices(vert1,vert2,vert3);
+    p1 = to_string(0) + "," + to_string(0) + "," + to_string(0) + "\n";
+    p2 = to_string(0) + "," + to_string(0) + "," + to_string(z) + "\n";
+    p3 = to_string(x) + "," + to_string(0) + "," + to_string(z) + "\n";
+    res = res + p1 + p2 + p3;
 
     // quadrado inferior x < 0 && z > 0
-    vert1.definePoint(0,0,z);
-    vert2.definePoint(0,0,0);
-    vert3.definePoint(-x,0,0);
-    plane.addVertices(vert1,vert2,vert3);
+    p1 = to_string(0) + "," + to_string(0) + "," + to_string(z) + "\n";
+    p2 = to_string(0) + "," + to_string(0) + "," + to_string(0) + "\n";
+    p3 = to_string(-x) + "," + to_string(0) + "," + to_string(0) + "\n";
+    res = res + p1 + p2 + p3;
 
-    vert1.definePoint(-x,0,0);
-    vert2.definePoint(-x,0,z);
-    vert3.definePoint(0,0,z);
-    plane.addVertices(vert1,vert2,vert3);
+    p1 = to_string(-x) + "," + to_string(0) + "," + to_string(0) + "\n";
+    p2 = to_string(-x) + "," + to_string(0) + "," + to_string(z) + "\n";
+    p3 = to_string(0) + "," + to_string(0) + "," + to_string(z) + "\n";
+    res = res + p1 + p2 + p3;
 
     // quadrado superior x > 0 && z < 0
-    vert1.definePoint(x,0,0);
-    vert2.definePoint(x,0,-z);
-    vert3.definePoint(0,0,-z);
-    plane.addVertices(vert1,vert2,vert3);
+    p1 = to_string(x) + "," + to_string(0) + "," + to_string(0) + "\n";
+    p2 = to_string(x) + "," + to_string(0) + "," + to_string(-z) + "\n";
+    p3 = to_string(0) + "," + to_string(0) + "," + to_string(-z) + "\n";
+    res = res + p1 + p2 + p3;
 
-    vert1.definePoint(0,0,-z);
-    vert2.definePoint(0,0,0);
-    vert3.definePoint(x,0,0);
-    plane.addVertices(vert1,vert2,vert3);
+    p1 = to_string(0) + "," + to_string(0) + "," + to_string(-z) + "\n";
+    p2 = to_string(0) + "," + to_string(0) + "," + to_string(0) + "\n";
+    p3 = to_string(x) + "," + to_string(0) + "," + to_string(0) + "\n";
+    res = res + p1 + p2 + p3;
 
     // quadrado superior x < 0 && z < 0
-    vert1.definePoint(0,0,0);
-    vert2.definePoint(0,0,-z);
-    vert3.definePoint(-x,0,-z);
-    plane.addVertices(vert1,vert2,vert3);
+    p1 = to_string(0) + "," + to_string(0) + "," + to_string(0) + "\n";
+    p2 = to_string(0) + "," + to_string(0) + "," + to_string(-z) + "\n";
+    p3 = to_string(-x) + "," + to_string(0) + "," + to_string(-z) + "\n";
+    res = res + p1 + p2 + p3;
 
-    vert1.definePoint(-x,0,-z);
-    vert2.definePoint(-x,0,0);
-    vert3.definePoint(0,0,0);
-    plane.addVertices(vert1,vert2,vert3);
+    p1 = to_string(-x) + "," + to_string(0) + "," + to_string(-z) + "\n";
+    p2 = to_string(-x) + "," + to_string(0) + "," + to_string(0) + "\n";
+    p3 = to_string(0) + "," + to_string(0) + "," + to_string(0) + "\n";
+    res = res + p1 + p2 + p3;
 
-    return plane;
+    writeInFile(res, file);
+    return true;
 }
 
-bool generatCone(vector<string> params) {
+
+bool generateCone(vector<string> params) {
     double radius = stod(params[0]);
     double height = stod(params[1]);
     int slices = stoi(params[2]);
     int stack = stoi(params[3]);
 
 
-    /*String onde são guardados o número total de vertices necessários para construir o
-    * cone
-    */
+    // String onde são guardados o número total de vertices necessários para construir o cone
     string res = to_string((2 * slices * stack) * 3) + "\n";
 
     if (radius < 0 || height < 0 || slices < 0 || stack < 0) {
