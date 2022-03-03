@@ -42,75 +42,34 @@ bool parseInput(string primitive, vector<string> params) {
     return ret;
 }
 
-/*
-void generator::primitive::addVertices(point a, point b, point c){
-    vertices.push_back(a);
-    vertices.push_back(b);
-    vertices.push_back(c);
-}
 
-void generator::point::definePoint(float lx, float ly, float lz){
-    x = lx; y = ly; z = lz;
-}
-
-*/
 bool generatePlane(vector<string> params){
 
-    string p1, p2, p3;
-    if (params[0] < 0 || params[1] < 0) return false;
-
-    float x = stof(params[0])/2, z = stof(params[1])/2;
+    float length = stof(params[0]);
+    int divisions = stoi(params[1]);
+    if (length < 0 || divisions < 0) return false;
 
     string file = params[2];
     int found = file.find(".3d");
     if (found <= 0) return false;
 
+    string p1, p2, p3, p4;
+    float x = length/divisions, z = length/divisions;
+
     // string que guarda os pontos que estruturam a figura
-    string res = to_string((2 * slices * stack) * 3) + "\n";
+    string res = "";
 
-    // quadrado inferior x > 0 && z > 0
-    p1 = to_string(x) + "," + to_string(0) + "," + to_string(z) + "\n";
-    p2 = to_string(x) + "," + to_string(0) + "," + to_string(0) + "\n";
-    p3 = to_string(0) + "," + to_string(0) + "," + to_string(0) + "\n";
-    res = res + p1 + p2 + p3;
-
-    p1 = to_string(0) + "," + to_string(0) + "," + to_string(0) + "\n";
-    p2 = to_string(0) + "," + to_string(0) + "," + to_string(z) + "\n";
-    p3 = to_string(x) + "," + to_string(0) + "," + to_string(z) + "\n";
-    res = res + p1 + p2 + p3;
-
-    // quadrado inferior x < 0 && z > 0
-    p1 = to_string(0) + "," + to_string(0) + "," + to_string(z) + "\n";
-    p2 = to_string(0) + "," + to_string(0) + "," + to_string(0) + "\n";
-    p3 = to_string(-x) + "," + to_string(0) + "," + to_string(0) + "\n";
-    res = res + p1 + p2 + p3;
-
-    p1 = to_string(-x) + "," + to_string(0) + "," + to_string(0) + "\n";
-    p2 = to_string(-x) + "," + to_string(0) + "," + to_string(z) + "\n";
-    p3 = to_string(0) + "," + to_string(0) + "," + to_string(z) + "\n";
-    res = res + p1 + p2 + p3;
-
-    // quadrado superior x > 0 && z < 0
-    p1 = to_string(x) + "," + to_string(0) + "," + to_string(0) + "\n";
-    p2 = to_string(x) + "," + to_string(0) + "," + to_string(-z) + "\n";
-    p3 = to_string(0) + "," + to_string(0) + "," + to_string(-z) + "\n";
-    res = res + p1 + p2 + p3;
-
-    p1 = to_string(0) + "," + to_string(0) + "," + to_string(-z) + "\n";
-    p2 = to_string(0) + "," + to_string(0) + "," + to_string(0) + "\n";
-    p3 = to_string(x) + "," + to_string(0) + "," + to_string(0) + "\n";
-    res = res + p1 + p2 + p3;
-
-    // quadrado superior x < 0 && z < 0
-    p1 = to_string(0) + "," + to_string(0) + "," + to_string(0) + "\n";
-    p2 = to_string(0) + "," + to_string(0) + "," + to_string(-z) + "\n";
-    p3 = to_string(-x) + "," + to_string(0) + "," + to_string(-z) + "\n";
-    res = res + p1 + p2 + p3;
-
-    p1 = to_string(-x) + "," + to_string(0) + "," + to_string(-z) + "\n";
-    p2 = to_string(-x) + "," + to_string(0) + "," + to_string(0) + "\n";
-    p3 = to_string(0) + "," + to_string(0) + "," + to_string(0) + "\n";
-    res = res + p1 + p2 + p3;
+    for(int row = -divisions/2; row < divisions/2; row++){
+        int nextRow = row++;
+        for(int column = divisions/2; column > -divisions/2; column--){
+            int nextColumn = column--;
+            p1 = to_string(x*column) + "," + to_string(y) + "," + to_string(z*nextRow) + "\n";
+            p2 = to_string(x*column) + "," + to_string(y) + "," + to_string(z*row) + "\n";
+            p3 = to_string(x*nextColumn) + "," + to_string(y) + "," + to_string(z*row) + "\n";
+            p4 = to_string(x*nextColumn) + "," + to_string(y) + "," + to_string(z*nextRow) + "\n";
+            res = res + p1 + p2 + p3 + p3 + p4 + p1;
+        }
+    }
 
     writeInFile(res, file);
     return true;

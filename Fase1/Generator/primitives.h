@@ -9,19 +9,7 @@
 using namespace std;
 
 namespace generator{
-/*
-    class point{
-        public:
-            float x, y, z;
-            void definePoint(float, float, float);
-    };
 
-    class primitive{
-        public:
-            std::vector<point> vertices;
-            void addVertices(point, point, point);
-    };
-*/
     bool parseInput(string, vector<string>);
     bool generatePlane(vector<string>);
     bool generateCone(vector<string>);
