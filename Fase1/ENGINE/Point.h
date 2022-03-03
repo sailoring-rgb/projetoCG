@@ -1,26 +1,32 @@
-#include <vector>
+
+#ifndef Point_h
+#define Point_h
 
 
-#ifndef FASE1_POINT_H
-#define FASE1_POINT_H
-
-class Point{
+class Point {
 	class PointBuilder;
 	PointBuilder* pointBuilder;
 
 public:
 
+
 	Point();
+
 
 	Point(float x, float y, float z);
 
+
 	Point(const Point& v);
+
 
 	float getX();
 
+
 	float getY();
-	
+
+
 	float getZ();
+
 
 	void setX(float x);
 
@@ -33,4 +39,5 @@ public:
 
 	~Point();
 };
-#endif //FASE1_POINT_H
+
+#endif 

@@ -1,14 +1,13 @@
-#ifndef FASE1_PRIMITIVES_H
-#define FASE1_PRIMITIVES_H
+#ifndef Primitive_h
+#define Primitive_h
 
 #include <vector>
 #include "Point.h"
+#include "Primitive.h"
 
-
-class Primitive {
+class Primitive{
 	class PrimitiveBuilder;
 	PrimitiveBuilder* primitiveBuilder;
-
 
 public:
 
@@ -27,5 +26,7 @@ public:
 	void addPoint(Point p);
 
 	~Primitive();
+	
 };
-#endif //FASE1_PRIMITIVES_H
+
+#endif

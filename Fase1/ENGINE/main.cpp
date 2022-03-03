@@ -7,7 +7,7 @@
 #include <vector>
 #include <sstream>
 #include "tinyxml2.h"
-#include "Primitives.h"
+#include "Primitive.h"
 #include "Point.h"
 #include <cstring>
 #include <string>
@@ -24,13 +24,13 @@
 using namespace tinyxml2;
 using namespace std;
 
-//Vetor para guardar nome de ficheiros
+//Vector that stores filenames.
 vector<string> files;
 
-//Vetor para guardar todas as primitivas
+//Vector that stores all Primitives.
 vector<Primitive> primitives;
 
-//Variables for keyboard fuction
+//Variables needed to the keyboard function.
 float r = 10.0f;
 float alpha = 0.5;
 float beta = 0.5;
@@ -65,29 +65,38 @@ void changeSize(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
 }
 
+
+/**
+ * Function that reads a file, given the filename.
+ * @param file filename.
+ * @return bool true if everything goes well. Otherwise, returns false.
+ */
 bool readFile(string file) {
 
-    ifstream Read3DFile(file);
+    ifstream MyReadFile(file);
 
-    if (!Read3DFile) {
+    if(!MyReadFile){
         return false;
     }
 
-    string text3d;
+    string myText;
 
-    getline(Read3DFile, text3d);
-    int vertices = stoi(text3d);
+    getline(MyReadFile, myText);
+    int vertices = stoi(myText);
 
     Primitive primitive;
 
     for (int i = 0; i < vertices; i++) {
+        // Vector of string to save tokens
         vector<float> tokens;
 
-        getline(Read3DFile, text3d);
-        stringstream check1(text3d);
+        // stringstream class check1
+        getline(MyReadFile, myText);
+        stringstream check1(myText);
 
         string intermediate;
 
+        // Tokenizing w.r.t. space ' '
         while (getline(check1, intermediate, ',')) {
             tokens.push_back(stof(intermediate));
         }
@@ -102,23 +111,35 @@ bool readFile(string file) {
 
     primitives.push_back(primitive);
 
-    Read3DFile.close();
+    MyReadFile.close();
 
     return true;
 }
 
-void draw() {
+
+/**
+ * Function that draws all the primitives previously stored in a vector.
+ */
+void drawPrimitives() {
+
     glBegin(GL_TRIANGLES);
 
-    for(int i = 0; i < primitives.size();i++)
+    float corzinhas = 1.0f;
+    float corzinhas2 = 0.0f;
+
+    for (int i = 0; i < primitives.size(); i++) 
         for (int j = 0; j < primitives[i].getNrVertices(); j++) {
-            glColor3f(rand(), rand(), rand());
+            corzinhas = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            corzinhas2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+            glColor3f(corzinhas,corzinhas2,corzinhas);
 
             Point point = primitives[i].getPoint(j);
 
             glVertex3f(point.getX(), point.getY(), point.getZ());
         }
+
     glEnd();
+
 }
 
 /**
@@ -152,15 +173,20 @@ void renderScene(void) {
     glVertex3f(0.0f, 0.0f, 100.0f);
     glEnd();
 
-    //DRAW Instruction Here
-    
-    draw();
+    //DRAW POINTS
+    drawPrimitives();
 
     // End of frame
     glutSwapBuffers();
 }
 
-void camera(int key_code, int x, int y) {
+/**
+ * Function that reacts to events.
+ * @param key_code
+ * @param x
+ * @param y
+ */
+void mover(int key_code, int x, int y) {
     float change = M_PI / 40;
     switch (key_code) {
         case GLUT_KEY_LEFT: {
@@ -171,12 +197,12 @@ void camera(int key_code, int x, int y) {
             beta += change;
             break;
         }
-        case GLUT_KEY_DOWN: {
-            if (alpha > -(M_PI / 2))alpha -= change;
+        case GLUT_KEY_UP: {
+            if (alpha < (M_PI / 2))alpha += change;
             break;
         }
-        case GLUT_KEY_UP: {
-            if (alpha > (M_PI / 2))alpha += change;
+        case GLUT_KEY_DOWN: {
+            if ( alpha>-(M_PI / 2) )alpha -= change;
             break;
         }
     }
@@ -184,37 +210,48 @@ void camera(int key_code, int x, int y) {
 }
 
 
+ /**
+  * Function that inits glut.
+  * @param argc size of array.
+  * @param argv array with arguments.
+  * @return bool true if everything goes well. Otherwise, returns false.
+  */
+bool initGlut(int argc, char** argv) {
 
-bool initGlut(int argc, char** argv){
+     bool res;
 
-    bool res;
+     char tmp[256];
 
-    char tmp[256];
+     getcwd(tmp, 256); //tmp which contains the directory
 
-    getcwd(tmp, 256); //tmp que contem a diretoria
+     string path(tmp);
 
-    string path(tmp);
+     int found = path.find("ENGINE"); // finds generator's localization
 
-    int found = path.find("ENGINE");
+     replace(path.begin(), path.end(), '\\', '/');
+     path.erase(path.begin() + found, path.end());
 
-    replace(path.begin(), path.end(), '\\', '/');
-    path.erase(path.begin() + found, path.end());
+     path = path + "Models/";
 
-    path = path + "MODELS/";
 
-    
+     for (int i = 0; i < files.size(); i++) {
+         string file = path + files[i];
+         res = readFile(file);
+         if(!res) return false;
+     }
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(800, 800);
-    glutCreateWindow("ProjetoCG");
+    glutCreateWindow("TP-CG");
 
     // Required callback registry
     glutDisplayFunc(renderScene);
     glutReshapeFunc(changeSize);
 
     // put here the registration of the keyboard callbacks
-    glutSpecialFunc(camera);
+    glutSpecialFunc(mover);
 
     //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
@@ -225,22 +262,24 @@ bool initGlut(int argc, char** argv){
     return true;
 }
 
-/* Function para ler XML */
+/**
+ * Function that reads a XML file.
+ * @return bool true if everything goes well. Otherwise, returns false.
+ */
 bool parseDocument() {
-    bool res;
 
     char tmp[256];
 
-    getcwd(tmp, 256); //tmp que contem a diretoria
+    getcwd(tmp, 256); //tmp which contains the directory
 
     string path(tmp);
 
-    int found = path.find("ENGINE");
+    int found = path.find("ENGINE"); // finds generator's localization
 
     replace(path.begin(), path.end(), '\\', '/');
     path.erase(path.begin() + found, path.end());
 
-    path = path + "MODELS/model.xml";
+    path = path + "Models/model.xml";
 
     strcpy(tmp, path.c_str());
 
@@ -250,7 +289,7 @@ bool parseDocument() {
     XMLNode* scene = doc.FirstChild();
     if (scene == nullptr) {
         cout << "ERRO";
-        return false;
+        return false; //in case of error
     }
 
     XMLElement* file = scene->FirstChildElement("model");
@@ -260,21 +299,29 @@ bool parseDocument() {
 
         strfile = file->Attribute("file");
         string namefile = strfile;
+        files.push_back(namefile);
+
         file = file->NextSiblingElement();
     }
     return true;
 }
 
-/*Main*/
-
+/**
+ * Main Function.
+ * @param argc size of array.
+ * @param argv array with arguments.
+ * @return int 
+ */
 int main(int argc, char** argv) {
+
     if (parseDocument()) {
-        if (!initGlut(argc, argv)) {
+        if(!initGlut(argc, argv)){
             cout << "3d File Invalid";
         }
-    }
-    else {
+    } else{
         cout << "XML File Invalid";
     }
     return 1;
 }
+
+

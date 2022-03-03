@@ -8,14 +8,14 @@
 #else
 #endif
 
-#include <cmath>
 #include <stdlib.h>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <cmath>
 #include <iostream>
 #include <fstream>
-#include <algorithm>
 #include "tinyxml2.h"
-#include <vector>
-#include <string>
 #include <cstring>
 
 using namespace tinyxml2;
@@ -29,16 +29,16 @@ void writeInFile(string res, string file) {
 
         string path(tmp);
 
-        int found = path.find("GENERATOR"); // finds generator's localization
+        int found = path.find("Generator"); // finds generator's localization
 
         replace(path.begin(), path.end(), '\\', '/');
         path.erase(path.begin() + found, path.end());
 
-        string pathXML = path + "MODELS/model.xml";
+        string pathXML = path + "Models/model.xml";
 
         strcpy(tmp, pathXML.c_str());
 
-        string path3D = path + "MODELS/" + file;
+        string path3D = path + "Models/" + file;
 
         ofstream File3D(path3D);
 
@@ -210,16 +210,20 @@ bool generateBox(vector<string> params) {
 */
 
 bool generateCone(vector<string> params) {
-    double radius = stod(params[0]);
-    double height = stod(params[1]);
-    int slices = stoi(params[2]);
-    int stack = stoi(params[3]);
-
+    double radius = -1;
+    double height = -1;
+    int slices = -1;
+    int stack = -1;
+    radius = stod(params[0]);
+    height = stod(params[1]);
+    slices = stoi(params[2]);
+    stack = stoi(params[3]);
+    
 
     // String onde são guardados o número total de vertices necessários para construir o cone
     string res = to_string((2 * slices * stack) * 3) + "\n";
 
-    if (radius < 0 || height < 0 || slices < 0 || stack < 0) {
+    if (radius < 0 || height < 0 || slices < 0 || stack < 0){
         return false;
     }
 
@@ -228,12 +232,12 @@ bool generateCone(vector<string> params) {
     if (found <= 0) return false;
 
     //calcular a altura de cada stack
-    double Height_of_Stack = height / stack;
+    double HeightofStack = height / stack;
 
     //Circunferencia de pontos, dados os slices a altura e o raio construido por stack
     for (double i = 0; i < stack; i++) {
-        double basestackRadius = ((radius * (height - (Height_of_Stack * i))) / height);
-        double topstackRadius = ((radius * (height - (Height_of_Stack * (i + 1)))) / height);
+        double basestackRadius = ((radius * (height - (HeightofStack * i))) / height);
+        double topstackRadius = ((radius * (height - (HeightofStack * (i + 1)))) / height);
 
         double angle = (2 * M_PI) / slices;
 
@@ -242,19 +246,19 @@ bool generateCone(vector<string> params) {
             double alpha2 = angle * (c + 1);
 
             float p1x = cos(alpha) * basestackRadius;
-            float p1y = Height_of_Stack * i;
+            float p1y = HeightofStack * i;
             float p1z = -sin(alpha) * basestackRadius;
 
             float p2x = cos(alpha2) * basestackRadius;
-            float p2y = Height_of_Stack * i;
+            float p2y = HeightofStack * i;
             float p2z = -sin(alpha2) * basestackRadius;
 
             float p3x = cos(alpha) * topstackRadius;
-            float p3y = Height_of_Stack * (i + 1);
+            float p3y = HeightofStack * (i + 1);
             float p3z = -sin(alpha) * topstackRadius;
 
             float p4x = cos(alpha2) * topstackRadius;
-            float p4y = Height_of_Stack * i;
+            float p4y = HeightofStack * (i+1);
             float p4z = -sin(alpha2) * topstackRadius;
 
             string p1 = to_string(p1x) + "," + to_string(p1y) + "," + to_string(p1z) + "\n";
@@ -280,6 +284,7 @@ bool generateCone(vector<string> params) {
 }
 
 bool parseInput(string primitive, vector<string> params) {
+
     bool ret = false;
 
     if (primitive.compare("box") == 0) {
@@ -295,7 +300,7 @@ bool parseInput(string primitive, vector<string> params) {
         else ret = false;
     }
     else if (primitive.compare("plane") == 0) {
-        if (params.size() == 4) {
+        if (params.size() == 2) {
             ret = generatePlane(params);
         }
         else ret = false;
@@ -312,7 +317,7 @@ bool parseInput(string primitive, vector<string> params) {
 /**
 * Function that Iniciates the Generator
 */
-int main(int argc, char* argv[]){
+int main(int argc, char **argv){
     if (argc == 1) {
         cout << "Not enough arguments";
         return 1;

@@ -2,17 +2,20 @@
 
 #include <cstddef>
 
+
 class Point::PointBuilder {
 	float x;
 	float y;
 	float z;
 
 public:
+
 	PointBuilder() {
 		x = 0;
 		y = 0;
 		z = 0;
 	}
+
 
 	PointBuilder(float x, float y, float z) {
 		this->x = x;
@@ -20,31 +23,40 @@ public:
 		this->z = z;
 	}
 
+
 	float getX() {
 		return x;
 	}
+
 
 	float getY() {
 		return y;
 	}
 
+
 	float getZ() {
 		return z;
 	}
 
-	float setX(float x) {
+
+	void setX(float x) {
 		this->x = x;
 	}
-	float setY(float y) {
+
+
+	void setY(float y) {
 		this->y = y;
 	}
-	float setZ(float z) {
+
+
+	void setZ(float z) {
 		this->z = z;
 	}
 
-	~PointBuilder() = default;
 
+	~PointBuilder() = default;
 };
+
 
 Point::Point() : pointBuilder{ new PointBuilder() } {}
 
