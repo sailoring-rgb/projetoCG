@@ -25,39 +25,40 @@ void writeInFile(string res, string file) {
     //generats XML file using tinyxml2
     char tmp[256];
 
-    getcwd(tmp, 256);//tmp which contains the directory
+    if (getcwd(tmp, 256) != NULL) { //tmp which contains the directory
 
-    string path(tmp);
+        string path(tmp);
 
-    int found = path.find("GENERATOR"); // finds generator's localization
+        int found = path.find("GENERATOR"); // finds generator's localization
 
-    replace(path.begin(), path.end(), '\\', '/');
-    path.erase(path.begin() + found, path.end());
+        replace(path.begin(), path.end(), '\\', '/');
+        path.erase(path.begin() + found, path.end());
 
-    string pathXML = path + "MODELS/model.xml";
+        string pathXML = path + "MODELS/model.xml";
 
-    strcpy(tmp, pathXML.c_str());
-    
-    string path3D = path + "MODELS/" + file;
+        strcpy(tmp, pathXML.c_str());
 
-    ofstream File3D(path3D);
+        string path3D = path + "MODELS/" + file;
 
-    File3D << res;
+        ofstream File3D(path3D);
 
-    File3D.close();
+        File3D << res;
 
-    const char* c = file.c_str();
+        File3D.close();
 
-    XMLDocument doc;
-    doc.LoadFile(tmp);
-    XMLNode* pRoot = doc.FirstChild();
+        const char* c = file.c_str();
 
-    XMLElement* pElement = doc.NewElement("model");
-    pElement->SetAttribute("file", c);
+        XMLDocument doc;
+        doc.LoadFile(tmp);
+        XMLNode* pRoot = doc.FirstChild();
 
-    pRoot->InsertEndChild(pElement);
+        XMLElement* pElement = doc.NewElement("model");
+        pElement->SetAttribute("file", c);
 
-    doc.SaveFile(tmp);
+        pRoot->InsertEndChild(pElement);
+
+        doc.SaveFile(tmp);
+    }
 }
 
 /*
@@ -279,7 +280,7 @@ bool generateCone(vector<string> params) {
 }
 
 bool parseInput(string primitive, vector<string> params) {
-    bool ret;
+    bool ret = false;
 
     if (primitive.compare("box") == 0) {
         if (params.size() == 4 || params.size() == 5) {
