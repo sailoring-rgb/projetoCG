@@ -10,8 +10,10 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include "primitives.cpp"
 #include "tinyxml2.h"
+#include "primitives.h"
+#include <vector>
+#include <string>
 
 
 using namespace tinyxml2;

@@ -1,9 +1,10 @@
-#include <vector>
+
 
 #ifndef FASE1_PRIMITIVES_H
 #define FASE1_PRIMITIVES_H
 
-#endif //FASE1_PRIMITIVES_H
+#include <vector>
+#include <string>
 
 using namespace std;
 
@@ -27,3 +28,5 @@ namespace generator{
     bool generateBox(vector<string>);
     bool generateSphere(vector<string>);
 }
+
+#endif //FASE1_PRIMITIVES_H
