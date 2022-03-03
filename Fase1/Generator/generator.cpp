@@ -80,7 +80,7 @@ bool generatePlane(vector<string> params) {
     float x = length / divisions, z = length / divisions;
 
     // string que guarda os pontos que estruturam a figura
-    string res = "";
+    string res = to_string(6) + "\n";
 
     for (int row = -divisions / 2; row < divisions / 2; row++) {
         int nextRow = row++;
@@ -103,6 +103,9 @@ bool generateBox(vector<string> params) {
     float length = stof(params[0]);
     float divisions = stof(params[1]);
 
+    // string que guarda os pontos que estruturam a figura
+    string res = to_string((int)(pow(divisions,2) * 6)) + "\n";
+
     if (length < 0 || divisions < 0) return false;
 
     string file = params[2];
@@ -116,8 +119,6 @@ bool generateBox(vector<string> params) {
 
     string p1, p2, p3, p4;
 
-    // string que guarda os pontos que estruturam a figura
-    string res = "";
 
     //Plano XZ
     //y=0
@@ -288,7 +289,7 @@ bool parseInput(string primitive, vector<string> params) {
     bool ret = false;
 
     if (primitive.compare("box") == 0) {
-        if (params.size() == 4 || params.size() == 5) {
+        if (params.size() == 3 || params.size() == 4) {
             ret = generateBox(params);
         }
         else ret = false;
@@ -300,7 +301,7 @@ bool parseInput(string primitive, vector<string> params) {
         else ret = false;
     }
     else if (primitive.compare("plane") == 0) {
-        if (params.size() == 2) {
+        if (params.size() == 3) {
             ret = generatePlane(params);
         }
         else ret = false;
