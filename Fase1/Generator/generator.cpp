@@ -1,6 +1,6 @@
 #define _USE_MATH_DEFINES
 
-#ifdef APPLE
+#ifdef __APPLE__
 #include <unistd.h>
 #elif _WIN32
 #include <direct.h>
