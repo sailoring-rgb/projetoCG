@@ -1,6 +1,6 @@
 #define _USE_MATH_DEFINES
 
-#ifdef __linux__
+#ifdef APPLE
 #include <unistd.h>
 #elif _WIN32
 #include <direct.h>
@@ -74,21 +74,24 @@ bool generatePlane(vector<string> params) {
     float x = length / divisions, z = length / divisions;
 
     // string que guarda os pontos que estruturam a figura
-    string res = to_string(6 * (int)(pow(divisions,2))) + "\n";
+    string res = to_string(6 * (int)(pow(divisions, 2))) + "\n";
 
-    for (int row = -divisions / 2; row < divisions / 2; row++) {
-        int nextRow = row++;
-        for (int column = divisions / 2; column > -divisions / 2; column--) {
-            int nextColumn = column--;
+    for (float row = -divisions / 2; row < divisions / 2; row++) {
+        float nextRow = row++;
+        for (float column = divisions / 2; column > -divisions / 2; column--) {
+            float nextColumn = column--;
             p1 = to_string(x * column) + "," + to_string(0) + "," + to_string(z * nextRow) + "\n";
             p2 = to_string(x * column) + "," + to_string(0) + "," + to_string(z * row) + "\n";
             p3 = to_string(x * nextColumn) + "," + to_string(0) + "," + to_string(z * row) + "\n";
             p4 = to_string(x * nextColumn) + "," + to_string(0) + "," + to_string(z * nextRow) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
+            cout << row;
+            cout << column;
         }
     }
 
     writeInFile(res, file);
+    printf("File Gerado com Sucesso");
     return true;
 }
 
@@ -196,6 +199,7 @@ bool generateBox(vector<string> params) {
     }
 
     writeInFile(res, file);
+    printf("File Gerado com Sucesso");
     return true;
 }
 
@@ -275,6 +279,7 @@ bool generateCone(vector<string> params) {
     }
 
     writeInFile(res, file);
+    printf("File Gerado com Sucesso");
     return true;
 }
 
