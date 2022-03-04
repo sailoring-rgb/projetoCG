@@ -63,7 +63,7 @@ void writeInFile(string res, string file) {
 bool generatePlane(vector<string> params) {
 
     float length = stof(params[0]);
-    int divisions = stoi(params[1]);
+    float divisions = stof(params[1]);
     if (length < 0 || divisions < 0) return false;
 
     string file = params[2];
@@ -74,24 +74,23 @@ bool generatePlane(vector<string> params) {
     float x = length / divisions, z = length / divisions;
 
     // string que guarda os pontos que estruturam a figura
-    string res = to_string(6 * (int)(pow(divisions, 2))) + "\n";
+    string res = to_string(6 * (int)(pow(divisions,2))) + "\n";
 
-    for (float row = -divisions / 2; row < divisions / 2; row++) {
-        float nextRow = row++;
-        for (float column = divisions / 2; column > -divisions / 2; column--) {
-            float nextColumn = column--;
-            p1 = to_string(x * column) + "," + to_string(0) + "," + to_string(z * nextRow) + "\n";
-            p2 = to_string(x * column) + "," + to_string(0) + "," + to_string(z * row) + "\n";
-            p3 = to_string(x * nextColumn) + "," + to_string(0) + "," + to_string(z * row) + "\n";
-            p4 = to_string(x * nextColumn) + "," + to_string(0) + "," + to_string(z * nextRow) + "\n";
+    for (double row = -divisions/2.0; row < divisions/2.0; row++) {
+        double tempR = row;
+        double nextRow = tempR + 1;
+        for (double column = divisions/2.0; column > -divisions/2.0; column--) {
+            double tempC = column;
+            double nextColumn = tempC - 1;
+            p1 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "\n";
+            p2 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * row) + "\n";
+            p3 = to_string(x * (nextColumn)) + "," + to_string(0.000000) + "," + to_string(z * row) + "\n";
+            p4 = to_string(x * nextColumn) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
-            cout << row;
-            cout << column;
         }
     }
 
     writeInFile(res, file);
-    printf("File Gerado com Sucesso");
     return true;
 }
 
@@ -199,7 +198,6 @@ bool generateBox(vector<string> params) {
     }
 
     writeInFile(res, file);
-    printf("File Gerado com Sucesso");
     return true;
 }
 
@@ -217,7 +215,7 @@ bool generateCone(vector<string> params) {
     height = stod(params[1]);
     slices = stoi(params[2]);
     stack = stoi(params[3]);
-    
+
 
     // String onde s�o guardados o n�mero total de vertices necess�rios para construir o cone
     string res = to_string((2 * slices * stack) * 3) + "\n";
@@ -279,7 +277,6 @@ bool generateCone(vector<string> params) {
     }
 
     writeInFile(res, file);
-    printf("File Gerado com Sucesso");
     return true;
 }
 
@@ -322,7 +319,7 @@ int main(int argc, char **argv){
         cout << "Not enough arguments";
         return 1;
     }
-    
+
     string primitive(argv[1]);
     vector<string> params;
     transform(primitive.begin(), primitive.end(), primitive.begin(), ::tolower);
