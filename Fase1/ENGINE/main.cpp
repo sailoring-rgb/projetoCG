@@ -1,7 +1,6 @@
 #define  _USE_MATH_DEFINES
 #include <math.h>
 #include <stdlib.h>
-#include <GL/glut.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -13,11 +12,18 @@
 #include <string>
 #include <algorithm>
 
-#ifdef __linux__
+#ifdef __APPLE__
 #include <unistd.h>
 #elif _WIN32
 #include <direct.h>
 #include <io.h>
+#else
+#endif
+
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#elif _WIN32
+#include <GL/glut.h>
 #else
 #endif
 
