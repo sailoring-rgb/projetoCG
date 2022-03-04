@@ -33,17 +33,11 @@ void writeInFile(string res, string file) {
 
         replace(path.begin(), path.end(), '\\', '/');
         path.erase(path.begin() + found, path.end());
-
         string pathXML = path + "Models/model.xml";
-
         strcpy(tmp, pathXML.c_str());
-
         string path3D = path + "Models/" + file;
-
         ofstream File3D(path3D);
-
         File3D << res;
-
         File3D.close();
 
         const char* c = file.c_str();
@@ -62,7 +56,7 @@ void writeInFile(string res, string file) {
 }
 
 /*
-    Função para gerar os pontos do Plano
+    Funï¿½ï¿½o para gerar os pontos do Plano
 */
 
 
@@ -80,7 +74,7 @@ bool generatePlane(vector<string> params) {
     float x = length / divisions, z = length / divisions;
 
     // string que guarda os pontos que estruturam a figura
-    string res = to_string(6) + "\n";
+    string res = to_string(6 * (int)(pow(divisions,2))) + "\n";
 
     for (int row = -divisions / 2; row < divisions / 2; row++) {
         int nextRow = row++;
@@ -104,7 +98,7 @@ bool generateBox(vector<string> params) {
     float divisions = stof(params[1]);
 
     // string que guarda os pontos que estruturam a figura
-    string res = to_string((int)(pow(divisions,2) * 6)) + "\n";
+    string res = to_string(6 * (int)(pow(divisions,2) * 6)) + "\n";
 
     if (length < 0 || divisions < 0) return false;
 
@@ -207,7 +201,7 @@ bool generateBox(vector<string> params) {
 
 
 /*
-    Função para gerar os pontos do Cone
+    Funï¿½ï¿½o para gerar os pontos do Cone
 */
 
 bool generateCone(vector<string> params) {
@@ -221,7 +215,7 @@ bool generateCone(vector<string> params) {
     stack = stoi(params[3]);
     
 
-    // String onde são guardados o número total de vertices necessários para construir o cone
+    // String onde sï¿½o guardados o nï¿½mero total de vertices necessï¿½rios para construir o cone
     string res = to_string((2 * slices * stack) * 3) + "\n";
 
     if (radius < 0 || height < 0 || slices < 0 || stack < 0){
