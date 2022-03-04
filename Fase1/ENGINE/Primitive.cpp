@@ -6,7 +6,7 @@
 
 class Primitive::PrimitiveBuilder {
 
-	//variável privada que guarda os vértices
+	//variï¿½vel privada que guarda os vï¿½rtices
 private:
 	std::vector<Point> vertices;
 
