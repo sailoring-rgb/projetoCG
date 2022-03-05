@@ -119,10 +119,10 @@ bool generateBox(vector<string> params) {
         for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
             double tempC = column;
             double nextColumn = tempC - 1;
-            p1 = to_string(x * column) + "," + to_string(-length) + "," + to_string(z * nextRow) + "\n";
-            p2 = to_string(x * column) + "," + to_string(-length) + "," + to_string(z * row) + "\n";
-            p3 = to_string(x * nextColumn) + "," + to_string(-length) + "," + to_string(z * row) + "\n";
-            p4 = to_string(x * nextColumn) + "," + to_string(-length) + "," + to_string(z * nextRow) + "\n";
+            p1 = to_string(x * column) + "," + to_string(-length / 2.0) + "," + to_string(z * nextRow) + "\n";
+            p2 = to_string(x * column) + "," + to_string(-length / 2.0) + "," + to_string(z * row) + "\n";
+            p3 = to_string(x * nextColumn) + "," + to_string(-length / 2.0) + "," + to_string(z * row) + "\n";
+            p4 = to_string(x * nextColumn) + "," + to_string(-length / 2.0) + "," + to_string(z * nextRow) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
         }
     }
@@ -134,10 +134,10 @@ bool generateBox(vector<string> params) {
         for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
             double tempC = column;
             double nextColumn = tempC - 1;
-            p1 = to_string(x * column) + "," + to_string(length) + "," + to_string(z * nextRow) + "\n";
-            p2 = to_string(x * column) + "," + to_string(length) + "," + to_string(z * row) + "\n";
-            p3 = to_string(x * nextColumn) + "," + to_string(length) + "," + to_string(z * row) + "\n";
-            p4 = to_string(x * nextColumn) + "," + to_string(length) + "," + to_string(z * nextRow) + "\n";
+            p1 = to_string(x * column) + "," + to_string(length / 2.0) + "," + to_string(z * nextRow) + "\n";
+            p2 = to_string(x * column) + "," + to_string(length / 2.0) + "," + to_string(z * row) + "\n";
+            p3 = to_string(x * nextColumn) + "," + to_string(length / 2.0) + "," + to_string(z * row) + "\n";
+            p4 = to_string(x * nextColumn) + "," + to_string(length / 2.0) + "," + to_string(z * nextRow) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
         }
     }
