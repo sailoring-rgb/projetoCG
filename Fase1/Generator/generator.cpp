@@ -98,101 +98,108 @@ bool generateBox(vector<string> params) {
 
     float length = stof(params[0]);
     float divisions = stof(params[1]);
-
-    // string que guarda os pontos que estruturam a figura
-    string res = to_string(6 * (int)(pow(divisions,2) * 6)) + "\n";
-
     if (length < 0 || divisions < 0) return false;
 
     string file = params[2];
     int found = file.find(".3d");
     if (found <= 0) return false;
 
-    float x = length / divisions;
-    float y = length / divisions;
-    float z = length / divisions;
-
-
     string p1, p2, p3, p4;
 
+    float x = length / divisions, y = length / divisions, z = length / divisions;
+
+    // string que guarda os pontos que estruturam a figura
+    string res = to_string(6 * (int)(pow(divisions, 2) * 6)) + "\n";
 
     //Plano XZ
-    //y=0
-    for (int row = -divisions / 2; row < divisions / 2; row++) {
-        int nextRow = row++;
-        for (int column = divisions / 2; column > -divisions / 2; column--) {
-            int nextColumn = column--;
-            p1 = to_string(x * column) + "," + to_string(y) + "," + to_string(z * nextRow) + "\n";
-            p2 = to_string(x * column) + "," + to_string(y) + "," + to_string(z * row) + "\n";
-            p3 = to_string(x * nextColumn) + "," + to_string(y) + "," + to_string(z * row) + "\n";
-            p4 = to_string(x * nextColumn) + "," + to_string(y) + "," + to_string(z * nextRow) + "\n";
+    //y=-length/2.0
+    for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
+        double tempR = row;
+        double nextRow = tempR + 1;
+        for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
+            double tempC = column;
+            double nextColumn = tempC - 1;
+            p1 = to_string(x * column) + "," + to_string(-length / 2.0) + "," + to_string(z * nextRow) + "\n";
+            p2 = to_string(x * column) + "," + to_string(-length / 2.0) + "," + to_string(z * row) + "\n";
+            p3 = to_string(x * nextColumn) + "," + to_string(-length / 2.0) + "," + to_string(z * row) + "\n";
+            p4 = to_string(x * nextColumn) + "," + to_string(-length / 2.0) + "," + to_string(z * nextRow) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
         }
     }
 
-    //y=length
-    for (int row = -divisions / 2; row < divisions / 2; row++) {
-        int nextRow = row++;
-        for (int column = divisions / 2; column > -divisions / 2; column--) {
-            int nextColumn = column--;
-            p1 = to_string(x * column) + "," + to_string(length) + "," + to_string(z * nextRow) + "\n";
-            p2 = to_string(x * column) + "," + to_string(length) + "," + to_string(z * row) + "\n";
-            p3 = to_string(x * nextColumn) + "," + to_string(length) + "," + to_string(z * row) + "\n";
-            p4 = to_string(x * nextColumn) + "," + to_string(length) + "," + to_string(z * nextRow) + "\n";
+    //y=length/2.0
+    for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
+        double tempR = row;
+        double nextRow = tempR + 1;
+        for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
+            double tempC = column;
+            double nextColumn = tempC - 1;
+            p1 = to_string(x * column) + "," + to_string(length / 2.0) + "," + to_string(z * nextRow) + "\n";
+            p2 = to_string(x * column) + "," + to_string(length / 2.0) + "," + to_string(z * row) + "\n";
+            p3 = to_string(x * nextColumn) + "," + to_string(length / 2.0) + "," + to_string(z * row) + "\n";
+            p4 = to_string(x * nextColumn) + "," + to_string(length / 2.0) + "," + to_string(z * nextRow) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
         }
     }
 
     //Plano XY
-    //z=0
-    for (int row = -divisions / 2; row < divisions / 2; row++) {
-        int nextRow = row++;
-        for (int column = divisions / 2; column > -divisions / 2; column--) {
-            int nextColumn = column--;
-            p1 = to_string(x * column) + "," + to_string(y * nextRow) + "," + to_string(0) + "\n";
-            p2 = to_string(x * column) + "," + to_string(y * row) + "," + to_string(0) + "\n";
-            p3 = to_string(x * nextColumn) + "," + to_string(y * row) + "," + to_string(0) + "\n";
-            p4 = to_string(x * nextColumn) + "," + to_string(y * nextRow) + "," + to_string(0) + "\n";
+    //z=length/2
+    for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
+        double tempR = row;
+        double nextRow = tempR + 1;
+        for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
+            double tempC = column;
+            double nextColumn = tempC - 1;
+            p1 = to_string(x * column) + "," + to_string(y * nextRow) + "," + to_string(length/2.0) + "\n";
+            p2 = to_string(x * column) + "," + to_string(y * row) + "," + to_string(length / 2.0) + "\n";
+            p3 = to_string(x * nextColumn) + "," + to_string(y * row) + "," + to_string(length / 2.0) + "\n";
+            p4 = to_string(x * nextColumn) + "," + to_string(y * nextRow) + "," + to_string(length / 2.0) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
         }
     }
 
-    //z=length
-    for (int row = -divisions / 2; row < divisions / 2; row++) {
-        int nextRow = row++;
-        for (int column = divisions / 2; column > -divisions / 2; column--) {
-            int nextColumn = column--;
-            p1 = to_string(x * column) + "," + to_string(y * nextRow) + "," + to_string(length) + "\n";
-            p2 = to_string(x * column) + "," + to_string(y * row) + "," + to_string(length) + "\n";
-            p3 = to_string(x * nextColumn) + "," + to_string(y * row) + "," + to_string(length) + "\n";
-            p4 = to_string(x * nextColumn) + "," + to_string(y * nextRow) + "," + to_string(length) + "\n";
+    //z=-length/2
+    for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
+        double tempR = row;
+        double nextRow = tempR + 1;
+        for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
+            double tempC = column;
+            double nextColumn = tempC - 1;
+            p1 = to_string(x * column) + "," + to_string(y * nextRow) + "," + to_string(-length / 2.0) + "\n";
+            p2 = to_string(x * column) + "," + to_string(y * row) + "," + to_string(-length / 2.0) + "\n";
+            p3 = to_string(x * nextColumn) + "," + to_string(y * row) + "," + to_string(-length / 2.0) + "\n";
+            p4 = to_string(x * nextColumn) + "," + to_string(y * nextRow) + "," + to_string(-length / 2.0) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
         }
     }
-
+    
     //Plano ZY
-    //x=0
-    for (int row = -divisions / 2; row < divisions / 2; row++) {
-        int nextRow = row++;
-        for (int column = divisions / 2; column > -divisions / 2; column--) {
-            int nextColumn = column--;
-            p1 = to_string(0) + "," + to_string(y * nextRow) + "," + to_string(z * column) + "\n";
-            p2 = to_string(0) + "," + to_string(y * row) + "," + to_string(z * column) + "\n";
-            p3 = to_string(0) + "," + to_string(y * row) + "," + to_string(z * nextColumn) + "\n";
-            p4 = to_string(0) + "," + to_string(y * nextRow) + "," + to_string(z * nextColumn) + "\n";
+    //x=length/2.0
+    for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
+        double tempR = row;
+        double nextRow = tempR + 1;
+        for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
+            double tempC = column;
+            double nextColumn = tempC - 1;
+            p1 = to_string(length / 2.0) + "," + to_string(y * nextRow) + "," + to_string(z * column) + "\n";
+            p2 = to_string(length / 2.0) + "," + to_string(y * row) + "," + to_string(z * column) + "\n";
+            p3 = to_string(length / 2.0) + "," + to_string(y * row) + "," + to_string(z * nextColumn) + "\n";
+            p4 = to_string(length / 2.0) + "," + to_string(y * nextRow) + "," + to_string(z * nextColumn) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
         }
     }
 
-    //x=length
-    for (int row = -divisions / 2; row < divisions / 2; row++) {
-        int nextRow = row++;
-        for (int column = divisions / 2; column > -divisions / 2; column--) {
-            int nextColumn = column--;
-            p1 = to_string(length) + "," + to_string(y * nextRow) + "," + to_string(z * column) + "\n";
-            p2 = to_string(length) + "," + to_string(y * row) + "," + to_string(z * column) + "\n";
-            p3 = to_string(length) + "," + to_string(y * row) + "," + to_string(z * nextColumn) + "\n";
-            p4 = to_string(length) + "," + to_string(y * nextRow) + "," + to_string(z * nextColumn) + "\n";
+    //x=-length/2.0
+    for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
+        double tempR = row;
+        double nextRow = tempR + 1;
+        for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
+            double tempC = column;
+            double nextColumn = tempC - 1;
+            p1 = to_string(-length / 2.0) + "," + to_string(y * nextRow) + "," + to_string(z * column) + "\n";
+            p2 = to_string(-length / 2.0) + "," + to_string(y * row) + "," + to_string(z * column) + "\n";
+            p3 = to_string(-length / 2.0) + "," + to_string(y * row) + "," + to_string(z * nextColumn) + "\n";
+            p4 = to_string(-length / 2.0) + "," + to_string(y * nextRow) + "," + to_string(z * nextColumn) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
         }
     }

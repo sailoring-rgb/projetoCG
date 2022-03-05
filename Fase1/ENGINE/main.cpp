@@ -129,6 +129,7 @@ bool readFile(string file) {
 void drawPrimitives() {
 
     glBegin(GL_TRIANGLES);
+    //glBegin(GL_LINES);
 
     float corzinhas = 1.0f;
     float corzinhas2 = 0.0f;
