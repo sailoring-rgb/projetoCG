@@ -350,7 +350,7 @@ bool generateSphere(vector<string> params){
         }
     }
 
-    string res = to_string(4) + "\n" + aux;
+    string res = to_string(totalPoints) + "\n" + aux;
     writeInFile(res,file);
     return true;
 }
