@@ -287,6 +287,74 @@ bool generateCone(vector<string> params) {
     return true;
 }
 
+bool generateSphere(vector<string> params){
+    double radius = stod(params[0]);
+    int totalSlices = stoi(params[2]);
+    int totalStacks = stoi(params[3]);
+
+    // Validação dos parâmetros recebidos
+    if (radius < 0 || totalSlices < 0 || totalStacks < 0)
+        return false;
+
+    // Validação da existência do ficheiro
+    string file = params[4];
+    int found = file.find(".3d");
+    if (found <= 0) return false;
+
+    int totalPoints = 0;
+
+    // String para guardar os pontos usados na construção da esfera
+    string aux ="";
+
+    // Definição dos limites da esfera em radianos
+    double startSlice = 0;
+    double startStack = 0;
+    double endSlice = M_PI * 2;
+    double endStack = M_PI;
+
+    // Definição dos passos dados em casa slice e stack
+    double stepSlice = (endSlice - startSlice) / totalSlices;
+    double stepStack = (endStack - startStack) / totalStacks;
+
+    // Pontos
+    double x0, x1, x2, x3, y0, y1, y2, y3, z0, z1, z2, z3;
+
+    // Ciclo para determinar os pontos da esfera
+    for(int i = 0; i < totalSlices; i++) {
+        for (int j = 0; j < totalStacks; j++) {
+            double u = i * stepSlice + startSlice;
+            double v = j * stepStack + startStack;
+            double un = (i + 1 == totalSlices) ? endSlice : (i + 1) * stepSlice + startSlice;
+            double vn = (j + 1 == totalStacks) ? endStack : (j + 1) * stepStack + startStack;
+
+            x0 = cos(u) * sin(v) * radius;
+            y0 = cos(v) * radius;
+            z0 = sin(u) * sin(v) * radius;
+            x1 = cos(u) * sin(vn) * radius;
+            y1 = cos(vn) * radius;
+            z1 = sin(u) * sin(vn) * radius;
+            x2 = cos(un) * sin(v) * radius;
+            y2 = cos(v) * radius;
+            z2 = sin(un) * sin(v) * radius;
+            x3 = cos(un) * sin(vn) * radius;
+            y3 = cos(vn) * radius;
+            z3 = sin(un) * sin(vn) * radius;
+
+            totalPoints += 4;
+
+            string p0 = to_string(x0) + "," + to_string(y0) + "," + to_string(z0) + "\n";
+            string p1 = to_string(x1) + "," + to_string(y1) + "," + to_string(z1) + "\n";
+            string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(z2) + "\n";
+            string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) + "\n";
+            aux = aux + p0 + p1 + p2 + p3;
+        }
+    }
+
+    string res = to_string(4) + "\n" + aux;
+    writeInFile(res,file);
+    return true;
+}
+
 bool parseInput(string primitive, vector<string> params) {
 
     bool ret = false;
@@ -311,7 +379,7 @@ bool parseInput(string primitive, vector<string> params) {
     }
     else if (primitive.compare("sphere") == 0) {
         if (params.size() == 4) {
-            //ret = generateSphere(params);
+            ret = generateSphere(params);
         }
         else ret = false;
     }
