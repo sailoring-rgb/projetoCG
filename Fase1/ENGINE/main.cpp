@@ -37,9 +37,14 @@ vector<string> files;
 vector<Primitive> primitives;
 
 //Variables needed to the keyboard function.
-float r = 10.0f;
-float alpha = 0.5;
-float beta = 0.5;
+float x = 0.1;
+float y = 0.1;
+float z = 0.1;
+float scale_x = 1.0f;
+float scale_y = 1.0f;
+float scale_z = 1.0f;
+float angle = 0.0f;
+float angle2 = 0.0f;
 
 /**
  * Function that redimensionates a window.
@@ -128,8 +133,8 @@ bool readFile(string file) {
  */
 void drawPrimitives() {
 
-    glBegin(GL_TRIANGLES);
-    //glBegin(GL_LINES);
+    //glBegin(GL_TRIANGLES);
+    glBegin(GL_LINES);
 
     float corzinhas = 1.0f;
     float corzinhas2 = 0.0f;
@@ -160,9 +165,14 @@ void renderScene(void) {
     // set the camera
     glLoadIdentity();
 
-    gluLookAt(sin(beta) * cos(alpha) * r, sin(alpha) * r, cos(beta) * cos(alpha) * r, //camera position
-        0.0, 0.0, 0.0,  // where to look
-        0.0f, 1.0f, 0.0f); //up vector
+    gluLookAt(5.0f, 5.0f, 5.0f,
+        0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f);
+
+    glTranslatef(x, 0.0, z);
+    glRotatef(angle, 0.0, 1.0, 0.0);
+    glRotatef(angle2, 1.0, 0.0, 0.0);
+    glScalef(scale_x, scale_y, scale_z);
 
     //AXIS
     glBegin(GL_LINES);
@@ -193,25 +203,36 @@ void renderScene(void) {
  * @param x
  * @param y
  */
-void mover(int key_code, int x, int y) {
-    float change = M_PI / 40;
+void rotate(int key_code, int x, int y) {
     switch (key_code) {
-        case GLUT_KEY_LEFT: {
-            beta -= change;
-            break;
-        }
-        case GLUT_KEY_RIGHT: {
-            beta += change;
-            break;
-        }
-        case GLUT_KEY_UP: {
-            if (alpha < (M_PI / 2))alpha += change;
-            break;
-        }
-        case GLUT_KEY_DOWN: {
-            if ( alpha>-(M_PI / 2) )alpha -= change;
-            break;
-        }
+    case GLUT_KEY_LEFT:
+        angle -= 2;
+        break;
+    case GLUT_KEY_RIGHT:
+        angle += 2;
+        break;
+    case GLUT_KEY_UP:
+        angle2 += 2;
+        break;
+    case GLUT_KEY_DOWN:
+        angle2 -= 2;
+        break;
+    }
+    glutPostRedisplay();
+}
+
+void scale(unsigned char key_code, int x, int y) {
+    switch (key_code) {
+    case '+':
+        scale_x += 0.1;
+        scale_y += 0.1;
+        scale_z += 0.1;
+        break;
+    case '-':
+        scale_x -= 0.1;
+        scale_y -= 0.1;
+        scale_z -= 0.1;
+        break;
     }
     glutPostRedisplay();
 }
@@ -258,7 +279,8 @@ bool initGlut(int argc, char** argv) {
     glutReshapeFunc(changeSize);
 
     // put here the registration of the keyboard callbacks
-    glutSpecialFunc(mover);
+    glutKeyboardFunc(scale);
+    glutSpecialFunc(rotate);  
 
     //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
