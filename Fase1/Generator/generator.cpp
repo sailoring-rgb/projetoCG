@@ -343,17 +343,18 @@ bool generateSphere(vector<string> params){
             y3 = cos(vn) * radius;
             z3 = sin(un) * sin(vn) * radius;
 
-            totalPoints += 6;
+            totalPoints += 12;
 
             string p0 = to_string(x0) + "," + to_string(y0) + "," + to_string(z0) + "\n";
             string p1 = to_string(x1) + "," + to_string(y1) + "," + to_string(z1) + "\n";
             string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(z2) + "\n";
             string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) + "\n";
-            aux = aux + p0 + p1 + p2 + p3 + p1 + p2;
+            aux = aux + p0 + p1 + p2 + p3 + p1 + p2 + p3 + p0 + p2 + p0 + p3 + p1;
 
             // p0, p1, p2
             // p3, p1, p2
             // p3, p0, p2 MAYBE NOT (?)
+            // p0, p3, p1
         }
     }
     string res = to_string(totalPoints) + "\n" + aux;
