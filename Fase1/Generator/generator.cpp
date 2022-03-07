@@ -349,7 +349,7 @@ bool generateSphere(vector<string> params){
             string p1 = to_string(x1) + "," + to_string(y1) + "," + to_string(z1) + "\n";
             string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(z2) + "\n";
             string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) + "\n";
-            aux = aux + p0 + p1 + p2 + p3 + p1 + p2;
+            aux = aux + p3 + p1 + p2 + p2 + p1 + p0;
 
             // p0, p1, p2
             // p3, p1, p2
