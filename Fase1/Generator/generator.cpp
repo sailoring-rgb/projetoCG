@@ -91,6 +91,7 @@ bool generatePlane(vector<string> params) {
     }
 
     writeInFile(res, file);
+    printf("File gerado com sucesso");
     return true;
 }
 
@@ -205,6 +206,7 @@ bool generateBox(vector<string> params) {
     }
 
     writeInFile(res, file);
+    printf("File gerado com sucesso");
     return true;
 }
 
@@ -284,20 +286,21 @@ bool generateCone(vector<string> params) {
     }
 
     writeInFile(res, file);
+    printf("File gerado com sucesso");
     return true;
 }
 
 bool generateSphere(vector<string> params){
     double radius = stod(params[0]);
-    int totalSlices = stoi(params[2]);
-    int totalStacks = stoi(params[3]);
+    int totalSlices = stoi(params[1]);
+    int totalStacks = stoi(params[2]);
 
     // Validação dos parâmetros recebidos
     if (radius < 0 || totalSlices < 0 || totalStacks < 0)
         return false;
 
     // Validação da existência do ficheiro
-    string file = params[4];
+    string file = params[3];
     int found = file.find(".3d");
     if (found <= 0) return false;
 
@@ -349,9 +352,9 @@ bool generateSphere(vector<string> params){
             aux = aux + p0 + p1 + p2 + p3;
         }
     }
-
     string res = to_string(totalPoints) + "\n" + aux;
     writeInFile(res,file);
+    printf("File gerado com sucesso");
     return true;
 }
 
