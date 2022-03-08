@@ -290,6 +290,50 @@ bool generateCone(vector<string> params) {
     return true;
 }
 
+bool generateCylinder(vector<string> params) {
+    // argumentos: float radius, float height, int slices file.3d
+
+    float radius = stof(params[0]);
+    float height = stof(params[1]);
+    int slices = stoi(params[2]);
+
+    if (radius < 0 || height < 0 || slices < 0) return false;
+
+    string file = params[3];
+    int found = file.find(".3d");
+    if (found <= 0) return false;
+
+    float step = (2 * M_PI) / slices;
+    float x1, x2, z1, z2, upper_h = height / 2, lower_h = - upper_h;
+    float alpha, next_alpha;
+    string aux = "";
+    int totalPoints = 0;
+
+    for(int i = 0; i < slices; i++){
+        alpha = step * i;
+        next_alpha = alpha + step;
+        x1 = radius * sin(alpha);
+        z1 = radius * cos(alpha);
+        x2 = radius * sin(next_alpha);
+        z2 = radius * cos(next_alpha);
+
+        string p0 = to_string(0) + "," + to_string(upper_h) + "," + to_string(0) + "\n";
+        string p1 = to_string(x1) + "," + to_string(upper_h) + "," + to_string(z1) + "\n";
+        string p2 = to_string(x2) + "," + to_string(upper_h) + "," + to_string(z2) + "\n";
+        string p3 = to_string(0) + "," + to_string(lower_h) + "," + to_string(0) + "\n";
+        string p4 = to_string(x1) + "," + to_string(lower_h) + "," + to_string(z1) + "\n";
+        string p5 = to_string(x2) + "," + to_string(lower_h) + "," + to_string(z2) + "\n";
+        aux += p2 + p0 + p1 + p5 + p3 + p4 + p1 + p4 + p5 + p1 + p5 + p2;
+        
+        totalPoints += 12;   
+    }
+    string res = to_string(totalPoints) + "\n" + aux;
+    writeInFile(res,file);
+    printf("File gerado com sucesso");
+    return true;
+}
+
+
 bool generateSphere(vector<string> params){
     double radius = stod(params[0]);
     int totalSlices = stoi(params[1]);
@@ -351,9 +395,6 @@ bool generateSphere(vector<string> params){
             string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) + "\n";
             aux = aux + p3 + p1 + p2 + p2 + p1 + p0;
 
-            // p0, p1, p2
-            // p3, p1, p2
-            // p3, p0, p2
         }
     }
     string res = to_string(totalPoints) + "\n" + aux;
@@ -387,6 +428,12 @@ bool parseInput(string primitive, vector<string> params) {
     else if (primitive.compare("sphere") == 0) {
         if (params.size() == 4) {
             ret = generateSphere(params);
+        }
+        else ret = false;
+    }
+    else if(primitive.compare("cylinder") == 0){
+        if(params.size() == 3){
+            ret = generateCylinder(params);
         }
         else ret = false;
     }
