@@ -407,6 +407,39 @@ bool parseInput(string primitive, vector<string> params) {
 
     bool ret = false;
 
+    switch(primitive){
+        case "box":
+            if (params.size() == 3 || params.size() == 4) {
+                ret = generateBox(params);
+            }
+            else ret = false;
+            break;
+        case "cone":
+            if (params.size() == 5) {
+                ret = generateCone(params);
+            }
+            else ret = false;
+            break;
+        case "plane":
+            if (params.size() == 3) {
+                ret = generatePlane(params);
+            }
+            else ret = false;
+            break;
+        case "sphere":
+            if (params.size() == 4) {
+                ret = generateSphere(params);
+            }
+            else ret = false;
+            break;
+        case "cylinder":
+            if(params.size() == 3){
+                ret = generateCylinder(params);
+            }
+            else ret = false;
+            break;
+    }
+    /**
     if (primitive.compare("box") == 0) {
         if (params.size() == 3 || params.size() == 4) {
             ret = generateBox(params);
@@ -437,6 +470,7 @@ bool parseInput(string primitive, vector<string> params) {
         }
         else ret = false;
     }
+    */
     return ret;
 }
 
