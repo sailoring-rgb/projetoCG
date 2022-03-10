@@ -121,7 +121,7 @@ bool generateBox(vector<string> params) {
             p2 = to_string(i * step - deviation) + "," + to_string( - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
             p3 = to_string((i + 1) * step - deviation) + "," + to_string( - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
             p4 = to_string((i + 1) * step - deviation) + "," + to_string( - deviation) +  "," + to_string(j * step - deviation) + "\n";
-            res = res + p3 + p1 + p2 + p3 + p4 + p1;
+            res = res + p3 + p1 + p2 + p3 + p1 + p4;
 
             // RIGHT FACE
             p1 = to_string(length - deviation) + "," + to_string(i * step - deviation) +  "," + to_string(j * step - deviation) + "\n";
