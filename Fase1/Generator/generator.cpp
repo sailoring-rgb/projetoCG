@@ -107,101 +107,56 @@ bool generateBox(vector<string> params) {
 
     string p1, p2, p3, p4;
 
-    float x = length / divisions, y = length / divisions, z = length / divisions;
+    float step = length / divisions;
+    float deviation = length / 2;
+
 
     // string que guarda os pontos que estruturam a figura
     string res = to_string(6 * (int)(pow(divisions, 2) * 6)) + "\n";
 
-    //Plano XZ
-    //y=-length/2.0
-    for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
-        double tempR = row;
-        double nextRow = tempR + 1;
-        for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
-            double tempC = column;
-            double nextColumn = tempC - 1;
-            p1 = to_string(x * column) + "," + to_string(-length / 2.0) + "," + to_string(z * nextRow) + "\n";
-            p2 = to_string(x * column) + "," + to_string(-length / 2.0) + "," + to_string(z * row) + "\n";
-            p3 = to_string(x * nextColumn) + "," + to_string(-length / 2.0) + "," + to_string(z * row) + "\n";
-            p4 = to_string(x * nextColumn) + "," + to_string(-length / 2.0) + "," + to_string(z * nextRow) + "\n";
-            res = res + p1 + p2 + p3 + p3 + p4 + p1;
-        }
-    }
+    for(int j = 0; j < divisions; j++){
+        for(int i = 0; i < divisions; i++){
+            // DOWN FACE
+            p1 = to_string(i * step - deviation) + "," + to_string( - deviation) +  "," + to_string(j * step - deviation) + "\n";
+            p2 = to_string(i * step - deviation) + "," + to_string( - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
+            p3 = to_string((i + 1) * step - deviation) + "," + to_string( - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string( - deviation) +  "," + to_string(j * step - deviation) + "\n";
+            res = res + p1 + p2 + p3 + p4 + p1 + p3;
 
-    //y=length/2.0
-    for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
-        double tempR = row;
-        double nextRow = tempR + 1;
-        for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
-            double tempC = column;
-            double nextColumn = tempC - 1;
-            p1 = to_string(x * column) + "," + to_string(length / 2.0) + "," + to_string(z * nextRow) + "\n";
-            p2 = to_string(x * column) + "," + to_string(length / 2.0) + "," + to_string(z * row) + "\n";
-            p3 = to_string(x * nextColumn) + "," + to_string(length / 2.0) + "," + to_string(z * row) + "\n";
-            p4 = to_string(x * nextColumn) + "," + to_string(length / 2.0) + "," + to_string(z * nextRow) + "\n";
-            res = res + p1 + p2 + p3 + p3 + p4 + p1;
-        }
-    }
+            // RIGHT FACE
+            p1 = to_string(length - deviation) + "," + to_string(i * step - deviation) +  "," + to_string(j * step - deviation) + "\n";
+            p2 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
+            p3 = to_string(length - deviation) + "," + to_string(i * step - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
+            p4 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) +  "," + to_string(j * step - deviation) + "\n";
+            res = res + p1 + p2 + p3 + p4 + p2 + p1;
 
-    //Plano XY
-    //z=length/2
-    for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
-        double tempR = row;
-        double nextRow = tempR + 1;
-        for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
-            double tempC = column;
-            double nextColumn = tempC - 1;
-            p1 = to_string(x * column) + "," + to_string(y * nextRow) + "," + to_string(length/2.0) + "\n";
-            p2 = to_string(x * column) + "," + to_string(y * row) + "," + to_string(length / 2.0) + "\n";
-            p3 = to_string(x * nextColumn) + "," + to_string(y * row) + "," + to_string(length / 2.0) + "\n";
-            p4 = to_string(x * nextColumn) + "," + to_string(y * nextRow) + "," + to_string(length / 2.0) + "\n";
-            res = res + p1 + p2 + p3 + p3 + p4 + p1;
-        }
-    }
+            // UP FACE
+            p1 = to_string(i * step - deviation) + "," + to_string(length - deviation) +  "," + to_string(j * step - deviation) + "\n";
+            p2 = to_string(i * step - deviation) + "," + to_string(length - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
+            p3 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) +  "," + to_string(j * step - deviation) + "\n";
+            res = res + p1 + p2 + p3 + p4 + p1 + p3;
 
-    //z=-length/2
-    for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
-        double tempR = row;
-        double nextRow = tempR + 1;
-        for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
-            double tempC = column;
-            double nextColumn = tempC - 1;
-            p1 = to_string(x * column) + "," + to_string(y * nextRow) + "," + to_string(-length / 2.0) + "\n";
-            p2 = to_string(x * column) + "," + to_string(y * row) + "," + to_string(-length / 2.0) + "\n";
-            p3 = to_string(x * nextColumn) + "," + to_string(y * row) + "," + to_string(-length / 2.0) + "\n";
-            p4 = to_string(x * nextColumn) + "," + to_string(y * nextRow) + "," + to_string(-length / 2.0) + "\n";
-            res = res + p1 + p2 + p3 + p3 + p4 + p1;
-        }
-    }
-    
-    //Plano ZY
-    //x=length/2.0
-    for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
-        double tempR = row;
-        double nextRow = tempR + 1;
-        for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
-            double tempC = column;
-            double nextColumn = tempC - 1;
-            p1 = to_string(length / 2.0) + "," + to_string(y * nextRow) + "," + to_string(z * column) + "\n";
-            p2 = to_string(length / 2.0) + "," + to_string(y * row) + "," + to_string(z * column) + "\n";
-            p3 = to_string(length / 2.0) + "," + to_string(y * row) + "," + to_string(z * nextColumn) + "\n";
-            p4 = to_string(length / 2.0) + "," + to_string(y * nextRow) + "," + to_string(z * nextColumn) + "\n";
-            res = res + p1 + p2 + p3 + p3 + p4 + p1;
-        }
-    }
+            // LEFT FACE
+            p1 = to_string(- deviation) + "," + to_string(i * step - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
+            p2 = to_string(- deviation) + "," + to_string((i + 1) * step - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
+            p3 = to_string(- deviation) + "," + to_string(i * step - deviation) +  "," + to_string(j * step - deviation) + "\n";
+            p4 = to_string(- deviation) + "," + to_string((i + 1) * step - deviation) +  "," + to_string(j * step - deviation) + "\n";
+            res = res + p1 + p2 + p3 + p2 + p4 + p3;
 
-    //x=-length/2.0
-    for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
-        double tempR = row;
-        double nextRow = tempR + 1;
-        for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
-            double tempC = column;
-            double nextColumn = tempC - 1;
-            p1 = to_string(-length / 2.0) + "," + to_string(y * nextRow) + "," + to_string(z * column) + "\n";
-            p2 = to_string(-length / 2.0) + "," + to_string(y * row) + "," + to_string(z * column) + "\n";
-            p3 = to_string(-length / 2.0) + "," + to_string(y * row) + "," + to_string(z * nextColumn) + "\n";
-            p4 = to_string(-length / 2.0) + "," + to_string(y * nextRow) + "," + to_string(z * nextColumn) + "\n";
-            res = res + p1 + p2 + p3 + p3 + p4 + p1;
+            // FRONT FACE
+            p1 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) +  "," + to_string(length - deviation) + "\n";
+            p2 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) +  "," + to_string(length - deviation) + "\n";
+            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) +  "," + to_string(length - deviation) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) +  "," + to_string(length - deviation) + "\n";
+            res = res + p1 + p2 + p3 + p4 + p1 + p3;
+
+            // BACK FACE
+            p1 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) +  "," + to_string(- deviation) + "\n";
+            p2 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) +  "," + to_string(- deviation) + "\n";
+            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) +  "," + to_string(- deviation) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) +  "," + to_string(- deviation) + "\n";
+            res = res + p1 + p2 + p3 + p3 + p2 + p4;
         }
     }
 
