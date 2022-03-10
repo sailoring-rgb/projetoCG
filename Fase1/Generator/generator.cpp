@@ -121,7 +121,7 @@ bool generateBox(vector<string> params) {
             p2 = to_string(i * step - deviation) + "," + to_string( - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
             p3 = to_string((i + 1) * step - deviation) + "," + to_string( - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
             p4 = to_string((i + 1) * step - deviation) + "," + to_string( - deviation) +  "," + to_string(j * step - deviation) + "\n";
-            res = res + p1 + p2 + p3 + p4 + p1 + p3;
+            res = res + p3 + p1 + p2 + p3 + p4 + p1;
 
             // RIGHT FACE
             p1 = to_string(length - deviation) + "," + to_string(i * step - deviation) +  "," + to_string(j * step - deviation) + "\n";
@@ -359,39 +359,48 @@ bool generateSphere(vector<string> params){
 }
 
 bool parseInput(string primitive, vector<string> params) {
+    int option = -1;
+
+    if (primitive.compare("box") == 0) option = 1;
+    else if (primitive.compare("cone") == 0) option = 2;
+    else if (primitive.compare("plane") == 0) option = 3;
+    else if (primitive.compare("sphere") == 0) option = 4;
+    else if (primitive.compare("cylinder") == 0) option = 5;
 
     bool ret = false;
 
-    switch(primitive){
-        case "box":
+    switch(option){
+        case 1:
             if (params.size() == 3 || params.size() == 4) {
                 ret = generateBox(params);
             }
             else ret = false;
             break;
-        case "cone":
+        case 2:
             if (params.size() == 5) {
                 ret = generateCone(params);
             }
             else ret = false;
             break;
-        case "plane":
+        case 3:
             if (params.size() == 3) {
                 ret = generatePlane(params);
             }
             else ret = false;
             break;
-        case "sphere":
+        case 4:
             if (params.size() == 4) {
                 ret = generateSphere(params);
             }
             else ret = false;
             break;
-        case "cylinder":
+        case 5:
             if(params.size() == 3){
                 ret = generateCylinder(params);
             }
             else ret = false;
+            break;
+        default:
             break;
     }
     /**
