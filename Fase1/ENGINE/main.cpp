@@ -237,6 +237,23 @@ void scale(unsigned char key_code, int x, int y) {
     glutPostRedisplay();
 }
 
+void polygonMode(unsigned char key_code, int x, int y){
+    switch(key_code) {
+        case '1':
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            break;
+        case '2':
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            break;
+        case '3':
+            glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+            break;
+        default:
+            break;
+    }
+    glutPostRedisplay();
+}
+
 
  /**
   * Function that inits glut.
@@ -280,6 +297,7 @@ bool initGlut(int argc, char** argv) {
 
     // put here the registration of the keyboard callbacks
     glutKeyboardFunc(scale);
+    glutKeyboardFunc(polygonMode);
     glutSpecialFunc(rotate);  
 
     //  OpenGL settings
