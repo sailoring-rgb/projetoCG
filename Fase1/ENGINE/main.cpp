@@ -246,6 +246,7 @@ void polygonMode(unsigned char key_code, int x, int y){
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             break;
         case '3':
+            glPointSize(4.0f);
             glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
             break;
         default:
