@@ -395,7 +395,7 @@ bool parseInput(string primitive, vector<string> params) {
             else ret = false;
             break;
         case 5:
-            if(params.size() == 3){
+            if(params.size() == 4){
                 ret = generateCylinder(params);
             }
             else ret = false;
