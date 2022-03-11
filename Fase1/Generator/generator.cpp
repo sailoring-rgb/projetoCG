@@ -121,7 +121,7 @@ bool generateBox(vector<string> params) {
             p2 = to_string(i * step - deviation) + "," + to_string( - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
             p3 = to_string((i + 1) * step - deviation) + "," + to_string( - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
             p4 = to_string((i + 1) * step - deviation) + "," + to_string( - deviation) +  "," + to_string(j * step - deviation) + "\n";
-            res = res + p3 + p1 + p2 + p3 + p1 + p4;
+            res = res + p1 + p3 + p2 + p3 + p1 + p4;
 
             // RIGHT FACE
             p1 = to_string(length - deviation) + "," + to_string(i * step - deviation) +  "," + to_string(j * step - deviation) + "\n";
@@ -246,7 +246,7 @@ bool generateCone(vector<string> params) {
 }
 
 bool generateCylinder(vector<string> params) {
-    // argumentos: float radius, float height, int slices file.3d
+    // argumentos: float radius, float height, int slices, file.3d
 
     float radius = stof(params[0]);
     float height = stof(params[1]);
@@ -278,7 +278,7 @@ bool generateCylinder(vector<string> params) {
         string p3 = to_string(0) + "," + to_string(lower_h) + "," + to_string(0) + "\n";
         string p4 = to_string(x1) + "," + to_string(lower_h) + "," + to_string(z1) + "\n";
         string p5 = to_string(x2) + "," + to_string(lower_h) + "," + to_string(z2) + "\n";
-        aux += p2 + p0 + p1 + p5 + p3 + p4 + p1 + p4 + p5 + p1 + p5 + p2;
+        aux += p2 + p0 + p1 + p4 + p3 + p5 + p1 + p4 + p5 + p1 + p5 + p2;
         
         totalPoints += 12;   
     }
@@ -403,38 +403,7 @@ bool parseInput(string primitive, vector<string> params) {
         default:
             break;
     }
-    /**
-    if (primitive.compare("box") == 0) {
-        if (params.size() == 3 || params.size() == 4) {
-            ret = generateBox(params);
-        }
-        else ret = false;
-    }
-    else if (primitive.compare("cone") == 0) {
-        if (params.size() == 5) {
-            ret = generateCone(params);
-        }
-        else ret = false;
-    }
-    else if (primitive.compare("plane") == 0) {
-        if (params.size() == 3) {
-            ret = generatePlane(params);
-        }
-        else ret = false;
-    }
-    else if (primitive.compare("sphere") == 0) {
-        if (params.size() == 4) {
-            ret = generateSphere(params);
-        }
-        else ret = false;
-    }
-    else if(primitive.compare("cylinder") == 0){
-        if(params.size() == 3){
-            ret = generateCylinder(params);
-        }
-        else ret = false;
-    }
-    */
+
     return ret;
 }
 
