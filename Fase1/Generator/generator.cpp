@@ -358,6 +358,64 @@ bool generateSphere(vector<string> params){
     return true;
 }
 
+bool generateTorus(vector<string>params) {
+    float inneradius = stof(params[0]);
+    float outradius = stof(params[1]);
+    int Nsides = stoi(params[2]);
+    int Nrings = stoi(params[3]);
+    double w = 0.0f;
+    double v = 0.0f;
+    double dw = 2 * M_PI / Nsides;
+    double dv = 2 * M_PI / Nrings;
+    int totalPoints = 0;
+
+    if (inneradius < 0 || outradius < 0 || Nsides < 0 || Nrings < 0)
+        return false;
+
+    string aux = "";
+
+    string file = params[4];
+    int found = file.find(".3d");
+    if (found <= 0) return false;
+
+    while (w < M_PI + dw) {
+        v = 0.0f;
+        while (v < 2 * M_PI + dv) {
+                
+                float p1x = (outradius + inneradius * cos(v)) * cos(w);
+                float p1y = (outradius + inneradius * cos(v)) * sin(w);
+                float p1z = (inneradius * sin(v));
+
+                float p2x = (outradius + inneradius * cos(v)) * -cos(w);
+                float p2y = (outradius + inneradius * cos(v)) * sin(w);
+                float p2z = (inneradius * sin(v));
+
+                float p3x = (outradius + inneradius * cos(v + dv)) * cos(w + dw);
+                float p3y = (outradius + inneradius * cos(v + dv)) * sin(w + dw);
+                float p3z = inneradius * sin(v + dv);
+
+                float p4x = (outradius + inneradius * cos(v + dv)) * -cos(w + dw);
+                float p4y = (outradius + inneradius * cos(v + dv)) * sin(w + dw);
+                float p4z = inneradius * sin(v + dv);
+
+                totalPoints += 4;
+
+                string p1 = to_string(p1x) + "," + to_string(p1y) + "," + to_string(p1z) + "\n";
+                string p2 = to_string(p2x) + "," + to_string(p2y) + "," + to_string(p2z) + "\n";
+                string p3 = to_string(p3x) + "," + to_string(p3y) + "," + to_string(p3z) + "\n";
+                string p4 = to_string(p4x) + "," + to_string(p4y) + "," + to_string(p4z) + "\n";
+                aux = aux + p3 + p1 + p2 + p2 + p4 + p3;   
+
+                v += dv;
+        }
+        w += dw;
+    }
+    string res = to_string(totalPoints) + "\n" + aux;
+    writeInFile(res, file);
+    printf("File gerado com sucesso");
+    return true;
+}
+
 bool parseInput(string primitive, vector<string> params) {
     int option = -1;
 
@@ -366,6 +424,7 @@ bool parseInput(string primitive, vector<string> params) {
     else if (primitive.compare("plane") == 0) option = 3;
     else if (primitive.compare("sphere") == 0) option = 4;
     else if (primitive.compare("cylinder") == 0) option = 5;
+    else if (primitive.compare("torus") == 0) option = 6; 
 
     bool ret = false;
 
@@ -397,6 +456,12 @@ bool parseInput(string primitive, vector<string> params) {
         case 5:
             if(params.size() == 4){
                 ret = generateCylinder(params);
+            }
+            else ret = false;
+            break;
+        case 6:
+            if (params.size() == 5) {
+                ret = generateTorus(params); 
             }
             else ret = false;
             break;
