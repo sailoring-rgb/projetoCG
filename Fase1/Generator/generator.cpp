@@ -359,57 +359,52 @@ bool generateSphere(vector<string> params){
 }
 
 bool generateTorus(vector<string>params) {
-    float inneradius = stof(params[0]);
-    float outradius = stof(params[1]);
-    int Nsides = stoi(params[2]);
-    int Nrings = stoi(params[3]);
-    double w = 0.0f;
-    double v = 0.0f;
-    double dw = 2 * M_PI / Nsides;
-    double dv = 2 * M_PI / Nrings;
-    int totalPoints = 0;
+    float innerRadius = stof(params[0]);
+    float outerRadius = stof(params[1]);
+    int numberSides = stoi(params[2]);
+    int numberRings = stoi(params[3]);
 
-    if (inneradius < 0 || outradius < 0 || Nsides < 0 || Nrings < 0)
+    if (innerRadius < 0 || outerRadius < 0 || numberSides < 0 || numberRings < 0)
         return false;
-
-    string aux = "";
 
     string file = params[4];
     int found = file.find(".3d");
     if (found <= 0) return false;
 
-    while (w < M_PI + dw) {
-        v = 0.0f;
-        while (v < 2 * M_PI + dv) {
-                
-                float p1x = (outradius + inneradius * cos(v)) * cos(w);
-                float p1y = (outradius + inneradius * cos(v)) * sin(w);
-                float p1z = (inneradius * sin(v));
+    string aux = "";
 
-                float p2x = (outradius + inneradius * cos(v)) * -cos(w);
-                float p2y = (outradius + inneradius * cos(v)) * sin(w);
-                float p2z = (inneradius * sin(v));
+    float stepRing = 2 * M_PI / numberRings;
+    float stepSide = 2 * M_PI / numberSides;
+    int totalPoints = 0;
+    float x, y, z;
 
-                float p3x = (outradius + inneradius * cos(v + dv)) * cos(w + dw);
-                float p3y = (outradius + inneradius * cos(v + dv)) * sin(w + dw);
-                float p3z = inneradius * sin(v + dv);
+    for(int i = 0 ; i < numberRings ; i++){
+        for(int j = 0; j < numberSides; j++){
+            x = (outerRadius + innerRadius * cos(stepRing * j)) * cos(stepSide * i);
+            y = (outerRadius + innerRadius * cos(stepRing * j)) * sin(stepSide * i);
+            z = innerRadius * sin(stepSide * i);
+            string p1 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
 
-                float p4x = (outradius + inneradius * cos(v + dv)) * -cos(w + dw);
-                float p4y = (outradius + inneradius * cos(v + dv)) * sin(w + dw);
-                float p4z = inneradius * sin(v + dv);
+            x = (outerRadius + innerRadius * cos(stepRing * (j + 1))) * cos(stepSide * i);
+            y = (outerRadius + innerRadius * cos(stepRing * (j + 1))) * sin(stepSide * i);
+            z = innerRadius * sin(stepSide * i);
+            string p2 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
 
-                totalPoints += 4;
+            x = (outerRadius + innerRadius * cos(stepRing * (j + 1))) * cos(stepSide * (i + 1));
+            y = (outerRadius + innerRadius * cos(stepRing * (j + 1))) * sin(stepSide * (i + 1));
+            z = innerRadius * sin(stepSide * (i + 1));
+            string p3 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
 
-                string p1 = to_string(p1x) + "," + to_string(p1y) + "," + to_string(p1z) + "\n";
-                string p2 = to_string(p2x) + "," + to_string(p2y) + "," + to_string(p2z) + "\n";
-                string p3 = to_string(p3x) + "," + to_string(p3y) + "," + to_string(p3z) + "\n";
-                string p4 = to_string(p4x) + "," + to_string(p4y) + "," + to_string(p4z) + "\n";
-                aux = aux + p3 + p1 + p2 + p2 + p4 + p3;   
+            x = (outerRadius + innerRadius * cos(stepRing * j)) * cos(stepSide * (i + 1));
+            y = (outerRadius + innerRadius * cos(stepRing * j)) * sin(stepSide * (i + 1));
+            z = innerRadius * sin(stepSide * (i + 1));
+            string p4 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
 
-                v += dv;
+            aux = aux + p1 + p4 + p2 + p2 + p4 + p3; 
+            totalPoints += 6;  
         }
-        w += dw;
     }
+
     string res = to_string(totalPoints) + "\n" + aux;
     writeInFile(res, file);
     printf("File gerado com sucesso");
