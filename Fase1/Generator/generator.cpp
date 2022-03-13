@@ -359,12 +359,12 @@ bool generateSphere(vector<string> params){
 }
 
 bool generateTorus(vector<string>params) {
-    float rTube = stof(params[0]);
-    float rTorus = stof(params[1]);
-    int numberSides = stoi(params[2]);
-    int numberRings = stoi(params[3]);
+    float innerR = stof(params[0]);
+    float outterR = stof(params[1]);
+    int slices = stoi(params[2]);
+    int stacks = stoi(params[3]);
 
-    if (rTube < 0 || rTorus < 0 || numberSides < 0 || numberRings < 0)
+    if (innerR < 0 || outterR < 0 || slices < 0 || stacks < 0)
         return false;
 
     string file = params[4];
@@ -373,38 +373,42 @@ bool generateTorus(vector<string>params) {
 
     string aux = "";
 
-    float stepRing = 2 * M_PI / numberRings;
-    float stepSide = 2 * M_PI / numberSides;
+    double rad = (innerR + outterR) / 2;
+    double dist = rad - innerR;
+
+    float stepSlice = (2 * M_PI) / slices;
+    float stepStack = (2 * M_PI) / stacks;
+
     int totalPoints = 0;
     float x, y, z;
 
-    for(int i = 0 ; i < numberRings ; i++){
-        for(int j = 0; j < numberSides; j++){
-            x = (rTorus + rTube * cos(stepSide * j)) * cos(stepRing * i);
-            y = (rTorus + rTube * cos(stepSide * j)) * sin(stepRing * i);
-            z = rTube * sin(stepSide * i);
+    for(int i = 0 ; i < slices ; i++){
+        for(int j = 0; j < stacks; j++){
+            x = (rad + dist * cos(stepSlice * i)) * cos(stepStack * j);
+            y = dist * sin(stepSlice * i);
+            z = (rad + dist * cos(stepSlice * i)) * sin(stepStack * j);
             string p1 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
 
-            x = (rTorus + rTube * cos(stepSide * (j + 1))) * cos(stepRing * i);
-            y = (rTorus + rTube * cos(stepSide * (j + 1))) * sin(stepRing * i);
-            z = rTube * sin(stepSide * i);
+            x = (rad + dist * cos(stepSlice * (i + 1))) * cos(stepStack * j);
+            y = dist * sin(stepSlice * (i + 1));
+            z = (rad + dist * cos(stepSlice * (i + 1))) * sin(stepStack * j);
             string p2 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
 
-            x = (rTorus + rTube * cos(stepSide * (j + 1))) * cos(stepRing * (i + 1));
-            y = (rTorus + rTube * cos(stepSide * (j + 1))) * sin(stepRing * (i + 1));
-            z = rTube * sin(stepSide * (i + 1));
+            x = (rad + dist * cos(stepSlice * (i + 1))) * cos(stepStack * (j + 1));
+            y = dist * sin(stepSlice * (i + 1));
+            z = (rad + dist * cos(stepSlice * (i + 1))) * sin(stepStack * (j + 1));
             string p3 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
 
-            x = (rTorus + rTube * cos(stepSide * j)) * cos(stepRing * (i + 1));
-            y = (rTorus + rTube * cos(stepSide * j)) * sin(stepRing * (i + 1));
-            z = rTube * sin(stepSide * (i + 1));
+            x = (rad + dist * cos(stepSlice * i)) * cos(stepStack * (j + 1));
+            y = dist * sin(stepSlice * i);
+            z = (rad + dist * cos(stepSlice * i)) * sin(stepStack * (j + 1));
             string p4 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
 
-            aux = aux + p1 + p4 + p2 + p2 + p4 + p3; 
+            aux = aux + p1 + p2 + p4 + p2 + p3 + p4 ; 
             totalPoints += 6;  
         }
     }
-
+    
     string res = to_string(totalPoints) + "\n" + aux;
     writeInFile(res, file);
     printf("File gerado com sucesso");
