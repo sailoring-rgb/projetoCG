@@ -359,12 +359,12 @@ bool generateSphere(vector<string> params){
 }
 
 bool generateTorus(vector<string>params) {
-    float innerRadius = stof(params[0]);
-    float outerRadius = stof(params[1]);
+    float rTube = stof(params[0]);
+    float rTorus = stof(params[1]);
     int numberSides = stoi(params[2]);
     int numberRings = stoi(params[3]);
 
-    if (innerRadius < 0 || outerRadius < 0 || numberSides < 0 || numberRings < 0)
+    if (rTube < 0 || rTorus < 0 || numberSides < 0 || numberRings < 0)
         return false;
 
     string file = params[4];
@@ -380,24 +380,24 @@ bool generateTorus(vector<string>params) {
 
     for(int i = 0 ; i < numberRings ; i++){
         for(int j = 0; j < numberSides; j++){
-            x = (outerRadius + innerRadius * cos(stepRing * j)) * cos(stepSide * i);
-            y = (outerRadius + innerRadius * cos(stepRing * j)) * sin(stepSide * i);
-            z = innerRadius * sin(stepSide * i);
+            x = (rTorus + rTube * cos(stepSide * j)) * cos(stepRing * i);
+            y = (rTorus + rTube * cos(stepSide * j)) * sin(stepRing * i);
+            z = rTube * sin(stepSide * i);
             string p1 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
 
-            x = (outerRadius + innerRadius * cos(stepRing * (j + 1))) * cos(stepSide * i);
-            y = (outerRadius + innerRadius * cos(stepRing * (j + 1))) * sin(stepSide * i);
-            z = innerRadius * sin(stepSide * i);
+            x = (rTorus + rTube * cos(stepSide * (j + 1))) * cos(stepRing * i);
+            y = (rTorus + rTube * cos(stepSide * (j + 1))) * sin(stepRing * i);
+            z = rTube * sin(stepSide * i);
             string p2 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
 
-            x = (outerRadius + innerRadius * cos(stepRing * (j + 1))) * cos(stepSide * (i + 1));
-            y = (outerRadius + innerRadius * cos(stepRing * (j + 1))) * sin(stepSide * (i + 1));
-            z = innerRadius * sin(stepSide * (i + 1));
+            x = (rTorus + rTube * cos(stepSide * (j + 1))) * cos(stepRing * (i + 1));
+            y = (rTorus + rTube * cos(stepSide * (j + 1))) * sin(stepRing * (i + 1));
+            z = rTube * sin(stepSide * (i + 1));
             string p3 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
 
-            x = (outerRadius + innerRadius * cos(stepRing * j)) * cos(stepSide * (i + 1));
-            y = (outerRadius + innerRadius * cos(stepRing * j)) * sin(stepSide * (i + 1));
-            z = innerRadius * sin(stepSide * (i + 1));
+            x = (rTorus + rTube * cos(stepSide * j)) * cos(stepRing * (i + 1));
+            y = (rTorus + rTube * cos(stepSide * j)) * sin(stepRing * (i + 1));
+            z = rTube * sin(stepSide * (i + 1));
             string p4 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
 
             aux = aux + p1 + p4 + p2 + p2 + p4 + p3; 
