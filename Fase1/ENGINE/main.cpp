@@ -40,9 +40,6 @@ vector<Primitive> primitives;
 float x = 0.1;
 float y = 0.1;
 float z = 0.1;
-float scale_x = 1.0f;
-float scale_y = 1.0f;
-float scale_z = 1.0f;
 float angle = 0.0f;
 float angle2 = 0.0f;
 
@@ -172,7 +169,6 @@ void renderScene(void) {
     glTranslatef(x, 0.0, z);
     glRotatef(angle, 0.0, 1.0, 0.0);
     glRotatef(angle2, 1.0, 0.0, 0.0);
-    glScalef(scale_x, scale_y, scale_z);
 
     //AXIS
     glBegin(GL_LINES);
@@ -216,22 +212,6 @@ void rotate(int key_code, int x, int y) {
         break;
     case GLUT_KEY_DOWN:
         angle2 -= 2;
-        break;
-    }
-    glutPostRedisplay();
-}
-
-void scale(unsigned char key_code, int x, int y) {
-    switch (key_code) {
-    case '+':
-        scale_x += 0.1;
-        scale_y += 0.1;
-        scale_z += 0.1;
-        break;
-    case '-':
-        scale_x -= 0.1;
-        scale_y -= 0.1;
-        scale_z -= 0.1;
         break;
     }
     glutPostRedisplay();
@@ -297,7 +277,6 @@ bool initGlut(int argc, char** argv) {
     glutReshapeFunc(changeSize);
 
     // put here the registration of the keyboard callbacks
-    glutKeyboardFunc(scale);
     glutKeyboardFunc(polygonMode);
     glutSpecialFunc(rotate);  
 
