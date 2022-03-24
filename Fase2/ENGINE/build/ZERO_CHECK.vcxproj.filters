@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\ENGINE\build\CMakeFiles\17e2d47341aa25ced7bfa553d75df954\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{23984A38-B598-3284-94E4-27C7D17B07AD}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\ENGINE\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\ENGINE\tinyxml2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\ENGINE\Point.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\ENGINE\Primitive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\ENGINE\Group.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\ENGINE\Trans.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\ENGINE\tinyxml2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\ENGINE\Point.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\ENGINE\Primitive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\ENGINE\Group.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\ENGINE\Trans.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\ENGINE\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{4EAB300A-8B0B-39AA-BD43-B851728D4DB6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{47B0CB5D-69F6-3024-A63C-3276C0DF9446}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
