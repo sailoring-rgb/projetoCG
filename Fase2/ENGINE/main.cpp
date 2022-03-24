@@ -11,6 +11,8 @@
 #include <cstring>
 #include <string>
 #include <algorithm>
+#include "Group.h"
+#include "Trans.h"
 
 #ifdef __APPLE__
 #include <unistd.h>
@@ -35,6 +37,9 @@ vector<string> files;
 
 //Vector that stores all Primitives.
 vector<Primitive> primitives;
+
+//Vector that stores all the gropus
+vector<Group> groups;
 
 //Variables needed to the keyboard function.
 float x = 0.1;
