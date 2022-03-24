@@ -35,9 +35,6 @@ using namespace std;
 //Vector that stores filenames.
 vector<string> files;
 
-//Vector that stores all Primitives.
-vector<Primitive> primitives;
-
 //Vector that stores all the gropus
 vector<Group> groups;
 
