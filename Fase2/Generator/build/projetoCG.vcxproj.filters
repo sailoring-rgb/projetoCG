@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\Generator\generator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\Generator\tinyxml2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\leona\OneDrive\documentos\GitHub\projetoCG\Fase2\Generator\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{17FF3EAF-9B90-322B-87C2-DCA506951FED}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
