@@ -1,6 +1,71 @@
 <scene>
+    <!-- Sol -->
     <group>
-        <color >
+        <color x="54.6951" y="48.1703" z="6.4150"/>
+        </models >
+            <model file="sphere.3d"/>
+        </models >
+    <group>
+    <!-- Mercúrio -->
+    <group>
+        <translate >
+        <color x="48.0181" y="41.7694" z="11.8348"/>
+        </models >
+            <model file="sphere.3d"/>
+        </models >
+    <group>
+    <!-- Vénus -->
+    <group>
+        <translate >
+        <color x="56.1064" y="48.7348" z="13.8468"/>
+        </models >
+            <model file="sphere.3d"/>
+        </models >
+    <group>
+    <!-- Terra -->
+    <group>
+        <translate >	
+        <color x="11.0194" y="4.4078" z="58.0276"/>
+        </models >
+            <model file="sphere.3d"/>
+        </models >
+    <group>
+    <!-- Marte -->
+    <group>
+        <translate > 	
+        <color x="25.1768" y="12.9791" z="1.1783"/>
+        </models >
+            <model file="sphere.3d"/>
+        </models >
+    <group>
+    <!-- Júpiter -->
+    <group>
+        <translate > 
+        <color x="71.9141" y="74.9097" z="53.3166"/>
+        </models >
+            <model file="sphere.3d"/>
+        </models >
+    <group>
+    <!-- Saturno -->
+    <group>
+        <translate >
+        <color x="79.1537" y="89.1547" z="39.0233"/>
+        </models >
+            <model file="sphere.3d"/>
+        </models >
+    <group>
+    <!-- Urano -->
+    <group>
+        <translate > 
+        <color x="34.5988" y="34.5988" z="34.5988"/>
+        </models >
+            <model file="sphere.3d"/>
+        </models >
+    <group>
+    <!-- Neptuno -->
+    <group>
+        <translate >
+        <color x="23.3233" y="18.5182" z="83.2340"/>
         </models >
             <model file="sphere.3d"/>
         </models >
