@@ -38,6 +38,8 @@ vector<string> files;
 //Vector that stores all the gropus
 vector<Group> groups;
 
+string pathFile;
+
 //Variables needed to the keyboard function.
 float x = 0.1;
 float y = 0.1;
@@ -81,13 +83,9 @@ void changeSize(int w, int h) {
  * @param file filename.
  * @return bool true if everything goes well. Otherwise, returns false.
  */
-bool readFile(string file) {
+Primitive readFile(string file) {
 
     ifstream MyReadFile(file);
-
-    if(!MyReadFile){
-        return false;
-    }
 
     string myText;
 
@@ -119,37 +117,58 @@ bool readFile(string file) {
         primitive.addPoint(point);
     }
 
-    primitives.push_back(primitive);
-
     MyReadFile.close();
 
-    return true;
+    return primitive;
 }
 
 
 /**
  * Function that draws all the primitives previously stored in a vector.
  */
-void drawPrimitives() {
+void drawPrimitives(Group groups) {
+    
+    string scale = "scale";
+    string translate = "translate";
+    string rotate = "rotate";
+    string color = "color";
 
-    glBegin(GL_TRIANGLES);
-    //glBegin(GL_LINES);
+    for (int j = 0; j < groups.getNrTrans(); j++) {
+        Trans t = groups.getTrans(j);
 
-    float corzinhas = 1.0f;
-    float corzinhas2 = 0.0f;
+        if (translate.compare(t.getName()) == 0) {
+            glTranslatef(t.getX(), t.getY(), t.getZ());
+        }
+        else if (scale.compare(t.getName()) == 0) {
+            glScalef(t.getX(), t.getY(), t.getZ());
+        }
+        else if (rotate.compare(t.getName()) == 0) {
+            glRotated(t.getAngle(), t.getX(), t.getY(), t.getZ());
+        }
+        else if (color.compare(t.getName()) == 0)
+        {        
+            glColor3f(t.getX(), t.getY(), t.getZ());
+        }
+    }
 
-    for (int i = 0; i < primitives.size(); i++) 
-        for (int j = 0; j < primitives[i].getNrVertices(); j++) {
-            corzinhas = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-            corzinhas2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-            glColor3f(corzinhas,corzinhas2,corzinhas);
+    for (int z = 0; z < groups.getNrPrimitives(); z++) {
+        Primitive p = groups.getPrimitives(z);
 
-            Point point = primitives[i].getPoint(j);
+        glBegin(GL_TRIANGLES);
+        for (int c = 0; c < p.getNrVertices(); c++) {
+            Point point = p.getPoint(c);
 
             glVertex3f(point.getX(), point.getY(), point.getZ());
         }
+        glEnd();
+    }
 
-    glEnd();
+    for (int z = 0; z < groups.getNrGroups(); z++) {
+        glPushMatrix();
+        drawPrimitives(groups.getGroup(z));
+        glPopMatrix();
+    }
+
 
 }
 
@@ -189,7 +208,11 @@ void renderScene(void) {
     glEnd();
 
     //DRAW POINTS
-    drawPrimitives();
+    for (int i = 0; i < groups.size(); i++) {
+        glPushMatrix();
+        drawPrimitives(groups[i]);
+        glPopMatrix();
+    }
 
     // End of frame
     glutSwapBuffers();
@@ -246,28 +269,6 @@ void polygonMode(unsigned char key_code, int x, int y){
   */
 bool initGlut(int argc, char** argv) {
 
-     bool res;
-
-     char tmp[256];
-
-     getcwd(tmp, 256); //tmp which contains the directory
-
-     string path(tmp);
-
-     int found = path.find("ENGINE"); // finds generator's localization
-
-     replace(path.begin(), path.end(), '\\', '/');
-     path.erase(path.begin() + found, path.end());
-
-     path = path + "Models/";
-
-
-     for (int i = 0; i < files.size(); i++) {
-         string file = path + files[i];
-         res = readFile(file);
-         if(!res) return false;
-     }
-
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
@@ -291,6 +292,98 @@ bool initGlut(int argc, char** argv) {
     return true;
 }
 
+Group parseGroup(XMLElement* group, int father) {
+    string models = "models";
+    string scale = "scale";
+    string translate = "translate";
+    string rotate = "rotate";
+    string grupo = "group";
+    string color = "color";
+    Group g;
+
+    do {
+        g = Group();
+        XMLElement* element = group->FirstChildElement();
+
+        while (element != nullptr){
+            if (models.compare(element->Name()) == 0) {
+
+                XMLElement* file = element->FirstChildElement("model");
+
+                while (file != nullptr) {
+                    const char* strfile = file->Attribute("file");
+                    string namefile = strfile;
+                    string path = pathFile + namefile;
+                    Primitive primitive = readFile(path);
+
+                    g.addPrimitives(primitive);
+
+                    file = file->NextSiblingElement();
+                }
+            }
+            else if (scale.compare(element->Name()) == 0) {
+                float x, y, z;
+
+                element->QueryFloatAttribute("x", &x);
+                element->QueryFloatAttribute("y", &y);
+                element->QueryFloatAttribute("x", &z);
+
+                Trans t = Trans("scale", x, y, z, 0);
+
+                g.addTrans(t);
+            }
+            else if (translate.compare(element->Name()) == 0) {
+                float x, y, z;
+
+                element->QueryFloatAttribute("x", &x);
+                element->QueryFloatAttribute("y", &y);
+                element->QueryFloatAttribute("x", &z);
+
+                Trans t = Trans("translate", x, y, z, 0);
+
+                g.addTrans(t);
+            }
+            else if (rotate.compare(element->Name()) == 0) {
+                float x, y, z, angle;
+
+                element->QueryFloatAttribute("angle", &angle);
+                element->QueryFloatAttribute("x", &x);
+                element->QueryFloatAttribute("y", &y);
+                element->QueryFloatAttribute("x", &z);
+
+                Trans t = Trans("rotate", x, y, z, angle);
+                
+                g.addTrans(t);
+            }
+            else if (grupo.compare(element->Name()) == 0) {
+                Group gr = parseGroup(element, 1);
+                g.addGroups(gr);
+            }
+            else if (color.compare(element->Name()) == 0) {
+                float red, green, blue;
+
+                element->QueryFloatAttribute("x", &red);
+                element->QueryFloatAttribute("y", &green);
+                element->QueryFloatAttribute("x", &blue);
+
+                Trans t = Trans("color", red, green, blue,0);
+
+                g.addTrans(t);
+            }
+
+            element = element->NextSiblingElement();
+
+            if (element == NULL && father == 1) return g;
+        }
+
+        if (father == 0) groups.push_back(g);
+        group = group->NextSiblingElement();
+
+    } while (group != nullptr);
+
+    return g;
+}
+
 /**
  * Function that reads a XML file.
  * @return bool true if everything goes well. Otherwise, returns false.
@@ -308,7 +401,7 @@ bool parseDocument() {
     replace(path.begin(), path.end(), '\\', '/');
     path.erase(path.begin() + found, path.end());
 
-    path = path + "Models/model.xml";
+    path = path + "Models/solarSystem.xml";
 
     strcpy(tmp, path.c_str());
 
@@ -321,17 +414,9 @@ bool parseDocument() {
         return false; //in case of error
     }
 
-    XMLElement* file = scene->FirstChildElement("model");
+    XMLElement* group = scene->FirstChildElement("group");
+    parseGroup(group, 0);
 
-    while (file != nullptr) {
-        const char* strfile;
-
-        strfile = file->Attribute("file");
-        string namefile = strfile;
-        files.push_back(namefile);
-
-        file = file->NextSiblingElement();
-    }
     return true;
 }
 
@@ -342,6 +427,23 @@ bool parseDocument() {
  * @return int 
  */
 int main(int argc, char** argv) {
+
+    bool res = true;
+
+    char tmp[256];
+
+    getcwd(tmp, 256);
+
+    string path(tmp);
+
+    int found = path.find("ENGINE");
+
+    replace(path.begin(), path.end(), '\\', '/');
+    path.erase(path.begin() + found, path.end());
+
+    path = path + "Models/";
+
+    pathFile = path;
 
     if (parseDocument()) {
         if(!initGlut(argc, argv)){

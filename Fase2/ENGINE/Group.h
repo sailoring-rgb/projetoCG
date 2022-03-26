@@ -1,20 +1,20 @@
-#ifndef GROUP_h
-#define GROUP_h
+#ifndef Group_h
+#define Group_h
 
 #include <vector>
-#include "GROUP.h"
+#include "Group.h"
 #include "Primitive.h"
 #include "Trans.h"
 
 class Group {
-	class GroupBuiler;
-
+	class GroupBuilder;
+	GroupBuilder* groupBuilder;
 
 public:
 
 	Group();
 
-	Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> Trans);
+	Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans);
 
 	int getNrPrimitives();
 
@@ -39,6 +39,7 @@ public:
 	Group getGroup(int index);
 
 	~Group();
+
 };
 
 #endif
