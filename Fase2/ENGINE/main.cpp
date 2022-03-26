@@ -186,11 +186,12 @@ void renderScene(void) {
     gluLookAt(5.0f, 5.0f, 5.0f,
         0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f);
-
+    /*
     glTranslatef(x, 0.0, z);
     glRotatef(angle, 0.0, 1.0, 0.0);
     glRotatef(angle2, 1.0, 0.0, 0.0);
-
+    */
+    /*
     //AXIS
     glBegin(GL_LINES);
     // X axis in red
@@ -206,6 +207,7 @@ void renderScene(void) {
     glVertex3f(0.0f, 0.0f, -100.0f);
     glVertex3f(0.0f, 0.0f, 100.0f);
     glEnd();
+    */
 
     //DRAW POINTS
     for (int i = 0; i < groups.size(); i++) {
@@ -224,7 +226,7 @@ void renderScene(void) {
  * @param x
  * @param y
  */
-void rotate(int key_code, int x, int y) {
+void rodar(int key_code, int x, int y) {
     switch (key_code) {
     case GLUT_KEY_LEFT:
         angle -= 2;
@@ -281,7 +283,7 @@ bool initGlut(int argc, char** argv) {
 
     // put here the registration of the keyboard callbacks
     glutKeyboardFunc(polygonMode);
-    glutSpecialFunc(rotate);  
+    glutSpecialFunc(rodar);  
 
     //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
@@ -306,6 +308,7 @@ Group parseGroup(XMLElement* group, int father) {
         XMLElement* element = group->FirstChildElement();
 
         while (element != nullptr){
+
             if (models.compare(element->Name()) == 0) {
 
                 XMLElement* file = element->FirstChildElement("model");
@@ -454,5 +457,3 @@ int main(int argc, char** argv) {
     }
     return 1;
 }
-
-
