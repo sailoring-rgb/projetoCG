@@ -7,3 +7,11 @@ Fase1/.idea/
 **.vscode
 *.ipch
 *.recipe
+*.tlog
+*.obj
+*.user
+*.log
+*.exe
+*.db
+Fase2/ENGINE/build/.vs/ProjetoCG/v17/.suo
+Fase2/ENGINE/build/.vs/ProjetoCG/v17/.suo
