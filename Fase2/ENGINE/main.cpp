@@ -405,13 +405,14 @@ bool parseDocument() {
     path.erase(path.begin() + found, path.end());
 
     path = path + "Models/solarSystem.xml";
+    cout << path << endl;
 
     strcpy(tmp, path.c_str());
 
     XMLDocument doc;
     doc.LoadFile(tmp);
 
-    XMLNode* scene = doc.FirstChild();
+    XMLElement* scene = doc.FirstChildElement();
     if (scene == nullptr) {
         cout << "ERRO";
         return false; //in case of error
