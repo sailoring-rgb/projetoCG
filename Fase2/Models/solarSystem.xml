@@ -53,7 +53,7 @@
         </models >
         <group>
             <translate x="1.1" y="0.3" z="1.1"/>
-            <scale x="0.3" y="0.3" z="0.3"/>	
+            <scale x="0.25" y="0.25" z="0.25"/>	
             <color x="238" y="233" z="233"/>
             <models >
                 <model file="sphere.3d"/>
@@ -61,7 +61,7 @@
         </group>
         <group>
             <translate x="2" y="0.3" z="2"/>
-            <scale x="0.3" y="0.3" z="0.3"/>	
+            <scale x="0.25" y="0.25" z="0.25"/>	
             <color x="255" y="239" z="219"/>
             <models >
                 <model file="sphere.3d"/>
@@ -85,6 +85,46 @@
         <models >
             <model file="sphere.3d"/>
         </models >
+        <group>
+            <rotate angle="90" x="0" y="1" z="0"/>
+            <scale x="0.55" y="0.55" z="0.55"/>
+            <color x="225" y="164" z="88"/>
+            <models >
+                <model file="torus.3d"/>
+            </models >
+        </group>
+        <group>
+            <translate x="1.1" y="-0.3" z="0.2"/>
+            <scale x="0.1" y="0.1" z="0.1"/>	
+            <color x="238" y="233" z="233"/>
+            <models >
+                <model file="sphere.3d"/>
+            </models >
+        </group>
+        <group>
+            <translate x="-1.1" y="0.3" z="-0.2"/>
+            <scale x="0.04" y="0.04" z="0.04"/>	
+            <color x="238" y="233" z="233"/>
+            <models >
+                <model file="sphere.3d"/>
+            </models >
+        </group>
+        <group>
+            <translate x="-0.9" y="0.3" z="-0.1"/>
+            <scale x="0.06" y="0.06" z="0.06"/>	
+            <color x="238" y="233" z="233"/>
+            <models >
+                <model file="sphere.3d"/>
+            </models >
+        </group>
+        <group>
+            <translate x="-0.6" y="0.3" z="0"/>
+            <scale x="0.08" y="0.08" z="0.08"/>	
+            <color x="238" y="233" z="233"/>
+            <models >
+                <model file="sphere.3d"/>
+            </models >
+        </group>
     </group>
     <!-- Urano -->
     <group>

@@ -193,7 +193,6 @@ void renderScene(void) {
     
     
     //AXIS
-    /*
     glBegin(GL_LINES);
     // X axis in red
     glColor3f(1.0f, 0.0f, 0.0f);
@@ -207,7 +206,7 @@ void renderScene(void) {
     glColor3f(0.0f, 0.0f, 1.0f);
     glVertex3f(0.0f, 0.0f, -100.0f);
     glVertex3f(0.0f, 0.0f, 100.0f);
-    glEnd();*/
+    glEnd();
     
 
     //DRAW POINTS
@@ -330,7 +329,7 @@ Group parseGroup(XMLElement* group, int father) {
 
                 element->QueryFloatAttribute("x", &x);
                 element->QueryFloatAttribute("y", &y);
-                element->QueryFloatAttribute("x", &z);
+                element->QueryFloatAttribute("z", &z);
 
                 Trans t = Trans("scale", x, y, z, 0);
 
@@ -341,7 +340,7 @@ Group parseGroup(XMLElement* group, int father) {
 
                 element->QueryFloatAttribute("x", &x);
                 element->QueryFloatAttribute("y", &y);
-                element->QueryFloatAttribute("x", &z);
+                element->QueryFloatAttribute("z", &z);
 
                 Trans t = Trans("translate", x, y, z, 0);
 
@@ -353,7 +352,7 @@ Group parseGroup(XMLElement* group, int father) {
                 element->QueryFloatAttribute("angle", &angle);
                 element->QueryFloatAttribute("x", &x);
                 element->QueryFloatAttribute("y", &y);
-                element->QueryFloatAttribute("x", &z);
+                element->QueryFloatAttribute("z", &z);
 
                 Trans t = Trans("rotate", x, y, z, angle);
                 
