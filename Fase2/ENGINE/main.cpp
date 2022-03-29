@@ -1,4 +1,4 @@
-#define  _USE_MATH_DEFINES
+﻿#define  _USE_MATH_DEFINES
 #include <math.h>
 #include <stdlib.h>
 #include <iostream>
@@ -147,7 +147,7 @@ void drawPrimitives(Group groups) {
         }
         else if (color.compare(t.getName()) == 0)
         {        
-            glColor3f(t.getX(), t.getY(), t.getZ());
+            glColor3f(t.getX() / 255.f, t.getY() / 255.f, t.getZ() / 255.f);
         }
     }
 
@@ -186,13 +186,14 @@ void renderScene(void) {
     gluLookAt(5.0f, 5.0f, 5.0f,
         0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f);
-    /*
+    
     glTranslatef(x, 0.0, z);
     glRotatef(angle, 0.0, 1.0, 0.0);
     glRotatef(angle2, 1.0, 0.0, 0.0);
-    */
-    /*
+    
+    
     //AXIS
+    /*
     glBegin(GL_LINES);
     // X axis in red
     glColor3f(1.0f, 0.0f, 0.0f);
@@ -206,8 +207,8 @@ void renderScene(void) {
     glColor3f(0.0f, 0.0f, 1.0f);
     glVertex3f(0.0f, 0.0f, -100.0f);
     glVertex3f(0.0f, 0.0f, 100.0f);
-    glEnd();
-    */
+    glEnd();*/
+    
 
     //DRAW POINTS
     for (int i = 0; i < groups.size(); i++) {
@@ -367,7 +368,7 @@ Group parseGroup(XMLElement* group, int father) {
 
                 element->QueryFloatAttribute("x", &red);
                 element->QueryFloatAttribute("y", &green);
-                element->QueryFloatAttribute("x", &blue);
+                element->QueryFloatAttribute("z", &blue);
 
                 Trans t = Trans("color", red, green, blue,0);
 
