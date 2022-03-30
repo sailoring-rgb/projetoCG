@@ -74,12 +74,12 @@ bool generatePlane(vector<string> params) {
     float x = length / divisions, z = length / divisions;
 
     // string que guarda os pontos que estruturam a figura
-    string res = to_string(6 * (int)(pow(divisions,2))) + "\n";
+    string res = to_string(6 * (int)(pow(divisions, 2))) + "\n";
 
-    for (double row = -divisions/2.0; row < divisions/2.0; row++) {
+    for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
         double tempR = row;
         double nextRow = tempR + 1;
-        for (double column = divisions/2.0; column > -divisions/2.0; column--) {
+        for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
             double tempC = column;
             double nextColumn = tempC - 1;
             p1 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "\n";
@@ -114,48 +114,48 @@ bool generateBox(vector<string> params) {
     // string que guarda os pontos que estruturam a figura
     string res = to_string(6 * (int)(pow(divisions, 2) * 6)) + "\n";
 
-    for(int j = 0; j < divisions; j++){
-        for(int i = 0; i < divisions; i++){
+    for (int j = 0; j < divisions; j++) {
+        for (int i = 0; i < divisions; i++) {
             // DOWN FACE
-            p1 = to_string(i * step - deviation) + "," + to_string( - deviation) +  "," + to_string(j * step - deviation) + "\n";
-            p2 = to_string(i * step - deviation) + "," + to_string( - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
-            p3 = to_string((i + 1) * step - deviation) + "," + to_string( - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
-            p4 = to_string((i + 1) * step - deviation) + "," + to_string( - deviation) +  "," + to_string(j * step - deviation) + "\n";
+            p1 = to_string(i * step - deviation) + "," + to_string(-deviation) + "," + to_string(j * step - deviation) + "\n";
+            p2 = to_string(i * step - deviation) + "," + to_string(-deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
+            p3 = to_string((i + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string(j * step - deviation) + "\n";
             res = res + p1 + p3 + p2 + p3 + p1 + p4;
 
             // RIGHT FACE
-            p1 = to_string(length - deviation) + "," + to_string(i * step - deviation) +  "," + to_string(j * step - deviation) + "\n";
-            p2 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
-            p3 = to_string(length - deviation) + "," + to_string(i * step - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
-            p4 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) +  "," + to_string(j * step - deviation) + "\n";
+            p1 = to_string(length - deviation) + "," + to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "\n";
+            p2 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
+            p3 = to_string(length - deviation) + "," + to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
+            p4 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "\n";
             res = res + p1 + p2 + p3 + p4 + p2 + p1;
 
             // UP FACE
-            p1 = to_string(i * step - deviation) + "," + to_string(length - deviation) +  "," + to_string(j * step - deviation) + "\n";
-            p2 = to_string(i * step - deviation) + "," + to_string(length - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
-            p3 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
-            p4 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) +  "," + to_string(j * step - deviation) + "\n";
+            p1 = to_string(i * step - deviation) + "," + to_string(length - deviation) + "," + to_string(j * step - deviation) + "\n";
+            p2 = to_string(i * step - deviation) + "," + to_string(length - deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
+            p3 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string(j * step - deviation) + "\n";
             res = res + p1 + p2 + p3 + p4 + p1 + p3;
 
             // LEFT FACE
-            p1 = to_string(- deviation) + "," + to_string(i * step - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
-            p2 = to_string(- deviation) + "," + to_string((i + 1) * step - deviation) +  "," + to_string((j + 1) * step - deviation) + "\n";
-            p3 = to_string(- deviation) + "," + to_string(i * step - deviation) +  "," + to_string(j * step - deviation) + "\n";
-            p4 = to_string(- deviation) + "," + to_string((i + 1) * step - deviation) +  "," + to_string(j * step - deviation) + "\n";
+            p1 = to_string(-deviation) + "," + to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
+            p2 = to_string(-deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
+            p3 = to_string(-deviation) + "," + to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "\n";
+            p4 = to_string(-deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "\n";
             res = res + p1 + p2 + p3 + p2 + p4 + p3;
 
             // FRONT FACE
-            p1 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) +  "," + to_string(length - deviation) + "\n";
-            p2 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) +  "," + to_string(length - deviation) + "\n";
-            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) +  "," + to_string(length - deviation) + "\n";
-            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) +  "," + to_string(length - deviation) + "\n";
+            p1 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(length - deviation) + "\n";
+            p2 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(length - deviation) + "\n";
+            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(length - deviation) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(length - deviation) + "\n";
             res = res + p1 + p2 + p3 + p4 + p1 + p3;
 
             // BACK FACE
-            p1 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) +  "," + to_string(- deviation) + "\n";
-            p2 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) +  "," + to_string(- deviation) + "\n";
-            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) +  "," + to_string(- deviation) + "\n";
-            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) +  "," + to_string(- deviation) + "\n";
+            p1 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(-deviation) + "\n";
+            p2 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(-deviation) + "\n";
+            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(-deviation) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(-deviation) + "\n";
             res = res + p1 + p2 + p3 + p3 + p2 + p4;
         }
     }
@@ -184,7 +184,7 @@ bool generateCone(vector<string> params) {
     // String onde s�o guardados o n�mero total de vertices necess�rios para construir o cone
     string res = to_string((2 * slices * stack) * 3) + "\n";
 
-    if (radius < 0 || height < 0 || slices < 0 || stack < 0){
+    if (radius < 0 || height < 0 || slices < 0 || stack < 0) {
         return false;
     }
 
@@ -219,7 +219,7 @@ bool generateCone(vector<string> params) {
             float p3z = -sin(alpha) * topstackRadius;
 
             float p4x = cos(alpha2) * topstackRadius;
-            float p4y = HeightofStack * (i+1);
+            float p4y = HeightofStack * (i + 1);
             float p4z = -sin(alpha2) * topstackRadius;
 
             string p1 = to_string(p1x) + "," + to_string(p1y) + "," + to_string(p1z) + "\n";
@@ -259,12 +259,12 @@ bool generateCylinder(vector<string> params) {
     if (found <= 0) return false;
 
     float step = (2 * M_PI) / slices;
-    float x1, x2, z1, z2, upper_h = height / 2, lower_h = - upper_h;
+    float x1, x2, z1, z2, upper_h = height / 2, lower_h = -upper_h;
     float alpha, next_alpha;
     string aux = "";
     int totalPoints = 0;
 
-    for(int i = 0; i < slices; i++){
+    for (int i = 0; i < slices; i++) {
         alpha = step * i;
         next_alpha = alpha + step;
         x1 = radius * sin(alpha);
@@ -279,17 +279,17 @@ bool generateCylinder(vector<string> params) {
         string p4 = to_string(x1) + "," + to_string(lower_h) + "," + to_string(z1) + "\n";
         string p5 = to_string(x2) + "," + to_string(lower_h) + "," + to_string(z2) + "\n";
         aux += p2 + p0 + p1 + p4 + p3 + p5 + p1 + p4 + p5 + p1 + p5 + p2;
-        
-        totalPoints += 12;   
+
+        totalPoints += 12;
     }
     string res = to_string(totalPoints) + "\n" + aux;
-    writeInFile(res,file);
+    writeInFile(res, file);
     printf("File gerado com sucesso");
     return true;
 }
 
 
-bool generateSphere(vector<string> params){
+bool generateSphere(vector<string> params) {
     double radius = stod(params[0]);
     int totalSlices = stoi(params[1]);
     int totalStacks = stoi(params[2]);
@@ -306,7 +306,7 @@ bool generateSphere(vector<string> params){
     int totalPoints = 0;
 
     // String para guardar os pontos usados na construção da esfera
-    string aux ="";
+    string aux = "";
 
     // Definição dos limites da esfera em radianos
     double startSlice = 0;
@@ -322,7 +322,7 @@ bool generateSphere(vector<string> params){
     double x0, x1, x2, x3, y0, y1, y2, y3, z0, z1, z2, z3;
 
     // Ciclo para determinar os pontos da esfera
-    for(int i = 0; i < totalSlices; i++) {
+    for (int i = 0; i < totalSlices; i++) {
         for (int j = 0; j < totalStacks; j++) {
             double u = i * stepSlice + startSlice;
             double v = j * stepStack + startStack;
@@ -353,7 +353,7 @@ bool generateSphere(vector<string> params){
         }
     }
     string res = to_string(totalPoints) + "\n" + aux;
-    writeInFile(res,file);
+    writeInFile(res, file);
     printf("File gerado com sucesso");
     return true;
 }
@@ -382,8 +382,8 @@ bool generateTorus(vector<string>params) {
     int totalPoints = 0;
     float x, y, z;
 
-    for(int i = 0 ; i < slices ; i++){
-        for(int j = 0; j < stacks; j++){
+    for (int i = 0; i < slices; i++) {
+        for (int j = 0; j < stacks; j++) {
             x = (rad + dist * cos(stepSlice * i)) * cos(stepStack * j);
             y = dist * sin(stepSlice * i);
             z = (rad + dist * cos(stepSlice * i)) * sin(stepStack * j);
@@ -404,16 +404,17 @@ bool generateTorus(vector<string>params) {
             z = (rad + dist * cos(stepSlice * i)) * sin(stepStack * (j + 1));
             string p4 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
 
-            aux = aux + p1 + p2 + p4 + p2 + p3 + p4 ; 
-            totalPoints += 6;  
+            aux = aux + p1 + p2 + p4 + p2 + p3 + p4;
+            totalPoints += 6;
         }
     }
-    
+
     string res = to_string(totalPoints) + "\n" + aux;
     writeInFile(res, file);
     printf("File gerado com sucesso");
     return true;
 }
+
 
 bool parseInput(string primitive, vector<string> params) {
     int option = -1;
@@ -423,49 +424,50 @@ bool parseInput(string primitive, vector<string> params) {
     else if (primitive.compare("plane") == 0) option = 3;
     else if (primitive.compare("sphere") == 0) option = 4;
     else if (primitive.compare("cylinder") == 0) option = 5;
-    else if (primitive.compare("torus") == 0) option = 6; 
+    else if (primitive.compare("torus") == 0) option = 6;
+    else if (primitive.compare("asteroids") == 0) option = 4;
 
     bool ret = false;
 
-    switch(option){
-        case 1:
-            if (params.size() == 3 || params.size() == 4) {
-                ret = generateBox(params);
-            }
-            else ret = false;
-            break;
-        case 2:
-            if (params.size() == 5) {
-                ret = generateCone(params);
-            }
-            else ret = false;
-            break;
-        case 3:
-            if (params.size() == 3) {
-                ret = generatePlane(params);
-            }
-            else ret = false;
-            break;
-        case 4:
-            if (params.size() == 4) {
-                ret = generateSphere(params);
-            }
-            else ret = false;
-            break;
-        case 5:
-            if(params.size() == 4){
-                ret = generateCylinder(params);
-            }
-            else ret = false;
-            break;
-        case 6:
-            if (params.size() == 5) {
-                ret = generateTorus(params); 
-            }
-            else ret = false;
-            break;
-        default:
-            break;
+    switch (option) {
+    case 1:
+        if (params.size() == 3 || params.size() == 4) {
+            ret = generateBox(params);
+        }
+        else ret = false;
+        break;
+    case 2:
+        if (params.size() == 5) {
+            ret = generateCone(params);
+        }
+        else ret = false;
+        break;
+    case 3:
+        if (params.size() == 3) {
+            ret = generatePlane(params);
+        }
+        else ret = false;
+        break;
+    case 4:
+        if (params.size() == 4) {
+            ret = generateSphere(params);
+        }
+        else ret = false;
+        break;
+    case 5:
+        if (params.size() == 4) {
+            ret = generateCylinder(params);
+        }
+        else ret = false;
+        break;
+    case 6:
+        if (params.size() == 5) {
+            ret = generateTorus(params);
+        }
+        else ret = false;
+        break;
+    default:
+        break;
     }
 
     return ret;
@@ -474,7 +476,7 @@ bool parseInput(string primitive, vector<string> params) {
 /**
 * Function that Iniciates the Generator
 */
-int main(int argc, char **argv){
+int main(int argc, char** argv) {
     if (argc == 1) {
         cout << "Not enough arguments";
         return 1;

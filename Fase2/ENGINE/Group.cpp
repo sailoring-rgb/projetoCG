@@ -1,6 +1,8 @@
 #include <iterator>
+#include <string>
 
 #include "Group.h"
+
 
 class Group::GroupBuilder {
 
@@ -8,11 +10,12 @@ private:
 	std::vector<Primitive> primitives;
 	std::vector<Group> groups;
 	std::vector<Trans> trans;
+	std::string nameFile;
 
 public: 
 		GroupBuilder() = default;
 
-		GroupBuilder(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans) {
+		GroupBuilder(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile) {
 			for (size_t i = 0; i < primitives.size(); i++) {
 			this->primitives.push_back(primitives.at(i));
 			}
@@ -22,6 +25,7 @@ public:
 			for (size_t i = 0; i < trans.size(); i++) {
 				this->trans.push_back(trans.at(i));
 			}
+			this->nameFile = nameFile;
 		}
 
 		int getNrPrimitives() {
@@ -34,6 +38,10 @@ public:
 
 		Primitive getPrimitives(int index) {
 			return primitives[index];
+		}
+
+		std::string getNameFile() {
+			return nameFile;
 		}
 
 		std::vector<Group> getGroups() {
@@ -68,12 +76,16 @@ public:
 			this->primitives = primitives;
 		}
 
+		void setNameFile(std::string nameFile) {
+			this->nameFile = nameFile;
+		}
+
 		~GroupBuilder() = default;
 };
 
 Group::Group() : groupBuilder{new class GroupBuilder()}{}
 
-Group::Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans) : groupBuilder{ new GroupBuilder(primitives,groups,trans)}{}
+Group::Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile) : groupBuilder{ new GroupBuilder(primitives,groups,trans,nameFile) }{}
 
 int Group::getNrPrimitives() {
 	return groupBuilder->getNrPrimitives();
@@ -103,12 +115,20 @@ void Group::setPrimitives(std::vector<Primitive> primitives) {
 	groupBuilder->setPrimitives(primitives);
 }
 
+void Group::setNameFile(std::string nameFile) {
+	groupBuilder->setNameFile(nameFile);
+}
+
 Trans Group::getTrans(int index) {
 	return groupBuilder->getTrans(index);
 }
 
 Primitive Group::getPrimitives(int index) {
 	return groupBuilder->getPrimitives(index);
+}
+
+std::string Group::getNameFile() {
+	return groupBuilder->getNameFile();
 }
 
 std::vector<Group> Group::getGroups() {

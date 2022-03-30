@@ -14,7 +14,7 @@ public:
 
 	Group();
 
-	Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans);
+	Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile);
 
 	int getNrPrimitives();
 
@@ -30,9 +30,13 @@ public:
 
 	void setPrimitives(std::vector<Primitive> primitives);
 
+	void Group::setNameFile(std::string nameFile);
+
 	Trans getTrans(int index);
 
 	Primitive getPrimitives(int index);
+
+	std::string Group::getNameFile();
 
 	std::vector<Group> getGroups();
 

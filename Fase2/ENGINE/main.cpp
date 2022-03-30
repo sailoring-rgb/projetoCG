@@ -29,6 +29,7 @@
 #else
 #endif
 
+
 using namespace tinyxml2;
 using namespace std;
 
@@ -127,7 +128,7 @@ Primitive readFile(string file) {
  * Function that draws all the primitives previously stored in a vector.
  */
 void drawPrimitives(Group groups) {
-    
+
     string scale = "scale";
     string translate = "translate";
     string rotate = "rotate";
@@ -146,7 +147,7 @@ void drawPrimitives(Group groups) {
             glRotated(t.getAngle(), t.getX(), t.getY(), t.getZ());
         }
         else if (color.compare(t.getName()) == 0)
-        {        
+        {
             glColor3f(t.getX() / 255.f, t.getY() / 255.f, t.getZ() / 255.f);
         }
     }
@@ -154,13 +155,46 @@ void drawPrimitives(Group groups) {
     for (int z = 0; z < groups.getNrPrimitives(); z++) {
         Primitive p = groups.getPrimitives(z);
 
-        glBegin(GL_TRIANGLES);
-        for (int c = 0; c < p.getNrVertices(); c++) {
-            Point point = p.getPoint(c);
+        if (groups.getNameFile().compare("asteroids.3d") == 0) {
+            
+            int arrx[180];
+            int arry[180];
 
-            glVertex3f(point.getX(), point.getY(), point.getZ());
+            srand(1);
+
+            for (int i = 0; i < 100; i++) {
+                arrx[i] = rand() % 18 + (-5);
+            }
+            for (int i = 0; i < 100; i++) {
+                arry[i] = rand() % 18 + (-5);
+            }
+            
+            for (int i = 0; i < 180; i++) {
+                 
+                glPushMatrix();
+                glRotated(6 * i, 0, 1, 0);
+                glTranslated(80 + arrx[i], arry[i], 0);
+
+                glBegin(GL_TRIANGLES);
+                for (int c = 0; c < p.getNrVertices(); c++) {
+                    Point point = p.getPoint(c);
+
+                    glVertex3f(point.getX(), point.getY(), point.getZ());
+                }
+                glEnd();
+
+                glPopMatrix();
+            }
         }
-        glEnd();
+        else {
+            glBegin(GL_TRIANGLES);
+            for (int c = 0; c < p.getNrVertices(); c++) {
+                Point point = p.getPoint(c);
+
+                glVertex3f(point.getX(), point.getY(), point.getZ());
+            }
+            glEnd();
+        }
     }
 
     for (int z = 0; z < groups.getNrGroups(); z++) {
@@ -186,11 +220,11 @@ void renderScene(void) {
     gluLookAt(5.0f, 5.0f, 5.0f,
         0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f);
-    
+
     glTranslatef(x, 0.0, z);
     glRotatef(angle, 0.0, 1.0, 0.0);
     glRotatef(angle2, 1.0, 0.0, 0.0);
-    
+
     /*
     //AXIS
     glBegin(GL_LINES);
@@ -207,7 +241,7 @@ void renderScene(void) {
     glVertex3f(0.0f, 0.0f, -100.0f);
     glVertex3f(0.0f, 0.0f, 100.0f);
     glEnd();*/
-    
+
 
     //DRAW POINTS
     for (int i = 0; i < groups.size(); i++) {
@@ -244,31 +278,31 @@ void rodar(int key_code, int x, int y) {
     glutPostRedisplay();
 }
 
-void polygonMode(unsigned char key_code, int x, int y){
-    switch(key_code) {
-        case '1':
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-            break;
-        case '2':
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            break;
-        case '3':
-            glPointSize(4.0f);
-            glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-            break;
-        default:
-            break;
+void polygonMode(unsigned char key_code, int x, int y) {
+    switch (key_code) {
+    case '1':
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        break;
+    case '2':
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        break;
+    case '3':
+        glPointSize(4.0f);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+        break;
+    default:
+        break;
     }
     glutPostRedisplay();
 }
 
 
- /**
-  * Function that inits glut.
-  * @param argc size of array.
-  * @param argv array with arguments.
-  * @return bool true if everything goes well. Otherwise, returns false.
-  */
+/**
+ * Function that inits glut.
+ * @param argc size of array.
+ * @param argv array with arguments.
+ * @return bool true if everything goes well. Otherwise, returns false.
+ */
 bool initGlut(int argc, char** argv) {
 
     glutInit(&argc, argv);
@@ -283,7 +317,7 @@ bool initGlut(int argc, char** argv) {
 
     // put here the registration of the keyboard callbacks
     glutKeyboardFunc(polygonMode);
-    glutSpecialFunc(rodar);  
+    glutSpecialFunc(rodar);
 
     //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
@@ -307,19 +341,21 @@ Group parseGroup(XMLElement* group, int father) {
         g = Group();
         XMLElement* element = group->FirstChildElement();
 
-        while (element != nullptr){
+        while (element != nullptr) {
 
             if (models.compare(element->Name()) == 0) {
 
                 XMLElement* file = element->FirstChildElement("model");
 
                 while (file != nullptr) {
+
                     const char* strfile = file->Attribute("file");
                     string namefile = strfile;
                     string path = pathFile + namefile;
                     Primitive primitive = readFile(path);
 
                     g.addPrimitives(primitive);
+                    g.setNameFile(namefile);
 
                     file = file->NextSiblingElement();
                 }
@@ -355,7 +391,7 @@ Group parseGroup(XMLElement* group, int father) {
                 element->QueryFloatAttribute("z", &z);
 
                 Trans t = Trans("rotate", x, y, z, angle);
-                
+
                 g.addTrans(t);
             }
             else if (grupo.compare(element->Name()) == 0) {
@@ -369,7 +405,7 @@ Group parseGroup(XMLElement* group, int father) {
                 element->QueryFloatAttribute("y", &green);
                 element->QueryFloatAttribute("z", &blue);
 
-                Trans t = Trans("color", red, green, blue,0);
+                Trans t = Trans("color", red, green, blue, 0);
 
                 g.addTrans(t);
             }
@@ -428,7 +464,7 @@ bool parseDocument() {
  * Main Function.
  * @param argc size of array.
  * @param argv array with arguments.
- * @return int 
+ * @return int
  */
 int main(int argc, char** argv) {
 
@@ -450,10 +486,11 @@ int main(int argc, char** argv) {
     pathFile = path;
 
     if (parseDocument()) {
-        if(!initGlut(argc, argv)){
+        if (!initGlut(argc, argv)) {
             cout << "3d File Invalid";
         }
-    } else{
+    }
+    else {
         cout << "XML File Invalid";
     }
     return 1;
