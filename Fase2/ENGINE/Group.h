@@ -30,13 +30,13 @@ public:
 
 	void setPrimitives(std::vector<Primitive> primitives);
 
-	void Group::setNameFile(std::string nameFile);
+	void setNameFile(std::string nameFile);
 
 	Trans getTrans(int index);
 
 	Primitive getPrimitives(int index);
 
-	std::string Group::getNameFile();
+	std::string getNameFile();
 
 	std::vector<Group> getGroups();
 

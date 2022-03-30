@@ -1,3 +1,0 @@
-C:/Users/ASUS/Ambiente de Trabalho/CG/projetoCG/Fase2/Generator/build/CMakeFiles/projetoCG.dir
-C:/Users/ASUS/Ambiente de Trabalho/CG/projetoCG/Fase2/Generator/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/ASUS/Ambiente de Trabalho/CG/projetoCG/Fase2/Generator/build/CMakeFiles/ZERO_CHECK.dir
