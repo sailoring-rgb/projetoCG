@@ -13,5 +13,5 @@ Fase1/.idea/
 *.log
 *.exe
 *.db
-Fase2/ENGINE/build/.vs/ProjetoCG/v17/.suo
-Fase2/ENGINE/build/.vs/ProjetoCG/v17/.suo
+Fase2/ENGINE/build/
+Fase2/Generator/build/
