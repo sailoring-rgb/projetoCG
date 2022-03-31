@@ -358,6 +358,75 @@ bool generateSphere(vector<string> params) {
     return true;
 }
 
+bool generateHalphSphere(vector<string> params) {
+    double radius = stod(params[0]);
+    int totalSlices = stoi(params[1]);
+    int totalStacks = stoi(params[2]);
+
+    // Validação dos parâmetros recebidos
+    if (radius < 0 || totalSlices < 0 || totalStacks < 0)
+        return false;
+
+    // Validação da existência do ficheiro
+    string file = params[3];
+    int found = file.find(".3d");
+    if (found <= 0) return false;
+
+    int totalPoints = 0;
+
+    // String para guardar os pontos usados na construção da esfera
+    string aux = "";
+
+    // Definição dos limites da esfera em radianos
+    double startSlice = 0;
+    double startStack = 0;
+    double endSlice = M_PI;
+    double endStack = M_PI;
+
+    // Definição dos passos dados em casa slice e stack
+    double stepSlice = (endSlice - startSlice) / totalSlices;
+    double stepStack = (endStack - startStack) / totalStacks;
+
+    // Pontos
+    double x0, x1, x2, x3, y0, y1, y2, y3, z0, z1, z2, z3;
+
+    // Ciclo para determinar os pontos da esfera
+    for (int i = 0; i < totalSlices; i++) {
+        for (int j = 0; j < totalStacks; j++) {
+            double u = i * stepSlice + startSlice;
+            double v = j * stepStack + startStack;
+            double un = (i + 1 == totalSlices) ? endSlice : (i + 1) * stepSlice + startSlice;
+            double vn = (j + 1 == totalStacks) ? endStack : (j + 1) * stepStack + startStack;
+
+            x0 = cos(u) * sin(v) * radius;
+            y0 = cos(v) * radius;
+            z0 = sin(u) * sin(v) * radius;
+            x1 = cos(u) * sin(vn) * radius;
+            y1 = cos(vn) * radius;
+            z1 = sin(u) * sin(vn) * radius;
+            x2 = cos(un) * sin(v) * radius;
+            y2 = cos(v) * radius;
+            z2 = sin(un) * sin(v) * radius;
+            x3 = cos(un) * sin(vn) * radius;
+            y3 = cos(vn) * radius;
+            z3 = sin(un) * sin(vn) * radius;
+
+            totalPoints += 6;
+
+            string p0 = to_string(x0) + "," + to_string(y0) + "," + to_string(z0) + "\n";
+            string p1 = to_string(x1) + "," + to_string(y1) + "," + to_string(z1) + "\n";
+            string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(z2) + "\n";
+            string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) + "\n";
+            aux = aux + p3 + p1 + p2 + p2 + p1 + p0;
+
+        }
+    }
+    string res = to_string(totalPoints) + "\n" + aux;
+    writeInFile(res, file);
+    printf("File gerado com sucesso");
+    return true;
+}
+
 bool generateTorus(vector<string>params) {
     float innerR = stof(params[0]);
     float outterR = stof(params[1]);
@@ -415,6 +484,77 @@ bool generateTorus(vector<string>params) {
     return true;
 }
 
+bool generateEllipsoid(vector<string> params){
+
+    double radius = stod(params[0]);
+    double height = stod(params[1]);
+    int totalSlices = stoi(params[2]);
+    int totalStacks = stoi(params[3]);
+
+    // Validação dos parâmetros recebidos
+    if (radius < 0 || height < 0 || totalSlices < 0 || totalStacks < 0)
+        return false;
+
+    // Validação da existência do ficheiro
+    string file = params[4];
+    int found = file.find(".3d");
+    if (found <= 0) return false;
+
+    int totalPoints = 0;
+
+    // String para guardar os pontos usados na construção do elipsóide
+    string aux ="";
+
+    // Definição dos limites do elipsóide
+    double startSlice = 0;
+    double startStack = 0;
+    double endSlice = M_PI * 2;
+    double endStack = M_PI;
+
+    // Definição dos passos dados em casa slice e stack
+    double stepSlice = (endSlice - startSlice) / totalSlices;
+    double stepStack = (endStack - startStack) / totalStacks;
+
+    // Pontos
+    double x0, x1, x2, x3, y0, y1, y2, y3, z0, z1, z2, z3;
+
+    // Ciclo para determinar os pontos do elipsóide
+    for(int i = 0; i < totalSlices; i++) {
+        for (int j = 0; j < totalStacks; j++) {
+            double u = i * stepSlice + startSlice;
+            double v = j * stepStack + startStack;
+            double un = (i + 1 == totalSlices) ? endSlice : (i + 1) * stepSlice + startSlice;
+            double vn = (j + 1 == totalStacks) ? endStack : (j + 1) * stepStack + startStack;
+
+            x0 = cos(u) * sin(v) * radius;
+            y0 = cos(v) * height;
+            z0 = sin(u) * sin(v) * radius;
+            x1 = cos(u) * sin(vn) * radius;
+            y1 = cos(vn) * height;
+            z1 = sin(u) * sin(vn) * radius;
+            x2 = cos(un) * sin(v) * radius;
+            y2 = cos(v) * height;
+            z2 = sin(un) * sin(v) * radius;
+            x3 = cos(un) * sin(vn) * radius;
+            y3 = cos(vn) * height;
+            z3 = sin(un) * sin(vn) * radius;
+
+            totalPoints += 6;
+
+            string p0 = to_string(x0) + "," + to_string(y0) + "," + to_string(z0) + "\n";
+            string p1 = to_string(x1) + "," + to_string(y1) + "," + to_string(z1) + "\n";
+            string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(z2) + "\n";
+            string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) + "\n";
+            aux = aux + p3 + p1 + p2 + p2 + p1 + p0;
+
+        }
+    }
+    string res = to_string(totalPoints) + "\n" + aux;
+    writeInFile(res,file);
+    printf("File gerado com sucesso");
+    return true;
+}
+
 
 bool parseInput(string primitive, vector<string> params) {
     int option = -1;
@@ -426,6 +566,8 @@ bool parseInput(string primitive, vector<string> params) {
     else if (primitive.compare("cylinder") == 0) option = 5;
     else if (primitive.compare("torus") == 0) option = 6;
     else if (primitive.compare("asteroids") == 0) option = 4;
+    else if (primitive.compare("ellipsoid") == 0) option = 7;
+    else if (primitive.compare("hsphere") == 0) option = 8;
 
     bool ret = false;
 
@@ -463,6 +605,18 @@ bool parseInput(string primitive, vector<string> params) {
     case 6:
         if (params.size() == 5) {
             ret = generateTorus(params);
+        }
+        else ret = false;
+        break;
+    case 7:
+        if (params.size() == 5) {
+                ret = generateEllipsoid(params); 
+        }
+        else ret = false;
+        break;
+    case 8:
+        if (params.size() == 4) {
+                ret = generateHalphSphere(params); 
         }
         else ret = false;
         break;

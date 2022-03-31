@@ -1,3 +1,14 @@
 <scene>
     <model file="asteroids.3d"/>
+    <model file="ellipsoide.3d"/>
+    <model file="ellipsoide.3d"/>
+    <model file="ellipsoide.3d"/>
+    <model file="torus2.3d"/>
+    <model file="torus2.3d"/>
+    <model file="torus2.3d"/>
+    <model file="torus2.3d"/>
+    <model file="hsphere.3d"/>
+    <model file="torus2.3d"/>
+    <model file="torus2.3d"/>
+    <model file="torus2.3d"/>
 </scene>
