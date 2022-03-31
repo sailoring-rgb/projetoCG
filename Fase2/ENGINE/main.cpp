@@ -362,7 +362,7 @@ Group parseGroup(XMLElement* group, int father) {
                 }
             }
             else if (transform.compare(element->Name()) == 0) {
-                XMLElement* element2 = element->FirstChildElement();
+                XMLElement* element2 = element->FirstChildElement("transform");
 
                 while (element2 != nullptr) {
 
