@@ -454,7 +454,7 @@ bool parseDocument() {
         return false; //in case of error
     }
 
-    XMLElement* group = scene->FirstChildElement("group");
+    XMLElement* group = scene->FirstChildElement("world");
     parseGroup(group, 0);
 
     return true;
