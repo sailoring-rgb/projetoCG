@@ -336,6 +336,7 @@ Group parseGroup(XMLElement* group, int father) {
     string grupo = "group";
     string color = "color";
     string transform = "transform";
+    string camera = "camera";
     Group g;
 
     do {
@@ -361,60 +362,59 @@ Group parseGroup(XMLElement* group, int father) {
                     file = file->NextSiblingElement();
                 }
             }
-            else if (transform.compare(element->Name()) == 0) {
-                XMLElement* element2 = element->FirstChildElement("transform");
+            else if (transform.compare(element->Name()) == 0){
+                    
+                XMLElement* file2 = element->FirstChildElement("transform");
+                    
+                while (file2 != nullptr) {
 
-                while (element2 != nullptr) {
-
-                    if (scale.compare(element2->Name()) == 0) {
+                    if (scale.compare(element->Name()) == 0) {
                         float x, y, z;
 
-                        element2->QueryFloatAttribute("x", &x);
-                        element2->QueryFloatAttribute("y", &y);
-                        element2->QueryFloatAttribute("z", &z);
+                        element->QueryFloatAttribute("x", &x);
+                        element->QueryFloatAttribute("y", &y);
+                        element->QueryFloatAttribute("z", &z);
 
                         Trans t = Trans("scale", x, y, z, 0);
 
                         g.addTrans(t);
                     }
-                    else if (translate.compare(element2->Name()) == 0) {
+                    else if (translate.compare(element->Name()) == 0) {
                         float x, y, z;
 
-                        element2->QueryFloatAttribute("x", &x);
-                        element2->QueryFloatAttribute("y", &y);
-                        element2->QueryFloatAttribute("z", &z);
+                        element->QueryFloatAttribute("x", &x);
+                        element->QueryFloatAttribute("y", &y);
+                        element->QueryFloatAttribute("z", &z);
 
                         Trans t = Trans("translate", x, y, z, 0);
 
                         g.addTrans(t);
                     }
-                    else if (rotate.compare(element2->Name()) == 0) {
+                    else if (rotate.compare(element->Name()) == 0) {
                         float x, y, z, angle;
 
-                        element2->QueryFloatAttribute("angle", &angle);
-                        element2->QueryFloatAttribute("x", &x);
-                        element2->QueryFloatAttribute("y", &y);
-                        element2->QueryFloatAttribute("z", &z);
+                        element->QueryFloatAttribute("angle", &angle);
+                        element->QueryFloatAttribute("x", &x);
+                        element->QueryFloatAttribute("y", &y);
+                        element->QueryFloatAttribute("z", &z);
 
                         Trans t = Trans("rotate", x, y, z, angle);
 
                         g.addTrans(t);
                     }
-                    else if (color.compare(element2->Name()) == 0) {
+                    else if (color.compare(element->Name()) == 0) {
                         float red, green, blue;
 
-                        element2->QueryFloatAttribute("x", &red);
-                        element2->QueryFloatAttribute("y", &green);
-                        element2->QueryFloatAttribute("z", &blue);
+                        element->QueryFloatAttribute("x", &red);
+                        element->QueryFloatAttribute("y", &green);
+                        element->QueryFloatAttribute("z", &blue);
 
                         Trans t = Trans("color", red, green, blue, 0);
 
                         g.addTrans(t);
                     }
 
-                    element2 = element2->NextSiblingElement();
-
-                    if (element2 == NULL && father == 1) return g;
+                    file2 = file2->NextSiblingElement();
                 }
             }            
             else if (grupo.compare(element->Name()) == 0) {
