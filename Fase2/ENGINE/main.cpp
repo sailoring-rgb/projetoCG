@@ -364,9 +364,9 @@ Group parseGroup(XMLElement* group, int father) {
             }
             else if (transform.compare(element->Name()) == 0){
                     
-                XMLElement* file2 = element->FirstChildElement("transform");
+                XMLElement* file = element->FirstChildElement("transform");
                     
-                while (file2 != nullptr) {
+                while (file != nullptr) {
 
                     if (scale.compare(element->Name()) == 0) {
                         float x, y, z;
@@ -414,7 +414,8 @@ Group parseGroup(XMLElement* group, int father) {
                         g.addTrans(t);
                     }
 
-                    file2 = file2->NextSiblingElement();
+                    file = file->NextSiblingElement();
+                    if (element == NULL && father == 1) return g;
                 }
             }            
             else if (grupo.compare(element->Name()) == 0) {
