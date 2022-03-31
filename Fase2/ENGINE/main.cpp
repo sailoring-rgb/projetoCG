@@ -448,13 +448,13 @@ bool parseDocument() {
     XMLDocument doc;
     doc.LoadFile(tmp);
 
-    XMLElement* scene = doc.FirstChildElement();
-    if (scene == nullptr) {
+    XMLElement* world = doc.FirstChildElement();
+    if (world == nullptr) {
         cout << "ERRO";
         return false; //in case of error
     }
 
-    XMLElement* group = scene->FirstChildElement("world");
+    XMLElement* group = world->FirstChildElement("group");
     parseGroup(group, 0);
 
     return true;
