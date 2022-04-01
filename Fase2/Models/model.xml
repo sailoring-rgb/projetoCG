@@ -16,4 +16,9 @@
     <model file="cone.3d"/>
     <model file="cone.3d"/>
     <model file="sphere.3d"/>
+    <model file="hsphere.3d"/>
+    <model file="hsphere.3d"/>
+    <model file="hsphere.3d"/>
+    <model file="hsphere.3d"/>
+    <model file="hsphere.3d"/>
 </scene>

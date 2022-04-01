@@ -374,7 +374,7 @@ bool generateHalfSphere(vector<string> params) {
 
     int totalPoints = 0;
 
-    // String para guardar os pontos usados na construção da esfera
+    // String para guardar os pontos usados na construção da semiesfera
     string aux = "";
 
     // Definição dos limites da esfera em radianos
@@ -390,7 +390,7 @@ bool generateHalfSphere(vector<string> params) {
     // Pontos
     double x0, x1, x2, x3, y0, y1, y2, y3, z0, z1, z2, z3;
 
-    // Ciclo para determinar os pontos da esfera
+    // Ciclo para determinar os pontos da seiesfermi
     for (int i = 0; i < totalSlices; i++) {
         for (int j = 0; j < totalStacks; j++) {
             double u = i * stepSlice + startSlice;
@@ -421,61 +421,20 @@ bool generateHalfSphere(vector<string> params) {
 
         }
     }
-    string res = to_string(totalPoints) + "\n" + aux;
-    writeInFile(res, file);
-    printf("File gerado com sucesso");
-    return true;
-}
 
-bool generateTorus(vector<string>params) {
-    float innerR = stof(params[0]);
-    float outterR = stof(params[1]);
-    int slices = stoi(params[2]);
-    int stacks = stoi(params[3]);
+    for(int i = 0 ; i < 30; i++){
+        float theta = 2 * M_PI / 30;
+        float x = radius * cosf(theta * i);
+        float y = radius * sinf(theta * i);
+        float x2 = radius * cosf(theta * (i + 1));
+        float y2 = radius * sinf(theta * (i + 1));
 
-    if (innerR < 0 || outterR < 0 || slices < 0 || stacks < 0)
-        return false;
+        string p0 = to_string(0) + "," + to_string(0) + "," + to_string(0) + "\n";
+        string p1 = to_string(x) + "," + to_string(y) + "," + to_string(0) + "\n";
+        string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(0) + "\n";
 
-    string file = params[4];
-    int found = file.find(".3d");
-    if (found <= 0) return false;
-
-    string aux = "";
-
-    double rad = (innerR + outterR) / 2;
-    double dist = rad - innerR;
-
-    float stepSlice = (2 * M_PI) / slices;
-    float stepStack = (2 * M_PI) / stacks;
-
-    int totalPoints = 0;
-    float x, y, z;
-
-    for (int i = 0; i < slices; i++) {
-        for (int j = 0; j < stacks; j++) {
-            x = (rad + dist * cos(stepSlice * i)) * cos(stepStack * j);
-            y = dist * sin(stepSlice * i);
-            z = (rad + dist * cos(stepSlice * i)) * sin(stepStack * j);
-            string p1 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
-
-            x = (rad + dist * cos(stepSlice * (i + 1))) * cos(stepStack * j);
-            y = dist * sin(stepSlice * (i + 1));
-            z = (rad + dist * cos(stepSlice * (i + 1))) * sin(stepStack * j);
-            string p2 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
-
-            x = (rad + dist * cos(stepSlice * (i + 1))) * cos(stepStack * (j + 1));
-            y = dist * sin(stepSlice * (i + 1));
-            z = (rad + dist * cos(stepSlice * (i + 1))) * sin(stepStack * (j + 1));
-            string p3 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
-
-            x = (rad + dist * cos(stepSlice * i)) * cos(stepStack * (j + 1));
-            y = dist * sin(stepSlice * i);
-            z = (rad + dist * cos(stepSlice * i)) * sin(stepStack * (j + 1));
-            string p4 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
-
-            aux = aux + p1 + p2 + p4 + p2 + p3 + p4;
-            totalPoints += 6;
-        }
+        aux = aux + p1 + p0 + p2;
+        totalPoints += 3;
     }
 
     string res = to_string(totalPoints) + "\n" + aux;
