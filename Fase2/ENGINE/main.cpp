@@ -363,60 +363,80 @@ Group parseGroup(XMLElement* group, int father) {
                 }
             }
             else if (transform.compare(element->Name()) == 0){
-                    
-                XMLElement* file = element->FirstChildElement("transform");
-                    
-                while (file != nullptr) {
 
-                    if (scale.compare(element->Name()) == 0) {
-                        float x, y, z;
+                if (scale.compare(element->Name()) == 0) {
 
-                        element->QueryFloatAttribute("x", &x);
-                        element->QueryFloatAttribute("y", &y);
-                        element->QueryFloatAttribute("z", &z);
+                    XMLElement* scale1 = element->FirstChildElement("scale");
+
+                    while (scale1 != nullptr) {
+
+                        float x = atof(scale1->Attribute("x"));
+                        float y = atof(scale1->Attribute("y"));
+                        float z = atof(scale1->Attribute("z"));
 
                         Trans t = Trans("scale", x, y, z, 0);
 
                         g.addTrans(t);
-                    }
-                    else if (translate.compare(element->Name()) == 0) {
-                        float x, y, z;
 
-                        element->QueryFloatAttribute("x", &x);
-                        element->QueryFloatAttribute("y", &y);
-                        element->QueryFloatAttribute("z", &z);
+                        scale1 = scale1->NextSiblingElement();
+                    }
+                }
+
+                if (translate.compare(element->Name()) == 0) {
+
+                    XMLElement* translate1 = element->FirstChildElement("translate");
+
+                    while (translate1 != nullptr) {
+
+                        float x = atof(translate1->Attribute("x"));
+                        float y = atof(translate1->Attribute("y"));
+                        float z = atof(translate1->Attribute("z"));
 
                         Trans t = Trans("translate", x, y, z, 0);
 
                         g.addTrans(t);
-                    }
-                    else if (rotate.compare(element->Name()) == 0) {
-                        float x, y, z, angle;
 
-                        element->QueryFloatAttribute("angle", &angle);
-                        element->QueryFloatAttribute("x", &x);
-                        element->QueryFloatAttribute("y", &y);
-                        element->QueryFloatAttribute("z", &z);
+                        translate1 = translate1->NextSiblingElement();
+                    }
+                }
+      
+                if (rotate.compare(element->Name()) == 0) {
+
+                    XMLElement* rotate1 = element->FirstChildElement("rotate");
+
+                    while (rotate1 != nullptr) {
+
+                        float angle = atof(rotate1->Attribute("angle"));
+                        float x = atof(rotate1->Attribute("x"));
+                        float y = atof(rotate1->Attribute("y"));
+                        float z = atof(rotate1->Attribute("z"));
 
                         Trans t = Trans("rotate", x, y, z, angle);
 
                         g.addTrans(t);
-                    }
-                    else if (color.compare(element->Name()) == 0) {
-                        float red, green, blue;
 
-                        element->QueryFloatAttribute("x", &red);
-                        element->QueryFloatAttribute("y", &green);
-                        element->QueryFloatAttribute("z", &blue);
+                        rotate1 = rotate1->NextSiblingElement();
+                    }
+                }
+                
+                if (color.compare(element->Name()) == 0) {
+
+                    XMLElement* color1 = element->FirstChildElement("color");
+
+                    while (color1 != nullptr) {
+
+                        float red = atof(color1->Attribute("x"));
+                        float green = atof(color1->Attribute("y"));
+                        float blue = atof(color1->Attribute("z")); 
 
                         Trans t = Trans("color", red, green, blue, 0);
 
                         g.addTrans(t);
-                    }
 
-                    file = file->NextSiblingElement();
-                    if (element == NULL && father == 1) return g;
+                        color1 = color1->NextSiblingElement();
+                    }
                 }
+                
             }            
             else if (grupo.compare(element->Name()) == 0) {
                 Group gr = parseGroup(element, 1);
