@@ -47,9 +47,12 @@ float y = 0.1;
 float z = 0.1;
 float angle = 0.0f;
 float angle2 = 0.0f;
+float zoomFactor = 1.0f;
+float max_zoom = 2.5f;
+float min_zoom = 0.5f;
 
 GLdouble eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ;
-GLdouble fov, radio, near, far, ratio=0.5;
+GLdouble fov, near, far, ratio = 0.5;
 
 /**
  * Function that redimensionates a window.
@@ -220,11 +223,7 @@ void renderScene(void) {
     // set the camera
     glLoadIdentity();
 
-    /*gluLookAt(5.0, 5.0, 5.0,
-        0.0, 0.0, 0.0,
-        0.0f, 1.0f, 0.0f);*/
-
-   gluLookAt(eyeX, eyeY, eyeZ,
+   gluLookAt(eyeX * zoomFactor, eyeY * zoomFactor, eyeZ * zoomFactor,
         centerX, centerY, centerZ,
         upX, upY, upZ);
 
@@ -268,37 +267,44 @@ void renderScene(void) {
  * @param y
  */
 void rodar(int key_code, int x, int y) {
+    float shift = M_PI / 2;
     switch (key_code) {
     case GLUT_KEY_LEFT:
-        angle -= 2;
+        angle -= shift;
         break;
     case GLUT_KEY_RIGHT:
-        angle += 2;
+        angle += shift;
         break;
     case GLUT_KEY_UP:
-        angle2 += 2;
+        angle2 += shift;
         break;
     case GLUT_KEY_DOWN:
-        angle2 -= 2;
+        angle2 -= shift;
+        break;
+    case GLUT_KEY_F1:
+        zoomFactor = std::min(zoomFactor + 0.25f, max_zoom);
+        break;
+    case GLUT_KEY_F2:
+        zoomFactor = std::max(zoomFactor - 0.25f, min_zoom);
         break;
     }
     glutPostRedisplay();
 }
 
 void polygonMode(unsigned char key_code, int x, int y) {
-    switch (key_code) {
-    case '1':
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        break;
-    case '2':
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        break;
-    case '3':
-        glPointSize(4.0f);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-        break;
-    default:
-        break;
+    switch (key_code){
+        case '1':
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            break;
+        case '2':
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            break;
+        case '3':
+            glPointSize(3.0f);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+            break;
+        default:
+            break;
     }
     glutPostRedisplay();
 }
