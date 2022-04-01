@@ -444,7 +444,7 @@ void parseCamera(XMLElement* camera) {
             if (element != nullptr) {
                 eyeX = stod(element->Attribute("x"));
                 eyeY = stod(element->Attribute("y"));
-                eyeZ = stod(element->Attribute("z"));                                
+                eyeZ = stod(element->Attribute("z"));
             }
         }
         else if (lookAt.compare(element->Name()) == 0) {
@@ -491,7 +491,11 @@ bool parseDocument() {
     replace(path.begin(), path.end(), '\\', '/');
     path.erase(path.begin() + found, path.end());
 
-    path = path + "Models/solarSystem.xml";
+    string fileName;
+
+    cout << "Introduza o nome do ficheiro XML: " << endl;
+    cin >> fileName;
+    path = path + "Models/" + fileName + ".xml";
     cout << path << endl;
 
     strcpy(tmp, path.c_str());
