@@ -440,8 +440,6 @@ void parseCamera(XMLElement* camera) {
      
     while (element != nullptr) {
 
-        cout << element->Name() << endl;
-
         if (position.compare(element->Name()) == 0) {
             if (element != nullptr) {
                 eyeX = stod(element->Attribute("x"));
