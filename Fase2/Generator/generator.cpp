@@ -358,6 +358,63 @@ bool generateSphere(vector<string> params) {
     return true;
 }
 
+bool generateTorus(vector<string>params) {
+    float innerR = stof(params[0]);
+    float outterR = stof(params[1]);
+    int slices = stoi(params[2]);
+    int stacks = stoi(params[3]);
+
+    if (innerR < 0 || outterR < 0 || slices < 0 || stacks < 0)
+        return false;
+
+    string file = params[4];
+    int found = file.find(".3d");
+    if (found <= 0) return false;
+
+    string aux = "";
+
+    double rad = (innerR + outterR) / 2;
+    double dist = rad - innerR;
+
+    float stepSlice = (2 * M_PI) / slices;
+    float stepStack = (2 * M_PI) / stacks;
+
+    int totalPoints = 0;
+    float x, y, z;
+
+    for (int i = 0; i < slices; i++) {
+        for (int j = 0; j < stacks; j++) {
+            x = (rad + dist * cos(stepSlice * i)) * cos(stepStack * j);
+            y = dist * sin(stepSlice * i);
+            z = (rad + dist * cos(stepSlice * i)) * sin(stepStack * j);
+            string p1 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
+
+            x = (rad + dist * cos(stepSlice * (i + 1))) * cos(stepStack * j);
+            y = dist * sin(stepSlice * (i + 1));
+            z = (rad + dist * cos(stepSlice * (i + 1))) * sin(stepStack * j);
+            string p2 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
+
+            x = (rad + dist * cos(stepSlice * (i + 1))) * cos(stepStack * (j + 1));
+            y = dist * sin(stepSlice * (i + 1));
+            z = (rad + dist * cos(stepSlice * (i + 1))) * sin(stepStack * (j + 1));
+            string p3 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
+
+            x = (rad + dist * cos(stepSlice * i)) * cos(stepStack * (j + 1));
+            y = dist * sin(stepSlice * i);
+            z = (rad + dist * cos(stepSlice * i)) * sin(stepStack * (j + 1));
+            string p4 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "\n";
+
+            aux = aux + p1 + p2 + p4 + p2 + p3 + p4;
+            totalPoints += 6;
+        }
+    }
+
+    string res = to_string(totalPoints) + "\n" + aux;
+    writeInFile(res, file);
+    printf("File gerado com sucesso");
+    return true;
+}
+
 bool generateHalfSphere(vector<string> params) {
     double radius = stod(params[0]);
     int totalSlices = stoi(params[1]);
