@@ -363,92 +363,58 @@ Group parseGroup(XMLElement* group, int father) {
                 }
             }
             else if (transform.compare(element->Name()) == 0){
+                
+                XMLElement* transformation = element->FirstChildElement();
 
-                XMLElement* scale1 = element->FirstChildElement("scale");
-               
-                if (scale.compare(scale1->Name()) == 0) {
-
-
-                    if (scale1 != nullptr) {
-
-                        float x = atof(scale1->Attribute("x"));
-                        float y = atof(scale1->Attribute("y"));
-                        float z = atof(scale1->Attribute("z"));
-
-                        Trans t = Trans("scale", x, y, z, 0);
-
-                        g.addTrans(t);
-
-                    }
-                }
-                else {
-
-                    XMLElement* translate1 = element->FirstChildElement("translate");
-
-                    if (translate.compare(translate1->Name()) == 0) {
-
-                        if (translate1 != nullptr) {
-
-                            float x = atof(translate1->Attribute("x"));
-                            float y = atof(translate1->Attribute("y"));
-                            float z = atof(translate1->Attribute("z"));
-
-                            Trans t = Trans("translate", x, y, z, 0);
-
+                while(transformation != nullptr){
+                    if (scale.compare(transformation->Name()) == 0) {
+                        if (transformation != nullptr) {
+                            float x = atof(transformation->Attribute("x"));
+                            float y = atof(transformation->Attribute("y"));
+                            float z = atof(transformation->Attribute("z"));
+                            Trans t = Trans("scale", x, y, z, 0);
                             g.addTrans(t);
-
                         }
                     }
-                    else {
-
-                        XMLElement* rotate1 = element->FirstChildElement("rotate");
-
-                        if (rotate.compare(rotate1->Name()) == 0) {
-
-                            if (rotate1 != nullptr) {
-
-                                float angle = atof(rotate1->Attribute("angle"));
-                                float x = atof(rotate1->Attribute("x"));
-                                float y = atof(rotate1->Attribute("y"));
-                                float z = atof(rotate1->Attribute("z"));
-
+                    else if(translate.compare(transformation->Name()) == 0) {
+                        if (transformation != nullptr) {
+                            float x = atof(transformation->Attribute("x"));
+                            float y = atof(transformation->Attribute("y"));
+                            float z = atof(transformation->Attribute("z"));
+                            Trans t = Trans("translate", x, y, z, 0);
+                            g.addTrans(t);
+                        }
+                    }
+                    else if (rotate.compare(transformation->Name()) == 0) {
+                            if (transformation != nullptr) {
+                                float angle = atof(transformation->Attribute("angle"));
+                                float x = atof(transformation->Attribute("x"));
+                                float y = atof(transformation->Attribute("y"));
+                                float z = atof(transformation->Attribute("z"));
                                 Trans t = Trans("rotate", x, y, z, angle);
-
                                 g.addTrans(t);
-
                             }
-                        }
-                        else {
-                            XMLElement* color1 = element->FirstChildElement("color");
-
-                            if (color.compare(color1->Name()) == 0) {
-
-                                if (color1 != nullptr) {
-
-                                    float red = atof(color1->Attribute("x"));
-                                    float green = atof(color1->Attribute("y"));
-                                    float blue = atof(color1->Attribute("z"));
-
-                                    Trans t = Trans("color", red, green, blue, 0);
-
-                                    g.addTrans(t);
-
-                                }
-                            }
-                        }
                     }
+                    else if (color.compare(transformation->Name()) == 0) {
+                            if (transformation != nullptr) {
+                                float red = atof(transformation->Attribute("x"));
+                                float green = atof(transformation->Attribute("y"));
+                                float blue = atof(transformation->Attribute("z"));
+                                Trans t = Trans("color", red, green, blue, 0);
+                                g.addTrans(t);
+                            }
+                    }
+
+                    transformation = transformation->NextSiblingElement();
                 }
-            }            
+            }
             else if (grupo.compare(element->Name()) == 0) {
                 Group gr = parseGroup(element, 1);
                 g.addGroups(gr);
             }
-
             element = element->NextSiblingElement();
-
             if (element == NULL && father == 1) return g;
         }
-
         if (father == 0) groups.push_back(g);
         group = group->NextSiblingElement();
 
