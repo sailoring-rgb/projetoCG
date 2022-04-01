@@ -358,7 +358,7 @@ bool generateSphere(vector<string> params) {
     return true;
 }
 
-bool generateHalphSphere(vector<string> params) {
+bool generateHalfSphere(vector<string> params) {
     double radius = stod(params[0]);
     int totalSlices = stoi(params[1]);
     int totalStacks = stoi(params[2]);
@@ -616,7 +616,7 @@ bool parseInput(string primitive, vector<string> params) {
         break;
     case 8:
         if (params.size() == 4) {
-                ret = generateHalphSphere(params); 
+                ret = generateHalfSphere(params); 
         }
         else ret = false;
         break;
