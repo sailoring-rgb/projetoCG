@@ -378,7 +378,6 @@ Group parseGroup(XMLElement* group, int father) {
 
                         g.addTrans(t);
 
-                        scale1 = scale1->NextSiblingElement();
                     }
                 }
 
@@ -396,7 +395,6 @@ Group parseGroup(XMLElement* group, int father) {
 
                         g.addTrans(t);
 
-                        translate1 = translate1->NextSiblingElement();
                     }
                 }
       
@@ -415,7 +413,6 @@ Group parseGroup(XMLElement* group, int father) {
 
                         g.addTrans(t);
 
-                        rotate1 = rotate1->NextSiblingElement();
                     }
                 }
                 
@@ -433,7 +430,6 @@ Group parseGroup(XMLElement* group, int father) {
 
                         g.addTrans(t);
 
-                        color1 = color1->NextSiblingElement();
                     }
                 }
                 
