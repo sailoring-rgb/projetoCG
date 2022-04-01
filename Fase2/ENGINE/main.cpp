@@ -408,6 +408,17 @@ Group parseGroup(XMLElement* group, int father) {
                     transformation = transformation->NextSiblingElement();
                 }
             }
+            else if (camera.compare(element->Name()) == 0){
+                
+                XMLElement* cam = element->FirstChildElement();
+
+                while(cam != nullptr){
+                   
+                    // INSERIR INSTRUÇÕES PARA OPERAR SOBRE A CÂMERA
+
+                    cam = cam->NextSiblingElement();
+                }
+            }
             else if (grupo.compare(element->Name()) == 0) {
                 Group gr = parseGroup(element, 1);
                 g.addGroups(gr);
