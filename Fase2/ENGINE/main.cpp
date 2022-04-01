@@ -48,6 +48,9 @@ float z = 0.1;
 float angle = 0.0f;
 float angle2 = 0.0f;
 
+GLdouble eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ;
+GLdouble fov, radio, near, far, ratio=0.5;
+
 /**
  * Function that redimensionates a window.
  * @param w width of the window.
@@ -72,7 +75,7 @@ void changeSize(int w, int h) {
     glViewport(0, 0, w, h);
 
     // Set perspective
-    gluPerspective(45.0f, ratio, 1.0f, 1000.0f);
+    gluPerspective(fov, ratio, near, far);
 
     // return to the model view matrix mode
     glMatrixMode(GL_MODELVIEW);
@@ -217,9 +220,13 @@ void renderScene(void) {
     // set the camera
     glLoadIdentity();
 
-    gluLookAt(5.0f, 5.0f, 5.0f,
-        0.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f);
+    /*gluLookAt(5.0, 5.0, 5.0,
+        0.0, 0.0, 0.0,
+        0.0f, 1.0f, 0.0f);*/
+
+   gluLookAt(eyeX, eyeY, eyeZ,
+        centerX, centerY, centerZ,
+        upX, upY, upZ);
 
     glTranslatef(x, 0.0, z);
     glRotatef(angle, 0.0, 1.0, 0.0);
@@ -342,7 +349,7 @@ Group parseGroup(XMLElement* group, int father) {
     do {
         g = Group();
         XMLElement* element = group->FirstChildElement();
-
+                
         while (element != nullptr) {
 
             if (models.compare(element->Name()) == 0) {
@@ -408,17 +415,6 @@ Group parseGroup(XMLElement* group, int father) {
                     transformation = transformation->NextSiblingElement();
                 }
             }
-            else if (camera.compare(element->Name()) == 0){
-                
-                XMLElement* cam = element->FirstChildElement();
-
-                while(cam != nullptr){
-                   
-                    // INSERIR INSTRUÇÕES PARA OPERAR SOBRE A CÂMERA
-
-                    cam = cam->NextSiblingElement();
-                }
-            }
             else if (grupo.compare(element->Name()) == 0) {
                 Group gr = parseGroup(element, 1);
                 g.addGroups(gr);
@@ -432,6 +428,52 @@ Group parseGroup(XMLElement* group, int father) {
     } while (group != nullptr);
 
     return g;
+}
+
+void parseCamera(XMLElement* camera) {
+    string position = "position";
+    string lookAt = "lookAt";
+    string up = "up";
+    string projection = "projection";
+
+    XMLElement* element = camera->FirstChildElement();
+     
+    while (element != nullptr) {
+
+        cout << element->Name() << endl;
+
+        if (position.compare(element->Name()) == 0) {
+            if (element != nullptr) {
+                eyeX = stod(element->Attribute("x"));
+                eyeY = stod(element->Attribute("y"));
+                eyeZ = stod(element->Attribute("z"));                                
+            }
+        }
+        else if (lookAt.compare(element->Name()) == 0) {
+            if (element != nullptr) {
+                centerX = stod(element->Attribute("x"));
+                centerY = stod(element->Attribute("y"));
+                centerZ = stod(element->Attribute("z"));
+            }
+        }
+        else if (up.compare(element->Name()) == 0) {
+            if (element != nullptr) {
+                upX = stod(element->Attribute("x"));
+                upY = stod(element->Attribute("y"));
+                upZ = stod(element->Attribute("z"));
+            }
+        }
+        else if (projection.compare(element->Name()) == 0) {
+            if (element != nullptr) {
+                fov = stod(element->Attribute("fov"));
+                near = stod(element->Attribute("near"));
+                far = stod(element->Attribute("far"));
+            }
+        }
+
+        element = element->NextSiblingElement();
+    }        
+    //camera = camera->NextSiblingElement();
 }
 
 /**
@@ -464,6 +506,9 @@ bool parseDocument() {
         cout << "ERRO";
         return false; //in case of error
     }
+
+    XMLElement* camera = world->FirstChildElement("camera");
+    parseCamera(camera);
 
     XMLElement* group = world->FirstChildElement("group");
     parseGroup(group, 0);
