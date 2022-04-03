@@ -52,7 +52,7 @@ float max_zoom = 2.5f;
 float min_zoom = 0.5f;
 
 GLdouble eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ;
-GLdouble fov, near, far, ratio = 0.5;
+GLdouble fov, near, far;
 
 /**
  * Function that redimensionates a window.
@@ -477,7 +477,6 @@ void parseCamera(XMLElement* camera) {
 
         element = element->NextSiblingElement();
     }        
-    //camera = camera->NextSiblingElement();
 }
 
 /**
@@ -492,7 +491,7 @@ bool parseDocument() {
 
     string path(tmp);
 
-    int found = path.find("ENGINE"); // finds generator's localization
+    int found = path.find("ENGINE"); 
 
     replace(path.begin(), path.end(), '\\', '/');
     path.erase(path.begin() + found, path.end());
@@ -512,7 +511,7 @@ bool parseDocument() {
     XMLElement* world = doc.FirstChildElement();
     if (world == nullptr) {
         cout << "ERRO";
-        return false; //in case of error
+        return false; 
     }
 
     XMLElement* camera = world->FirstChildElement("camera");
