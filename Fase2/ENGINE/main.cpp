@@ -36,7 +36,7 @@ using namespace std;
 //Vector that stores filenames.
 vector<string> files;
 
-//Vector that stores all the gropus
+//Vector that stores all the groups
 vector<Group> groups;
 
 string pathFile;
