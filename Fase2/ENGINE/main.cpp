@@ -282,10 +282,10 @@ void rodar(int key_code, int x, int y) {
         angle2 -= shift;
         break;
     case GLUT_KEY_F1:
-        zoomFactor = std::min(zoomFactor + 0.25f, max_zoom);
+        zoomFactor = std::max(zoomFactor - 0.25f, min_zoom);
         break;
     case GLUT_KEY_F2:
-        zoomFactor = std::max(zoomFactor - 0.25f, min_zoom);
+        zoomFactor = std::min(zoomFactor + 0.25f, max_zoom);
         break;
     }
     glutPostRedisplay();
