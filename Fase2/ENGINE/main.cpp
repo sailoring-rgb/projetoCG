@@ -501,7 +501,7 @@ bool parseDocument() {
     cout << "Introduza o nome do ficheiro XML: " << endl;
     cin >> fileName;
     path = path + "Models/" + fileName + ".xml";
-    cout << path << endl;
+    //cout << path << endl;
 
     strcpy(tmp, path.c_str());
 
