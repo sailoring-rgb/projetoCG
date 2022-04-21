@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\ASUS\Ambiente de Trabalho\CG\projetoCG\Fase2\ENGINE\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ASUS\Ambiente de Trabalho\CG\projetoCG\Fase2\ENGINE\tinyxml2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ASUS\Ambiente de Trabalho\CG\projetoCG\Fase2\ENGINE\Point.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ASUS\Ambiente de Trabalho\CG\projetoCG\Fase2\ENGINE\Primitive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ASUS\Ambiente de Trabalho\CG\projetoCG\Fase2\ENGINE\Group.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\ASUS\Ambiente de Trabalho\CG\projetoCG\Fase2\ENGINE\Trans.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\ASUS\Ambiente de Trabalho\CG\projetoCG\Fase2\ENGINE\tinyxml2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ASUS\Ambiente de Trabalho\CG\projetoCG\Fase2\ENGINE\Point.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ASUS\Ambiente de Trabalho\CG\projetoCG\Fase2\ENGINE\Primitive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ASUS\Ambiente de Trabalho\CG\projetoCG\Fase2\ENGINE\Group.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\ASUS\Ambiente de Trabalho\CG\projetoCG\Fase2\ENGINE\Trans.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\ASUS\Ambiente de Trabalho\CG\projetoCG\Fase2\ENGINE\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{07B2C253-7ADC-331C-8E23-F785434E79B7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{087FF4C5-A09C-303E-A41A-04387FB85EDA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
