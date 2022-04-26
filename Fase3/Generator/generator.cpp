@@ -571,6 +571,60 @@ bool generateEllipsoid(vector<string> params){
     return true;
 }
 
+bool generatePatch(vector<string> params){
+    // PARAMS:
+    // [0] name_patch_file
+    // [1] tessellation_lvl
+    double tessellation_lvl = stod(params[1]);
+    string patch;
+
+    if (tessellation_lvl < 0)
+        return false;
+
+    ifstream file_patch;
+
+    file_patch.open("../../Models/"+params[0]);
+
+    if(!file_patch.is_open()){
+        printf("Cannot open file.\n");
+        return false;
+    }
+    string nr;
+    getline(file_patch,nr);
+    int nrPatches = stoi(nr);
+
+    string aux;
+
+    for(int i = 0 ; i < nrPatches; i++){
+        // In each cycle iteration aux has the patch #i
+        getline(file_patch,aux);
+    }
+
+    file_patch.close();
+
+
+
+
+
+    // CALCULATE THE POINTS
+
+    // WRITE ON AUX
+/*
+    string output = params[0];
+    int out_found = output.find(".3d");
+    if (out_found <= 0) return false;
+
+    string aux = NULL;
+    int totalPoints = 0;
+    string res = to_string(totalPoints) + "\n" + aux;
+
+    writeInFile(res,output);
+    printf("File gerado com sucesso");
+*/
+
+    return true;
+}
+
 
 bool parseInput(string primitive, vector<string> params) {
     int option = -1;
@@ -584,6 +638,7 @@ bool parseInput(string primitive, vector<string> params) {
     else if (primitive.compare("asteroids") == 0) option = 4;
     else if (primitive.compare("ellipsoid") == 0) option = 7;
     else if (primitive.compare("hsphere") == 0) option = 8;
+    else if (primitive.compare("patch") == 0) option = 9;
 
     bool ret = false;
 
@@ -626,13 +681,19 @@ bool parseInput(string primitive, vector<string> params) {
         break;
     case 7:
         if (params.size() == 5) {
-                ret = generateEllipsoid(params); 
+            ret = generateEllipsoid(params); 
         }
         else ret = false;
         break;
     case 8:
         if (params.size() == 4) {
-                ret = generateHalfSphere(params); 
+            ret = generateHalfSphere(params); 
+        }
+        else ret = false;
+        break;
+    case 9:
+        if (params.size() == 2) {
+            ret = generatePatch(params);
         }
         else ret = false;
         break;
