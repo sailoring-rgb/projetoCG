@@ -571,10 +571,30 @@ bool generateEllipsoid(vector<string> params){
     return true;
 }
 
+// WORKING ON THIS
+string computePoints(vector<vector<vector<string>>> patches, int tessellation){
+    vector<string> triangles;
+    vector<vector<string>> grid;
+
+    vector<vector<float>> bezier_matrix
+    {
+        {-1.0f,3.0f,-3.0f,1.0f},
+        {3.0f,-6.0f,3.0f,0.0f},
+        {-3.0f,3.0f,0.0f,0.0f},
+        {1.0f,0.0f,0.0f,0.0f},
+    };
+
+    for(int i = 0; i < tessellation; i++){
+        for(int j = 0; j < tessellation; j++){
+
+        }
+    }
+
+    return NULL;
+}
+
 bool generatePatch(vector<string> params){
-    // PARAMS:
-    // [0] name_patch_file
-    // [1] tessellation_lvl
+    // PARAMS: [0] name_patch_file | [1] tessellation_lvl
     double tessellation_lvl = stod(params[1]);
 
     if (tessellation_lvl < 0)
@@ -600,27 +620,56 @@ bool generatePatch(vector<string> params){
     while(getline(file_patch,aux)){
         if (i == 0)
             patchesCounter = stoi(aux);
-        else if (i <= patchesCounter)
+        else if (i <= patchesCounter){
+            aux.erase(remove(aux.begin(), aux.end(), ' '), aux.end());
             patches.push_back(aux);
+        }
         else if (i == patchesCounter + 1)
             pointsCounter = stoi(aux);
-        else
+        else{
+            aux.erase(remove(aux.begin(), aux.end(), ' '), aux.end());
             points.push_back(aux);
+        }
         i++;
     }
 
     file_patch.close();
 
+    vector<vector<vector<string>>> patches_final;
 
+    for(i = 0; i < patchesCounter; i++){
+        int counter = 0;
 
-/*
-    string output = params[0];
-    int out_found = output.find(".3d");
-    if (out_found <= 0) return false;
+        vector<string> curve(4);
+        vector<vector<string>> patch;
 
-    writeInFile(res,output);
+        for(int j = 0; j < patches.size(); j++){
+            string point = patches[i];
+            if (counter < 4){
+                curve[counter] = point;
+                if (j == patches.size() - 1)
+                    patch.push_back(curve);
+            }
+            else{
+                counter = 0;
+                patch.push_back(curve);
+                curve[counter] = point;
+            }
+        counter++;
+        }
+        patches_final.push_back(patch);
+    }
+
+    string res;
+    //res = computePoints(patches_final, tessellation_lvl);
+
+    string file = params[0];
+    file.erase(remove(file.begin(), file.end(), '.'), file.end());
+  
+
+    writeInFile(res,file+".3d");
     printf("File gerado com sucesso");
-*/
+    
 
     return true;
 }
