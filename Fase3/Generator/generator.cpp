@@ -576,7 +576,6 @@ bool generatePatch(vector<string> params){
     // [0] name_patch_file
     // [1] tessellation_lvl
     double tessellation_lvl = stod(params[1]);
-    string patch;
 
     if (tessellation_lvl < 0)
         return false;
@@ -589,34 +588,35 @@ bool generatePatch(vector<string> params){
         printf("Cannot open file.\n");
         return false;
     }
-    string nr;
-    getline(file_patch,nr);
-    int nrPatches = stoi(nr);
+    
+    vector<string> patches;
+    vector<string> points;
 
     string aux;
 
-    for(int i = 0 ; i < nrPatches; i++){
-        // In each cycle iteration aux has the patch #i
-        getline(file_patch,aux);
+    int i = 0;
+    int patchesCounter = 0, pointsCounter = 0;
+    
+    while(getline(file_patch,aux)){
+        if (i == 0)
+            patchesCounter = stoi(aux);
+        else if (i <= patchesCounter)
+            patches.push_back(aux);
+        else if (i == patchesCounter + 1)
+            pointsCounter = stoi(aux);
+        else
+            points.push_back(aux);
+        i++;
     }
 
     file_patch.close();
 
 
 
-
-
-    // CALCULATE THE POINTS
-
-    // WRITE ON AUX
 /*
     string output = params[0];
     int out_found = output.find(".3d");
     if (out_found <= 0) return false;
-
-    string aux = NULL;
-    int totalPoints = 0;
-    string res = to_string(totalPoints) + "\n" + aux;
 
     writeInFile(res,output);
     printf("File gerado com sucesso");
