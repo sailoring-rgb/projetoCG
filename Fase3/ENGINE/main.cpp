@@ -150,7 +150,7 @@ void drawPrimitives(Group groups) {
             glScalef(t.getX(), t.getY(), t.getZ());
         }
         else if (rotate.compare(t.getName()) == 0) {
-            glRotated(t.getAngle(), t.getX(), t.getY(), t.getZ());
+            glRotated(t.getTime(), t.getX(), t.getY(), t.getZ());
         }
         else if (color.compare(t.getName()) == 0)
         {
@@ -385,7 +385,7 @@ Group parseGroup(XMLElement* group, int father) {
                             float x = atof(transformation->Attribute("x"));
                             float y = atof(transformation->Attribute("y"));
                             float z = atof(transformation->Attribute("z"));
-                            Trans t = Trans("scale", x, y, z, 0);
+                            Trans t = Trans("scale", x, y, z, 0, 0);
                             g.addTrans(t);
                         }
                     }
@@ -394,18 +394,26 @@ Group parseGroup(XMLElement* group, int father) {
                             float x = atof(transformation->Attribute("x"));
                             float y = atof(transformation->Attribute("y"));
                             float z = atof(transformation->Attribute("z"));
-                            Trans t = Trans("translate", x, y, z, 0);
+                            Trans t = Trans("translate", x, y, z, 0, 0);
                             g.addTrans(t);
                         }
                     }
                     else if (rotate.compare(transformation->Name()) == 0) {
-                            if (transformation != nullptr) {
-                                float angle = atof(transformation->Attribute("angle"));
+                            if (transformation != nullptr) {                              
                                 float x = atof(transformation->Attribute("x"));
                                 float y = atof(transformation->Attribute("y"));
                                 float z = atof(transformation->Attribute("z"));
-                                Trans t = Trans("rotate", x, y, z, angle);
-                                g.addTrans(t);
+
+                                if (transformation->FindAttribute("time")) {
+                                    float time = atof(transformation->Attribute("time"));
+                                    Trans t = Trans("rotate", x, y, z, 0, time);
+                                    g.addTrans(t);
+                                }
+                                else if (transformation->FindAttribute("angle")) {
+                                    float time = atof(transformation->Attribute("angle"));
+                                    Trans t = Trans("rotate", x, y, z, angle, 0);
+                                    g.addTrans(t);
+                                }
                             }
                     }
                     else if (color.compare(transformation->Name()) == 0) {
@@ -413,7 +421,7 @@ Group parseGroup(XMLElement* group, int father) {
                                 float red = atof(transformation->Attribute("x"));
                                 float green = atof(transformation->Attribute("y"));
                                 float blue = atof(transformation->Attribute("z"));
-                                Trans t = Trans("color", red, green, blue, 0);
+                                Trans t = Trans("color", red, green, blue, 0, 0);
                                 g.addTrans(t);
                             }
                     }

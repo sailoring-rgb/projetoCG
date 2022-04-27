@@ -12,7 +12,7 @@ public:
 
 	Trans();
 
-	Trans(std::string name, float x, float y, float z, float angle);
+	Trans(std::string name, float x, float y, float z, float angle, float time);
 
 	std::string getName();
 
@@ -23,6 +23,8 @@ public:
 	float getZ();
 
 	float getAngle();
+
+	float getTime();
 };
 
 
