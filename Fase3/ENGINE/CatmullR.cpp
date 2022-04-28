@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-#include "CatmullRom.h"
+#include "CatmullR.h"
 
 void CatmullRom::buildRotMatrix(float* x, float* y, float* z, float* m) {
 
