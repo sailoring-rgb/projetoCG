@@ -16,8 +16,8 @@
 #include <iostream>
 #include <fstream>
 #include "tinyxml2.h"
-#include "../ENGINE/Point.h"
 #include <cstring>
+#include <sstream>
 
 using namespace tinyxml2;
 using namespace std;
@@ -572,7 +572,87 @@ bool generateEllipsoid(vector<string> params){
     return true;
 }
 
+// Função para separa uma string de acordo com um delimitador
+vector<string> split(string s, string del) {
+    vector<string> res;
+    int start = 0;
+    int end = s.find(del);
+    while (end != -1) {
+        res.push_back(s.substr(start, end - start));
+        start = end + del.size();
+        end = s.find(del, start);
+    }
+    res.push_back(s.substr(start, end - start));
+    return res;
+}
 
+// Função para converter vetores de strings para int
+vector<int> convertToInt(vector<string> v){
+    int i;
+    vector<int> res;
+    for(i = 0; i < v.size(); i++){
+        res.push_back(stoi(v.at(i)));
+    }
+
+    return res;
+}
+
+// Função para converter vetores de strings para float
+vector<float> convertToFloat(vector<string> v){
+    int i;
+    vector<float> res;
+    for(i = 0; i < v.size(); i++){
+        res.push_back(stof(v.at(i)));
+    }
+
+    return res;
+}
+
+// Função para ir buscar os pontos do patch
+vector<string> fetchPatchPoints(string single_patch, vector<string> points){
+    vector<string> res;
+    vector<string> aux = split(single_patch,",");
+    vector<int> indexes = convertToInt(aux);
+    int i;
+    
+    for(i = 0; i < indexes.size(); i++){
+        int index = indexes.at(i);
+        res.push_back(points.at(index));
+    }
+    return res;
+}
+
+// Função para gerar um vetor com as coordenadas de um ponto a partir de uma string
+vector<float> genereatePoint(string s){
+    
+    vector<string> aux = split(s,",");
+    vector<float> p_coordinates = convertToFloat(aux);
+
+    return p_coordinates;
+}
+
+// Função para calcular os pontos dos triângulos de um patch
+void triangulation(vector<string> patch, int tessellation_lvl){
+    vector<vector<float>> m
+    {
+        {-1.0f,3.0f,-3.0f,1.0f},
+        {3.0f,-6.0f,3.0f,0.0f},
+        {-3.0f,3.0f,0.0f,0.0f},
+        {1.0f,0.0f,0.0f,0.0f},
+    };
+    int i;
+    vector<float> point;
+    vector<vector<float>> matrix_points;
+    for(i = 0; i < patch.size(); i++) {
+        point = genereatePoint(patch.at(i));
+        matrix_points.push_back(point);
+    }
+
+    // at this time: matrix_points tem 16 vetores
+    // cada vetor corresponde coordenadas a um vetor ponto
+    // cada ponto é um vetor de 3 floats
+
+}
 
 bool generatePatch(vector<string> params){
     // PARAMS: [0] name_patch_file | [1] tessellation_lvl
@@ -616,8 +696,17 @@ bool generatePatch(vector<string> params){
 
     file_patch.close();
 
-    string res;
-    //res = computePoints(patches_final, tessellation_lvl);
+    string res = "";
+    string single_patch;
+    vector<string> patch_aux;
+
+    for(i = 0; i < patchesCounter; i++){
+        single_patch = patches.at(i);
+        patch_aux = fetchPatchPoints(single_patch, points);
+        triangulation(patch_aux,tessellation_lvl);
+        break;
+    }
+    
 
     string file = params[0];
     file.erase(remove(file.begin(), file.end(), '.'), file.end());
