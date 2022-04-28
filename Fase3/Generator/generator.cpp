@@ -16,6 +16,7 @@
 #include <iostream>
 #include <fstream>
 #include "tinyxml2.h"
+#include "../ENGINE/Point.h"
 #include <cstring>
 
 using namespace tinyxml2;
@@ -571,27 +572,7 @@ bool generateEllipsoid(vector<string> params){
     return true;
 }
 
-// WORKING ON THIS
-string computePoints(vector<vector<vector<string>>> patches, int tessellation){
-    vector<string> triangles;
-    vector<vector<string>> grid;
 
-    vector<vector<float>> bezier_matrix
-    {
-        {-1.0f,3.0f,-3.0f,1.0f},
-        {3.0f,-6.0f,3.0f,0.0f},
-        {-3.0f,3.0f,0.0f,0.0f},
-        {1.0f,0.0f,0.0f,0.0f},
-    };
-
-    for(int i = 0; i < tessellation; i++){
-        for(int j = 0; j < tessellation; j++){
-
-        }
-    }
-
-    return NULL;
-}
 
 bool generatePatch(vector<string> params){
     // PARAMS: [0] name_patch_file | [1] tessellation_lvl
@@ -602,7 +583,7 @@ bool generatePatch(vector<string> params){
 
     ifstream file_patch;
 
-    file_patch.open("../../Models/"+params[0]);
+    file_patch.open("../../Patches/"+params[0]);
 
     if(!file_patch.is_open()){
         printf("Cannot open file.\n");
@@ -626,7 +607,7 @@ bool generatePatch(vector<string> params){
         }
         else if (i == patchesCounter + 1)
             pointsCounter = stoi(aux);
-        else{
+        else if (i > patchesCounter + 1){
             aux.erase(remove(aux.begin(), aux.end(), ' '), aux.end());
             points.push_back(aux);
         }
@@ -635,39 +616,13 @@ bool generatePatch(vector<string> params){
 
     file_patch.close();
 
-    vector<vector<vector<string>>> patches_final;
-
-    for(i = 0; i < patchesCounter; i++){
-        int counter = 0;
-
-        vector<string> curve(4);
-        vector<vector<string>> patch;
-
-        for(int j = 0; j < patches.size(); j++){
-            string point = patches[i];
-            if (counter < 4){
-                curve[counter] = point;
-                if (j == patches.size() - 1)
-                    patch.push_back(curve);
-            }
-            else{
-                counter = 0;
-                patch.push_back(curve);
-                curve[counter] = point;
-            }
-        counter++;
-        }
-        patches_final.push_back(patch);
-    }
-
     string res;
     //res = computePoints(patches_final, tessellation_lvl);
 
     string file = params[0];
     file.erase(remove(file.begin(), file.end(), '.'), file.end());
   
-
-    writeInFile(res,file+".3d");
+    //writeInFile(res,file+".3d");
     printf("File gerado com sucesso");
     
 
