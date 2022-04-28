@@ -20,7 +20,12 @@
     <group>
         <transform>
             <rotate time="185" x="0" y="1" z="0"/>
-            <translate x="1.3" y="0" z="0"/>
+            <translate time="10" align="True">
+                <point x="1.3" y="0" z="0"/>
+                <point x="0" y="1.3" z="0"/>
+                <point x="0" y="-1.3" z="0"/>
+                <point x="1.3" y="2" z="0"/>
+            <translate/>
             <scale x="0.05" y="0.05" z="0.05"/>
             <color x="238" y="154" z="73"/>
         </transform>

@@ -391,11 +391,24 @@ Group parseGroup(XMLElement* group, int father) {
                     }
                     else if(translate.compare(transformation->Name()) == 0) {
                         if (transformation != nullptr) {
-                            float x = atof(transformation->Attribute("x"));
-                            float y = atof(transformation->Attribute("y"));
-                            float z = atof(transformation->Attribute("z"));
-                            Trans t = Trans("translate", x, y, z, 0, 0);
-                            g.addTrans(t);
+
+                            if (transformation->FindAttribute("time")) {
+                                float time = atof(transformation->Attribute("time"));
+                                string align = transformation->Attribute("align");
+                               
+
+                                XMLElement* point = transformation->FirstChildElement("point");
+                                while (point != nullptr) {
+                                    float x = atof(point->Attribute("x"));
+                                    float y = atof(point->Attribute("y"));
+                                    float z = atof(point->Attribute("z"));
+
+                                    point = point->NextSiblingElement("point");
+                                }
+
+                                Trans t = Trans("translate", x, y, z, 0, time);
+                                g.addTrans(t);
+                            }
                         }
                     }
                     else if (rotate.compare(transformation->Name()) == 0) {
