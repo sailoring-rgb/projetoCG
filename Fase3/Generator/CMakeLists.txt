@@ -5,7 +5,7 @@ PROJECT(GENERATOR)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(${PROJECT_NAME} generator.cpp tinyxml2.cpp)
+add_executable(${PROJECT_NAME} generator.cpp tinyxml2.cpp Point.cpp)
 
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})
