@@ -409,6 +409,14 @@ Group parseGroup(XMLElement* group, int father) {
                                 Trans t = Trans("translate", x, y, z, 0, time);
                                 g.addTrans(t);
                             }
+                            else if (transformation->FindAttribute("x")) {
+                                float x = atof(transformation->Attribute("x"));
+                                float y = atof(transformation->Attribute("y"));
+                                float z = atof(transformation->Attribute("z"));
+
+                                Trans t = Trans("translate", x, y, z, 0, 0);
+                                g.addTrans(t);
+                            }
                         }
                     }
                     else if (rotate.compare(transformation->Name()) == 0) {
@@ -531,6 +539,7 @@ bool parseDocument() {
 
     XMLElement* world = doc.FirstChildElement();
     if (world == nullptr) {
+        cout << "ola" << endl;
         cout << "ERRO";
         return false; 
     }
