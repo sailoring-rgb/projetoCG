@@ -70,7 +70,7 @@ class Point {
 };
 //-----------------
 
-// Função para escrever num ficheiro
+
 void writeInFile(string res, string file) {
     //generats XML file using tinyxml2
     char tmp[256];
@@ -141,7 +141,6 @@ bool generatePlane(vector<string> params) {
     return true;
 }
 
-// Função para gerar os pontos de um cubo
 bool generateBox(vector<string> params) {
 
     float length = stof(params[0]);
@@ -156,6 +155,7 @@ bool generateBox(vector<string> params) {
 
     float step = length / divisions;
     float deviation = length / 2;
+
 
     // string que guarda os pontos que estruturam a figura
     string res = to_string(6 * (int)(pow(divisions, 2) * 6)) + "\n";
@@ -733,6 +733,7 @@ vector<float> vectorGenerator(float f) {
     return vect;
 }
 
+
 // Função para criação dos pontos dos triângulos de um patch
 vector<Point> triangulacao(vector<vector<vector<Point>>> patches_set, int tessellation_lvl) {
     int i, j, k;
@@ -867,7 +868,6 @@ bool generatePatch(vector<string> params){
     return true;
 }
 
-// Função para processar o input recebido na main
 bool parseInput(string primitive, vector<string> params) {
     int option = -1;
 
@@ -946,7 +946,9 @@ bool parseInput(string primitive, vector<string> params) {
     return ret;
 }
 
-// Função para iniciar o gerador
+/**
+* Function that Iniciates the Generator
+*/
 int main(int argc, char** argv) {
     if (argc == 1) {
         cout << "Not enough arguments";
