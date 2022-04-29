@@ -18,58 +18,10 @@
 #include "tinyxml2.h"
 #include <cstring>
 #include <sstream>
+#include "Point.h"
 
 using namespace tinyxml2;
 using namespace std;
-
-//------------------
-class Point {
-    public:
-
-	float x;
-	float y;
-	float z;
-
-	Point() {
-		x = 0;
-		y = 0;
-		z = 0;
-	}
-
-	Point(float x, float y, float z) {
-		this->x = x;
-		this->y = y;
-		this->z = z;
-	}
-
-
-	float getX() {
-		return x;
-	}
-
-	float getY() {
-		return y;
-	}
-
-	float getZ() {
-		return z;
-	}
-
-	void setX(float x) {
-		this->x = x;
-	}
-
-	void setY(float y) {
-		this->y = y;
-	}
-
-
-	void setZ(float z) {
-		this->z = z;
-	}
-};
-//-----------------
-
 
 void writeInFile(string res, string file) {
     //generats XML file using tinyxml2
