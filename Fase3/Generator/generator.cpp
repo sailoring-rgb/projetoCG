@@ -22,7 +22,7 @@
 using namespace tinyxml2;
 using namespace std;
 
-//------------------
+//------------------ AUX FUNCTIONS AND DECLARATIONS ------------------//
 class Point {
     public:
 
@@ -68,9 +68,8 @@ class Point {
 		this->z = z;
 	}
 };
-//-----------------
 
-
+// Função para escrever em ficheiro
 void writeInFile(string res, string file) {
     //generats XML file using tinyxml2
     char tmp[256];
@@ -105,6 +104,179 @@ void writeInFile(string res, string file) {
     }
 }
 
+
+// Partir uma string segundo um delimitador
+vector<string> splitter(string s, string del) {
+    vector<string> res;
+    int start = 0;
+    int end = s.find(del);
+
+    while (end != -1) {
+        res.push_back(s.substr(start, end - start));
+        start = end + del.size();
+        end = s.find(del, start);
+    }
+    res.push_back(s.substr(start, end - start));
+    return res;
+}
+
+// Multiplicação: matrix_float * matrix_point
+vector<vector<Point>> multMatrixPoints(vector<vector<float>> m, vector<vector<Point>> patch) {
+    int i, j, k;
+    float x, y, z;
+    Point p, pm;
+    vector<vector<Point>> res(4,vector<Point>(4));
+    
+    for (i = 0; i < 4; ++i)
+        for (j = 0; j < 4; ++j)
+            res[i][j] = Point(0, 0, 0);
+
+    for (i = 0; i < 4; ++i) {
+        for (j = 0; j < 4; ++j){
+            for (k = 0; k < 4; ++k) {
+                p = patch[k][j];
+                x = p.getX();
+                y = p.getY();
+                z = p.getZ();
+                p = Point(x * m[i][k], y * m[i][k], z * m[i][k]);
+                pm = res[i][j];
+                res[i][j] = Point(pm.getX() + p.getX(), pm.getY() + p.getY(), pm.getZ() + p.getZ());
+            }
+        }
+    }
+    return res;
+}
+
+// Multiplicação: matrix_point * matrix_float
+vector<vector<Point>> multPointsMatrix(vector<vector<Point>> mat, vector<vector<float>> m) {
+    int i, j, k;
+    float x, y, z;
+    Point p, pm;
+    vector<vector<Point>> res(4,vector<Point>(4));
+
+    for (i = 0; i < 4; ++i)
+        for (j = 0; j < 4; ++j)
+            res[i][j] = Point(0, 0, 0);    
+
+    for (i = 0; i < 4; ++i) {
+        for (j = 0; j < 4; ++j){
+            for (k = 0; k < 4; ++k) {
+                p = mat[i][k];
+                x = p.getX();
+                y = p.getY();
+                z = p.getZ();
+                p = Point(x * m[k][j], y * m[k][j], z * m[k][j]);
+                pm = res[i][j];
+                res[i][j] = Point(pm.getX() + p.getX(), pm.getY() + p.getY(), pm.getZ() + p.getZ());
+            }
+        }
+    }
+    return res;
+}
+
+// Multiplicação: vetor * matrix_points
+vector<Point> multVectorMatrix(vector<float> vect, vector<vector<Point>> matrix) {
+    int j, k;
+    float x, y, z;
+    Point p, pm;
+    vector<Point> res(4);
+
+    for (j = 0; j < 4; ++j)
+        res[j] = Point(0, 0, 0);
+
+    for (j = 0; j < 4; ++j) {
+        for (k = 0; k < 4; ++k) {
+            p = matrix[k][j];
+            x = p.getX();
+            y = p.getY();
+            z = p.getZ();
+            p = Point(x * vect[k], y * vect[k], z * vect[k]);
+            pm = res[j];
+            res[j] = Point(pm.getX() + p.getX(), pm.getY() + p.getY(), pm.getZ() + p.getZ());
+        }
+    }
+    return  res;
+}
+
+// Multiplicação: vetor * matrix_points
+Point multVectors(vector<Point> vector, ::vector<float> vect) {
+    Point p = Point(0, 0, 0);
+    int j;
+
+    for(j = 0; j < 4; ++j){
+        p.setX(p.getX() + vector[j].getX() * vect[j]);
+        p.setY(p.getY() + vector[j].getY() * vect[j]);
+        p.setZ(p.getZ() + vector[j].getZ() * vect[j]);
+    }
+    return p;
+}
+
+// Funcção para gerar os vetores u e v 
+vector<float> vectorGenerator(float f) {
+    vector<float> vect(4);
+
+    vect[0] = pow(f,3);
+    vect[1] = pow(f,2);
+    vect[2] = f;
+    vect[3] = 1;
+
+    return vect;
+}
+
+
+// Função para criação dos pontos dos triângulos de um patch
+vector<Point> triangulacao(vector<vector<vector<Point>>> patches_set, int tessellation_lvl) {
+    int i, j, k;
+    float pu = 0.0f, pv = 0.0f;
+    vector<float> u, v;
+    vector<Point> triangles, res;
+    vector<vector<Point>> aux, matrix;
+    vector<vector<Point>> grid(tessellation_lvl + 1, vector<Point> (tessellation_lvl + 1));
+    Point final;
+    
+    vector<vector<float>> m
+    {
+        {-1.0f,3.0f,-3.0f,1.0f},
+        {3.0f,-6.0f,3.0f,0.0f},
+        {-3.0f,3.0f,0.0f,0.0f},
+        {1.0f,0.0f,0.0f,0.0f},
+    };
+
+    for (j = 0; j <= tessellation_lvl; j++)
+        for (k = 0; k <= tessellation_lvl; k++)
+            grid[j][k] = Point(0, 0, 0);
+
+    for(i = 0; i< patches_set.size(); i++) {
+        aux = multMatrixPoints(m, patches_set[i]);
+        matrix = multPointsMatrix(aux, m);
+
+        for (int j = 0; j <= tessellation_lvl; j++) {
+            pv = ((float) j) / ((float) tessellation_lvl);
+            v = vectorGenerator(pv);
+            for (int k = 0; k <= tessellation_lvl; k++) {
+                pu = ((float) k) / ((float) tessellation_lvl);
+                u = vectorGenerator(pu);
+                res = multVectorMatrix(u, matrix);
+                final = multVectors(res, v);
+                grid[j][k] = Point(final.getX(), final.getY(), final.getZ());
+            }
+        }
+
+        for (j = 0; j < tessellation_lvl; j++) {
+            for (k = 0; k < tessellation_lvl; k++) {
+                triangles.push_back(grid[j][k]);
+                triangles.push_back(grid[j+1][k]);
+                triangles.push_back(grid[j][k+1]);
+                triangles.push_back(grid[j+1][k]);
+                triangles.push_back(grid[j+1][k+1]);
+                triangles.push_back(grid[j][k+1]);
+            }
+        }
+    }
+    return triangles;
+}
+
+//------------------ FUNCTIONS TO COMPUTE POINTS ------------------//
 // Função para gerar os pontos do Plano
 bool generatePlane(vector<string> params) {
 
@@ -141,6 +313,7 @@ bool generatePlane(vector<string> params) {
     return true;
 }
 
+// Função para determinar os pontos do cubo
 bool generateBox(vector<string> params) {
 
     float length = stof(params[0]);
@@ -211,7 +384,6 @@ bool generateBox(vector<string> params) {
     return true;
 }
 
-
 // Função para gerar os pontos do Cone
 bool generateCone(vector<string> params) {
     double radius = -1;
@@ -223,8 +395,7 @@ bool generateCone(vector<string> params) {
     slices = stoi(params[2]);
     stack = stoi(params[3]);
 
-
-    // String onde s�o guardados o n�mero total de vertices necess�rios para construir o cone
+    // String onde é guardados o némero total de vertices necessários para construir o cone
     string res = to_string((2 * slices * stack) * 3) + "\n";
 
     if (radius < 0 || height < 0 || slices < 0 || stack < 0) {
@@ -615,177 +786,6 @@ bool generateEllipsoid(vector<string> params){
     return true;
 }
 
-// Partir uma string segundo um delimitador
-vector<string> splitter(string s, string del) {
-    vector<string> res;
-    int start = 0;
-    int end = s.find(del);
-
-    while (end != -1) {
-        res.push_back(s.substr(start, end - start));
-        start = end + del.size();
-        end = s.find(del, start);
-    }
-    res.push_back(s.substr(start, end - start));
-    return res;
-}
-
-// Multiplicação: matrix_float * matrix_point
-vector<vector<Point>> multMatrixPoints(vector<vector<float>> m, vector<vector<Point>> patch) {
-    int i, j, k;
-    float x, y, z;
-    Point p, pm;
-    vector<vector<Point>> res(4,vector<Point>(4));
-    
-    for (i = 0; i < 4; ++i)
-        for (j = 0; j < 4; ++j)
-            res[i][j] = Point(0, 0, 0);
-
-    for (i = 0; i < 4; ++i) {
-        for (j = 0; j < 4; ++j){
-            for (k = 0; k < 4; ++k) {
-                p = patch[k][j];
-                x = p.getX();
-                y = p.getY();
-                z = p.getZ();
-                p = Point(x * m[i][k], y * m[i][k], z * m[i][k]);
-                pm = res[i][j];
-                res[i][j] = Point(pm.getX() + p.getX(), pm.getY() + p.getY(), pm.getZ() + p.getZ());
-            }
-        }
-    }
-    return res;
-}
-
-// Multiplicação: matrix_point * matrix_float
-vector<vector<Point>> multPointsMatrix(vector<vector<Point>> mat, vector<vector<float>> m) {
-    int i, j, k;
-    float x, y, z;
-    Point p, pm;
-    vector<vector<Point>> res(4,vector<Point>(4));
-
-    for (i = 0; i < 4; ++i)
-        for (j = 0; j < 4; ++j)
-            res[i][j] = Point(0, 0, 0);    
-
-    for (i = 0; i < 4; ++i) {
-        for (j = 0; j < 4; ++j){
-            for (k = 0; k < 4; ++k) {
-                p = mat[i][k];
-                x = p.getX();
-                y = p.getY();
-                z = p.getZ();
-                p = Point(x * m[k][j], y * m[k][j], z * m[k][j]);
-                pm = res[i][j];
-                res[i][j] = Point(pm.getX() + p.getX(), pm.getY() + p.getY(), pm.getZ() + p.getZ());
-            }
-        }
-    }
-    return res;
-}
-
-// Multiplicação: vetor * matrix_points
-vector<Point> multVectorMatrix(vector<float> vect, vector<vector<Point>> matrix) {
-    int j, k;
-    float x, y, z;
-    Point p, pm;
-    vector<Point> res(4);
-
-    for (j = 0; j < 4; ++j)
-        res[j] = Point(0, 0, 0);
-
-    for (j = 0; j < 4; ++j) {
-        for (k = 0; k < 4; ++k) {
-            p = matrix[k][j];
-            x = p.getX();
-            y = p.getY();
-            z = p.getZ();
-            p = Point(x * vect[k], y * vect[k], z * vect[k]);
-            pm = res[j];
-            res[j] = Point(pm.getX() + p.getX(), pm.getY() + p.getY(), pm.getZ() + p.getZ());
-        }
-    }
-    return  res;
-}
-
-// Multiplicação: vetor * matrix_points
-Point multVectors(vector<Point> vector, ::vector<float> vect) {
-    Point p = Point(0, 0, 0);
-    int j;
-
-    for(j = 0; j < 4; ++j){
-        p.setX(p.getX() + vector[j].getX() * vect[j]);
-        p.setY(p.getY() + vector[j].getY() * vect[j]);
-        p.setZ(p.getZ() + vector[j].getZ() * vect[j]);
-    }
-    return p;
-}
-
-// Funcção para gerar os vetores u e v 
-vector<float> vectorGenerator(float f) {
-    vector<float> vect(4);
-
-    vect[0] = pow(f,3);
-    vect[1] = pow(f,2);
-    vect[2] = f;
-    vect[3] = 1;
-
-    return vect;
-}
-
-
-// Função para criação dos pontos dos triângulos de um patch
-vector<Point> triangulacao(vector<vector<vector<Point>>> patches_set, int tessellation_lvl) {
-    int i, j, k;
-    float pu = 0.0f, pv = 0.0f;
-    vector<float> u, v;
-    vector<Point> triangles, res;
-    vector<vector<Point>> aux, matrix;
-    vector<vector<Point>> grid(tessellation_lvl + 1, vector<Point> (tessellation_lvl + 1));
-    Point final;
-    
-    vector<vector<float>> m
-    {
-        {-1.0f,3.0f,-3.0f,1.0f},
-        {3.0f,-6.0f,3.0f,0.0f},
-        {-3.0f,3.0f,0.0f,0.0f},
-        {1.0f,0.0f,0.0f,0.0f},
-    };
-
-    for (j = 0; j <= tessellation_lvl; j++)
-        for (k = 0; k <= tessellation_lvl; k++)
-            grid[j][k] = Point(0, 0, 0);
-
-    for(i = 0; i< patches_set.size(); i++) {
-        aux = multMatrixPoints(m, patches_set[i]);
-        matrix = multPointsMatrix(aux, m);
-
-        for (int j = 0; j <= tessellation_lvl; j++) {
-            pv = ((float) j) / ((float) tessellation_lvl);
-            v = vectorGenerator(pv);
-            for (int k = 0; k <= tessellation_lvl; k++) {
-                pu = ((float) k) / ((float) tessellation_lvl);
-                u = vectorGenerator(pu);
-                res = multVectorMatrix(u, matrix);
-                final = multVectors(res, v);
-                grid[j][k] = Point(final.getX(), final.getY(), final.getZ());
-            }
-        }
-
-        for (j = 0; j < tessellation_lvl; j++) {
-            for (k = 0; k < tessellation_lvl; k++) {
-                triangles.push_back(grid[j][k]);
-                triangles.push_back(grid[j+1][k]);
-                triangles.push_back(grid[j][k+1]);
-                triangles.push_back(grid[j+1][k]);
-                triangles.push_back(grid[j+1][k+1]);
-                triangles.push_back(grid[j][k+1]);
-            }
-        }
-    }
-    return triangles;
-}
-
 // Função para processar um patch
 bool generatePatch(vector<string> params){
     ifstream file_patch;
@@ -868,6 +868,7 @@ bool generatePatch(vector<string> params){
     return true;
 }
 
+//------------------ FUNCTIONS PARSE INPUT ------------------//
 bool parseInput(string primitive, vector<string> params) {
     int option = -1;
 
@@ -946,9 +947,8 @@ bool parseInput(string primitive, vector<string> params) {
     return ret;
 }
 
-/**
-* Function that Iniciates the Generator
-*/
+//------------------ MAIN ------------------//
+// Function that Iniciates the Generator
 int main(int argc, char** argv) {
     if (argc == 1) {
         cout << "Not enough arguments";
