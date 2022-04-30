@@ -16,21 +16,18 @@
 #include "CatmullRom.h"
 
 #ifdef __APPLE__
+#define GL_SILENCE_DEPRECATION
+#include <OpenGL/gl.h>
+#include <OpenGL/glext.h>
+#include <GLUT/glut.h>
 #include <unistd.h>
 #elif _WIN32
 #include <direct.h>
 #include <io.h>
-#else
-#endif
-
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#elif _WIN32
 #include <GL/glew.h>
 #include <GL/glut.h>
 #else
 #endif
-
 
 using namespace tinyxml2;
 using namespace std;
