@@ -179,12 +179,12 @@ void drawPrimitives(Group g) {
                     glVertex3fv(pos2);
                 }
                 glEnd();*/
-                float pos[3], d[3];
+                float p[3], d[3];
                 float t1 = 100.0f;
                 glBegin(GL_LINE_LOOP);
                 for (int i = 0; i < t1; i += 1) {
-                    CatmullRom::getGlobalCatmullRomPoint(catmullPoints, i / t1, pos, d);
-                    glVertex3fv(pos);
+                    CatmullRom::getGlobalCatmullRomPoint(catmullPoints, i / t1, p, d);
+                    glVertex3fv(p);
                 }
                 glEnd();
 
