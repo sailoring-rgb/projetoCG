@@ -276,8 +276,8 @@ void renderSceneCatmullRom(std::vector<Trans> trans, std::vector<Primitive> prim
     // apply transformations here
 
     float m[16];
-    float pos[3];
-    float deriv[3];
+    float pos[4];
+    float deriv[4];
     float z[3];
     float y[3];
 
@@ -337,10 +337,10 @@ void renderSceneCatmullRom(std::vector<Trans> trans, std::vector<Primitive> prim
     glPopMatrix();
 }
 
-/*
+
 vector<float> calculateNewAngle(float time) {
 
-    angle = ((float)glutGet(GLUT_ELAPSED_TIME) * 360 / 1000) / ((float)time));
+    angle = ((float)glutGet(GLUT_ELAPSED_TIME) * 360 / 1000) / ((float)time);
 
     glutPostRedisplay();
 
@@ -348,7 +348,7 @@ vector<float> calculateNewAngle(float time) {
 
     res.push_back(angle);
     return res;
-}*/
+}
 
 void applyTrans(Group g) {
 
@@ -377,7 +377,7 @@ void applyTrans(Group g) {
             }
         }
     }
-    /*
+    
     for (int z = 0; z < g.getNrPrimitives(); z++) {
         Primitive p = g.getPrimitives(z);
 
@@ -389,7 +389,7 @@ void applyTrans(Group g) {
 
         ptr = ptr + nrVer;
 
-    }*/
+    }
 }
 
 /**
@@ -622,7 +622,7 @@ bool initGlut(int argc, char** argv) {
 
     // Required callback registry
     glutDisplayFunc(renderScene);
-    //glutIdleFunc(renderScene);
+   // glutIdleFunc(renderScene);
     glutReshapeFunc(changeSize);
 
     // put here the registration of the keyboard callbacks
@@ -644,7 +644,6 @@ bool initGlut(int argc, char** argv) {
 
     //Create VBO
     glGenBuffers(1, buffers);
-
     glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertexB.size(), vertexB.data(), GL_STATIC_DRAW);
 
@@ -706,7 +705,6 @@ Group parseGroup(XMLElement* group, int father) {
                             if (transformation->FindAttribute("time")) {
                                 float time = atof(transformation->Attribute("time"));
                                 string align = transformation->Attribute("align");
-                               
 
                                 XMLElement* point = transformation->FirstChildElement("point");
                                 while (point != nullptr) {
@@ -724,7 +722,7 @@ Group parseGroup(XMLElement* group, int father) {
                                     point = point->NextSiblingElement("point");
                                 }
 
-                                Trans t = Trans("translate", x, y, z, 0, time);
+                                Trans t = Trans("translate", 0, 0, 0, 0, time);
                                 g.addTrans(t);
                             }
                             else if (transformation->FindAttribute("x")) {
@@ -879,12 +877,12 @@ bool parseDocument() {
 int main(int argc, char** argv) {
 
     bool res = true;
-
     char tmp[256];
 
     getcwd(tmp, 256);
 
     string path(tmp);
+    vertexB.reserve(100000);
 
     int found = path.find("ENGINE");
 
@@ -896,9 +894,10 @@ int main(int argc, char** argv) {
     pathFile = path;
 
     if (parseDocument()) {
-        if (!initGlut(argc, argv)) {
+        initGlut(argc, argv);
+        /*if (!initGlut(argc, argv)) {
             cout << "3d File Invalid";
-        }
+        }*/
     }
     else {
         cout << "XML File Invalid";

@@ -9,7 +9,6 @@ class Primitive::PrimitiveBuilder {
 	//vari�vel privada que guarda os v�rtices
 private:
 	std::vector<Point> vertices;
-	unsigned int vbo_buffer = 0;
 
 public:
 
@@ -31,10 +30,6 @@ public:
 
 	Point getPoint(int index) {
 		return vertices[index];
-	}
-
-	int getVBObuffer() {
-		return vbo_buffer;
 	}
 
 	void addPoint(Point p) {
