@@ -16,7 +16,7 @@ def calculate_circle(raio):
 
     return points
 
-points = calculate_circle(1.3)
+points = calculate_circle(5.5)
 
 for p in points:
     point = Tree.SubElement(world, "point")
