@@ -6,11 +6,11 @@ world = Tree.Element('world')
 def calculate_circle(raio):
     points = []
 
-    nrPoints = 12
+    nrPoints = 8
 
-    angle = 360 / nrPoints
+    angle = 360 / 8
 
-    for i in range(nrPoints):
+    for i in range(8):
         point = (cos(angle*i)*raio,sin(angle*i)*raio)
         points.append(point)
 
@@ -26,4 +26,4 @@ for p in points:
 
 tree = Tree.ElementTree(world)
 
-tree.write('generated.xml')
+tree.write('curvas.xml')
