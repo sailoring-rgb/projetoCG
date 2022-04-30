@@ -11,11 +11,12 @@ private:
 	std::vector<Group> groups;
 	std::vector<Trans> trans;
 	std::string nameFile;
+	std::vector<Point> points;
 
 public: 
 		GroupBuilder() = default;
 
-		GroupBuilder(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile) {
+		GroupBuilder(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile, std::vector<Point> points) {
 			for (size_t i = 0; i < primitives.size(); i++) {
 			this->primitives.push_back(primitives.at(i));
 			}
@@ -26,6 +27,9 @@ public:
 				this->trans.push_back(trans.at(i));
 			}
 			this->nameFile = nameFile;
+			for (size_t i = 0; i < points.size(); i++) {
+				this->points.push_back(points.at(i));
+			}
 		}
 
 		int getNrPrimitives() {
@@ -44,8 +48,20 @@ public:
 			return nameFile;
 		}
 
+		std::vector<Point> getPoints() {
+			return points;
+		}
+
 		std::vector<Group> getGroups() {
 			return groups;
+		}
+
+		std::vector<Trans> getTrans() {
+			return trans;
+		}
+
+		std::vector<Primitive> getPrimitives() {
+			return primitives;
 		}
 
 		Group getGroup(int index) {
@@ -58,6 +74,10 @@ public:
 
 		int getNrTrans() {
 			return trans.size();
+		}
+
+		void addPoint(Point p) {
+			points.push_back(p);
 		}
 
 		void addTrans(Trans t) {
@@ -85,7 +105,11 @@ public:
 
 Group::Group() : groupBuilder{new class GroupBuilder()}{}
 
-Group::Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile) : groupBuilder{ new GroupBuilder(primitives,groups,trans,nameFile) }{}
+Group::Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile, std::vector<Point> points) : groupBuilder{ new GroupBuilder(primitives,groups,trans,nameFile,points) }{}
+
+std::vector<Point> Group::getPoints() {
+	return groupBuilder->getPoints();
+}
 
 int Group::getNrPrimitives() {
 	return groupBuilder->getNrPrimitives();
@@ -97,6 +121,10 @@ int Group::getNrGroups() {
 
 int Group::getNrTrans() {
 	return groupBuilder->getNrTrans();
+}
+
+void Group::addPoint(Point p) {
+	groupBuilder->addPoint(p);
 }
 
 void Group::addTrans(Trans t) {
@@ -133,6 +161,14 @@ std::string Group::getNameFile() {
 
 std::vector<Group> Group::getGroups() {
 	return groupBuilder->getGroups();
+}
+
+std::vector<Trans> Group::getTrans() {
+	return groupBuilder->getTrans();
+}
+
+std::vector<Primitive> Group::getPrimitives() {
+	return groupBuilder->getPrimitives();
 }
 
 Group Group::getGroup(int index) {

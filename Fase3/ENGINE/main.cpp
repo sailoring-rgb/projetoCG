@@ -25,6 +25,7 @@
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #elif _WIN32
+#include <GL/glew.h>
 #include <GL/glut.h>
 #else
 #endif
@@ -53,6 +54,17 @@ float min_zoom = 0.5f;
 
 GLdouble eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ;
 GLdouble fov, near, far;
+
+int pointcount = 1;
+vector<Point> catmullPoints; 
+float p[5][3] = { {-1,-1,0},{-1,1,0},{1,1,0},{0,0,0},{1,-1,0} };
+
+float prev_y[3] = { 0, 1, 0 };
+float t = 0;
+
+vector<float> vertexB;
+GLuint buffers[1];
+GLuint ptr = 0;
 
 /**
  * Function that redimensionates a window.
@@ -101,6 +113,7 @@ Primitive readFile(string file) {
 
     Primitive primitive;
 
+    //nós temos 3 pontos que equivale a 9 floats
     for (int i = 0; i < vertices; i++) {
         // Vector of string to save tokens
         vector<float> tokens;
@@ -121,6 +134,11 @@ Primitive readFile(string file) {
         point.setY(tokens[1]);
         point.setZ(tokens[2]);
 
+        //VBO
+        vertexB.push_back(tokens[0]);
+        vertexB.push_back(tokens[1]);
+        vertexB.push_back(tokens[2]);
+
         primitive.addPoint(point);
     }
 
@@ -130,38 +148,314 @@ Primitive readFile(string file) {
 }
 
 
-/**
- * Function that draws all the primitives previously stored in a vector.
- */
-void drawPrimitives(Group groups) {
+
+void buildRotMatrix(float* x, float* y, float* z, float* m) {
+
+    m[0] = x[0]; m[1] = x[1]; m[2] = x[2]; m[3] = 0;
+    m[4] = y[0]; m[5] = y[1]; m[6] = y[2]; m[7] = 0;
+    m[8] = z[0]; m[9] = z[1]; m[10] = z[2]; m[11] = 0;
+    m[12] = 0; m[13] = 0; m[14] = 0; m[15] = 1;
+}
+
+
+void cross(float* a, float* b, float* res) {
+
+    res[0] = a[1] * b[2] - a[2] * b[1];
+    res[1] = a[2] * b[0] - a[0] * b[2];
+    res[2] = a[0] * b[1] - a[1] * b[0];
+}
+
+void normalize(float* a) {
+
+    float l = sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
+    a[0] = a[0] / l;
+    a[1] = a[1] / l;
+    a[2] = a[2] / l;
+}
+
+float length(float* v) {
+
+    float res = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+    return res;
+
+}
+
+void multMatrixVector(float m[4][4], float* v, float* res) {
+
+    for (int j = 0; j < 4; ++j) {
+        res[j] = 0;
+        for (int k = 0; k < 4; ++k) {
+            res[j] += v[k] * m[j][k];
+        }
+    }
+
+}
+
+void getCatmullRomPoint(float t, float* p0, float* p1, float* p2, float* p3, float* pos, float* deriv) {
+
+    // catmull-rom matrix
+    float m[4][4] = { {-0.5f,  1.5f, -1.5f,  0.5f},
+                        { 1.0f, -2.5f,  2.0f, -0.5f},
+                        {-0.5f,  0.0f,  0.5f,  0.0f},
+                        { 0.0f,  1.0f,  0.0f,  0.0f} };
+
+
+    for (int i = 0; i < 3; i++) {	 // i = x, y, z
+
+        float p[4] = { p0[i], p1[i], p2[i], p3[i] };
+        float a[4];
+
+        // Compute A = M * P
+        multMatrixVector(m, p, a);
+
+        pos[i] = powf(t, 3.0) * a[0] + powf(t, 2.0) * a[1] + t * a[2] + a[3];
+        // Compute pos = T * A
+
+        // compute deriv = T' * A
+        deriv[i] = 3 * powf(t, 2.0) * a[0] + 2 * t * a[1] + a[2];
+    }
+}
+
+
+// given  global t, returns the point in the curve
+void getGlobalCatmullRomPoint(float gt, float* pos, float* deriv) {
+
+    float t = gt * pointcount; // this is the real global t
+    int index = floor(t);  // which segment
+    t = t - index; // where within  the segment
+
+    // indices store the points
+    int indices[4];
+    indices[0] = (index + pointcount - 1) % pointcount;
+    indices[1] = (indices[0] + 1) % pointcount;
+    indices[2] = (indices[1] + 1) % pointcount;
+    indices[3] = (indices[2] + 1) % pointcount;
+
+    getCatmullRomPoint(t, p[indices[0]], p[indices[1]], p[indices[2]], p[indices[3]], pos, deriv);
+}
+
+void renderCatmullRomCurve() {
+
+    float pos[3];
+    float deriv[3];
+
+    // draw curve using line segments with GL_LINE_LOOP
+    glBegin(GL_LINE_LOOP);
+    float i = 0;
+    while (i < 100.0f) {
+        getGlobalCatmullRomPoint(i / 100.0f, pos, deriv);
+        glVertex3f(pos[0], pos[1], pos[2]);
+        //gt += 1.0 / TESSELATION;
+    }
+    glEnd();
+
+    glBegin(GL_LINES);
+    for (int i = 0; i < 100; i += 1) {
+        getGlobalCatmullRomPoint(i / 100.0f, pos, deriv);
+        glVertex3f(pos[0], pos[1], pos[2]);
+        pos[0] += deriv[0];
+        pos[1] += deriv[1];
+        pos[2] += deriv[2];
+        glVertex3f(pos[0], pos[1], pos[2]);
+    }
+    glEnd();
+}
+
+
+void renderSceneCatmullRom(std::vector<Trans> trans, std::vector<Primitive> primitives, float time) {
 
     string scale = "scale";
     string translate = "translate";
     string rotate = "rotate";
     string color = "color";
 
-    for (int j = 0; j < groups.getNrTrans(); j++) {
-        Trans t = groups.getTrans(j);
+    renderCatmullRomCurve();
+
+    glPushMatrix();
+
+    // apply transformations here
+
+    float m[16];
+    float pos[3];
+    float deriv[3];
+    float z[3];
+    float y[3];
+
+    t = ((float)glutGet(GLUT_ELAPSED_TIME) / 1000) / ((float)time);
+
+    getGlobalCatmullRomPoint(t, pos, deriv);
+
+    glTranslatef(pos[0], pos[1], pos[2]);
+
+    float x[3] = { deriv[0], deriv[1], deriv[2] };
+
+    normalize(x);
+    cross(x, prev_y, z);
+    normalize(z);
+    cross(z, x, y);
+    normalize(y);
+
+    memcpy(prev_y, y, 3 * sizeof(float));
+
+    buildRotMatrix(x, y, z, m);
+
+    glMultMatrixf(m);
+
+    for (int j = 0; j < trans.size(); j++) {
+        Trans t = trans[j];
 
         if (translate.compare(t.getName()) == 0) {
-            glTranslatef(t.getX(), t.getY(), t.getZ());
+            if (t.getTime() == 0) {
+                glTranslatef(t.getX(), t.getY(), t.getZ());
+            }
         }
         else if (scale.compare(t.getName()) == 0) {
             glScalef(t.getX(), t.getY(), t.getZ());
         }
+        else if (color.compare(t.getName()) == 0) {
+            glColor3f(t.getX(), t.getY(), t.getZ());
+        }
         else if (rotate.compare(t.getName()) == 0) {
-            glRotated(t.getTime(), t.getX(), t.getY(), t.getZ());
+            if (t.getAngle() != 0 && t.getTime() == 0) {
+                glRotatef(t.getAngle(), t.getX(), t.getY(), t.getZ());
+            }
+        }
+    }
+    
+    for (int i = 0; i < primitives.size(); i++) {
+        Primitive primitive = primitives[i];
+
+        int nrVertices = primitive.getNrVertices();
+
+        glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+        glVertexPointer(3, GL_FLOAT, 0, 0);
+        glDrawArrays(GL_TRIANGLES, ptr, nrVertices);
+
+        ptr = ptr + nrVertices;        
+    }
+
+    glPopMatrix();
+}
+
+/*
+vector<float> calculateNewAngle(float time) {
+
+    angle = ((float)glutGet(GLUT_ELAPSED_TIME) * 360 / 1000) / ((float)time));
+
+    glutPostRedisplay();
+
+    vector<float> res;
+
+    res.push_back(angle);
+    return res;
+}*/
+
+void applyTrans(Group g) {
+
+    string translate = "translate";
+    string rotate = "rotate";
+    string scale = "scale";
+    string color = "color";
+
+    for (int j = 0; j < g.getNrTrans(); j++) {
+        Trans t = g.getTrans(j);
+
+        if (translate.compare(t.getName()) == 0) {
+            if (t.getTime() == 0) {
+                glTranslatef(t.getX(), t.getY(), t.getZ());
+            }
+        }
+        else if (scale.compare(t.getName()) == 0) {
+            glScalef(t.getX(), t.getY(), t.getZ());
+        }
+        else if (color.compare(t.getName()) == 0) {
+            glColor3f(t.getX(), t.getY(), t.getZ());
+        }
+        else if (rotate.compare(t.getName()) == 0) {
+            if (t.getAngle() != 0 && t.getTime() == 0) {
+                glRotatef(t.getAngle(), t.getX(), t.getY(), t.getZ());
+            }
+        }
+    }
+    /*
+    for (int z = 0; z < g.getNrPrimitives(); z++) {
+        Primitive p = g.getPrimitives(z);
+
+        int nrVer = p.getNrVertices();
+
+        glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+        glVertexPointer(3, GL_FLOAT, 0, 0);
+        glDrawArrays(GL_TRIANGLES, ptr, nrVer);
+
+        ptr = ptr + nrVer;
+
+    }*/
+}
+
+/**
+ * Function that draws all the primitives previously stored in a vector.
+ */
+void drawPrimitives(Group g) {
+
+    string scale = "scale";
+    string translate = "translate";
+    string rotate = "rotate";
+    string color = "color";
+    float time = 0;
+
+    for (int j = 0; j < g.getNrTrans(); j++) {
+        Trans t = g.getTrans(j);
+
+        if (translate.compare(t.getName()) == 0) {
+            if (t.getTime() != 0) {
+                time = t.getTime();
+
+                catmullPoints = g.getPoints();
+
+                pointcount = catmullPoints.size();
+
+                renderSceneCatmullRom(g.getTrans(), g.getPrimitives(), time);
+            }
+            else if (t.getTime() == 0) {
+                glTranslatef(t.getX(), t.getY(), t.getZ());
+            }
+        }
+        else if (rotate.compare(t.getName()) == 0) {
+            /*if (t.getAngle() == 0 && t.getTime() != 0) { // transformação com tempo
+                time = t.getTime();
+
+                float x = t.getX();
+                float y = t.getY();
+                float z = t.getZ();
+
+                glRotatef(t.getAngle(), x, y, z);
+
+                applyTrans(g);
+
+                //vector<float> res = calculateNewAngle(time, x, y, z, g.getPrimitives(), g.getTrans(), g.getAngle());
+                //g.setAngle(res[0]);*/
+            glRotatef(t.getAngle(), x, y, z);
+            /* }
+            else if (t.getAngle() != 0 && t.getTime() == 0) {
+                glRotatef(t.getAngle(), t.getX(), t.getY(), t.getZ());
+            }*/
+        }
+        else if (scale.compare(t.getName()) == 0) {
+            glScalef(t.getX(), t.getY(), t.getZ());
         }
         else if (color.compare(t.getName()) == 0)
         {
             glColor3f(t.getX() / 255.f, t.getY() / 255.f, t.getZ() / 255.f);
         }
+
     }
 
-    for (int z = 0; z < groups.getNrPrimitives(); z++) {
-        Primitive p = groups.getPrimitives(z);
+    for (int z = 0; z < g.getNrPrimitives(); z++) {
+        Primitive p = g.getPrimitives(z);
 
-        if (groups.getNameFile().compare("asteroids.3d") == 0) {
+        int nrVertices = p.getNrVertices();
+
+        if (g.getNameFile().compare("asteroids.3d") == 0) {
             
             int arrx[180];
             int arry[180];
@@ -181,36 +475,36 @@ void drawPrimitives(Group groups) {
                 glRotated(6 * i, 0, 1, 0);
                 glTranslated(80 + arrx[i], arry[i], 0);
 
-                glBegin(GL_TRIANGLES);
-                for (int c = 0; c < p.getNrVertices(); c++) {
-                    Point point = p.getPoint(c);
+                glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+                glVertexPointer(3, GL_FLOAT, 0, 0);
+                glDrawArrays(GL_TRIANGLES, ptr, nrVertices);
 
-                    glVertex3f(point.getX(), point.getY(), point.getZ());
-                }
-                glEnd();
+                ptr = ptr + nrVertices;
 
                 glPopMatrix();
             }
         }
         else {
-            glBegin(GL_TRIANGLES);
-            for (int c = 0; c < p.getNrVertices(); c++) {
-                Point point = p.getPoint(c);
+            glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+            glVertexPointer(3, GL_FLOAT, 0, 0);
+            glDrawArrays(GL_TRIANGLES, ptr, nrVertices);
 
-                glVertex3f(point.getX(), point.getY(), point.getZ());
-            }
-            glEnd();
+            ptr = ptr + nrVertices;
         }
     }
 
-    for (int z = 0; z < groups.getNrGroups(); z++) {
+    for (int z = 0; z < g.getNrGroups(); z++) {
         glPushMatrix();
-        drawPrimitives(groups.getGroup(z));
+        drawPrimitives(g.getGroup(z));
         glPopMatrix();
     }
 
 
 }
+
+
+
+
 
 /**
  * Function that creates a scene.
@@ -255,6 +549,8 @@ void renderScene(void) {
         drawPrimitives(groups[i]);
         glPopMatrix();
     }
+
+    ptr = 0;
 
     // End of frame
     glutSwapBuffers();
@@ -326,15 +622,31 @@ bool initGlut(int argc, char** argv) {
 
     // Required callback registry
     glutDisplayFunc(renderScene);
+    //glutIdleFunc(renderScene);
     glutReshapeFunc(changeSize);
 
     // put here the registration of the keyboard callbacks
     glutKeyboardFunc(polygonMode);
     glutSpecialFunc(rodar);
 
+    glewInit();  
+
     //  OpenGL settings
+    glEnableClientState(GL_VERTEX_ARRAY);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glPolygonMode(GL_FRONT, GL_LINE);
+
+    //glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_INDEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+
+    //Create VBO
+    glGenBuffers(1, buffers);
+
+    glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertexB.size(), vertexB.data(), GL_STATIC_DRAW);
 
     // enter GLUT's main cycle
     glutMainLoop();
@@ -349,7 +661,6 @@ Group parseGroup(XMLElement* group, int father) {
     string grupo = "group";
     string color = "color";
     string transform = "transform";
-    string camera = "camera";
     Group g;
 
     do {
@@ -402,6 +713,13 @@ Group parseGroup(XMLElement* group, int father) {
                                     float x = atof(point->Attribute("x"));
                                     float y = atof(point->Attribute("y"));
                                     float z = atof(point->Attribute("z"));
+
+                                    Point p;
+                                    p.setX(x);
+                                    p.setY(y);
+                                    p.setZ(z);
+
+                                    g.addPoint(p);
 
                                     point = point->NextSiblingElement("point");
                                 }
@@ -539,7 +857,6 @@ bool parseDocument() {
 
     XMLElement* world = doc.FirstChildElement();
     if (world == nullptr) {
-        cout << "ola" << endl;
         cout << "ERRO";
         return false; 
     }

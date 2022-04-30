@@ -14,13 +14,21 @@ public:
 
 	Group();
 
-	Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile);
+	Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile, std::vector<Point> points);
+
+	std::vector<Point> getPoints();
+
+	std::vector<Trans> getTrans();
+
+	std::vector<Primitive> getPrimitives();
 
 	int getNrPrimitives();
 
 	int getNrGroups();
 
 	int getNrTrans();
+
+	void addPoint(Point p);
 
 	void addTrans(Trans t);
 

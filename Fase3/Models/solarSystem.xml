@@ -20,11 +20,15 @@
     <group>
         <transform>
             <rotate time="185" x="0" y="1" z="0"/>
-            <translate time="10" align="True">
+            <translate time="4" align="True">
+                <point x="1.3" y="0" z="1.3"/>
+                <point x="0" y="0" z="1.3"/>
+                <point x="-1.3" y="0" z="1.3"/>
+                <point x="-1.3" y="0" z="0"/>
+                <point x="-1.3" y="0" z="-1.3"/>
+                <point x="0" y="0" z="-1.3"/>
+                <point x="1.3" y="0" z="-1.3"/>
                 <point x="1.3" y="0" z="0"/>
-                <point x="0" y="1.3" z="0"/>
-                <point x="0" y="-1.3" z="0"/>
-                <point x="1.3" y="2" z="0"/>
             </translate>
             <scale x="0.05" y="0.05" z="0.05"/>
             <color x="238" y="154" z="73"/>
@@ -36,7 +40,16 @@
     <!-- Vénus -->
     <group>
         <transform>
-            <translate x="1.5" y="0" z="0"/>
+            <translate time="4" align="True">
+                <point x="1.5" y="0" z="1.5"/>
+                <point x="0" y="0" z="1.5"/>
+                <point x="-1.5" y="0" z="1.5"/>
+                <point x="-1.5" y="0" z="0"/>
+                <point x="-1.5" y="0" z="-1.5"/>
+                <point x="0" y="0" z="-1.5"/>
+                <point x="1.5" y="0" z="-1.5"/>
+                <point x="1.5" y="0" z="0"/>
+            </translate>
             <scale x="0.09" y="0.09" z="0.09"/>
             <color x="255" y="165" z="79"/>
         </transform>
@@ -48,7 +61,16 @@
     <group>
         <transform>
             <rotate time="235" x="0" y="1" z="0"/>
-            <translate x="1.75" y="0" z="0"/>
+            <translate time="4" align="True">
+                <point x="1.75" y="0" z="1.75"/>
+                <point x="0" y="0" z="1.75"/>
+                <point x="-1.75" y="0" z="1.75"/>
+                <point x="-1.75" y="0" z="0"/>
+                <point x="-1.75" y="0" z="-1.75"/>
+                <point x="0" y="0" z="-1.75"/>
+                <point x="1.75" y="0" z="-1.75"/>
+                <point x="1.75" y="0" z="0"/>
+            </translate>
             <scale x="0.10" y="0.10" z="0.10"/>	
             <color x="0" y="0" z="205"/>
         </transform>
@@ -71,7 +93,16 @@
     <group>
         <transform>            
             <rotate time="-35" x="0" y="1" z="0"/>
-            <translate x="2" y="0" z="0"/>	
+            <translate time="4" align="True">
+                <point x="2" y="0" z="2"/>
+                <point x="0" y="0" z="2"/>
+                <point x="-2" y="0" z="2"/>
+                <point x="-2" y="0" z="0"/>
+                <point x="-2" y="0" z="-2"/>
+                <point x="0" y="0" z="-2"/>
+                <point x="2" y="0" z="-2"/>
+                <point x="2" y="0" z="0"/>
+            </translate>
             <scale x="0.07" y="0.07" z="0.07"/>
             <color x="205" y="0" z="0"/>
         </transform>
@@ -103,7 +134,16 @@
     <group>
         <transform>
             <rotate time="200" x="0" y="1" z="0"/>
-            <translate x="3.3" y="0" z="0"/>
+            <translate time="4" align="True">
+                <point x="3.3" y="0" z="3.3"/>
+                <point x="0" y="0" z="3.3"/>
+                <point x="-3.3" y="0" z="3.3"/>
+                <point x="-3.3" y="0" z="0"/>
+                <point x="-3.3" y="0" z="-3.3"/>
+                <point x="0" y="0" z="-3.3"/>
+                <point x="3.3" y="0" z="-3.3"/>
+                <point x="3.3" y="0" z="0"/>
+            </translate>
             <scale x="0.35" y="0.35" z="0.35"/>
             <color x="245" y="222" z="179"/>
         </transform>
@@ -165,7 +205,16 @@
     <group>
         <transform>
             <rotate time="20" x="0" y="1" z="0"/>
-            <translate x="4.25" y="0" z="0"/>
+            <translate time="4" align="True">
+                <point x="4.25" y="0" z="4.25"/>
+                <point x="0" y="0" z="4.25"/>
+                <point x="-4.25" y="0" z="4.25"/>
+                <point x="-4.25" y="0" z="0"/>
+                <point x="-4.25" y="0" z="-4.25"/>
+                <point x="0" y="0" z="-4.25"/>
+                <point x="4.25" y="0" z="-4.25"/>
+                <point x="4.25" y="0" z="0"/>
+            </translate>
             <scale x="0.3" y="0.3" z="0.3"/>
             <color x="255" y="246" z="143"/>
         </transform>
@@ -237,7 +286,16 @@
     <group>
         <transform>  
             <rotate time="-35" x="0" y="1" z="0"/> 
-            <translate x="5" y="0" z="0"/> 
+            <translate time="4" align="True">
+                <point x="5" y="0" z="5"/>
+                <point x="0" y="0" z="5"/>
+                <point x="-5" y="0" z="5"/>
+                <point x="-5" y="0" z="0"/>
+                <point x="-5" y="0" z="-5"/>
+                <point x="0" y="0" z="-5"/>
+                <point x="5" y="0" z="-5"/>
+                <point x="5" y="0" z="0"/>
+            </translate>
             <scale x="0.15" y="0.15" z="0.15"/>
             <color x="100" y="149" z="237"/>
         </transform>
@@ -299,7 +357,16 @@
     <group>
         <transform>                     
             <rotate time="225" x="0" y="1" z="0"/>
-            <translate x="5.5" y="0" z="0"/>
+            <translate time="4" align="True">
+                <point x="5.5" y="0" z="5.5"/>
+                <point x="0" y="0" z="5.5"/>
+                <point x="-5.5" y="0" z="5.5"/>
+                <point x="-5.5" y="0" z="0"/>
+                <point x="-5.5" y="0" z="-5.5"/>
+                <point x="0" y="0" z="-5.5"/>
+                <point x="5.5" y="0" z="-5.5"/>
+                <point x="5.5" y="0" z="0"/>
+            </translate>
             <scale x="0.15" y="0.15" z="0.15"/>
             <color x="65" y="105" z="255"/>
         </transform>
