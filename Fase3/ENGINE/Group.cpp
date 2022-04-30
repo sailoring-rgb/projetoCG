@@ -11,12 +11,12 @@ private:
 	std::vector<Group> groups;
 	std::vector<Trans> trans;
 	std::string nameFile;
-	std::vector<Point> points;
+	std::vector<Point> catmullPoints;
 
 public: 
 		GroupBuilder() = default;
 
-		GroupBuilder(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile, std::vector<Point> points) {
+		GroupBuilder(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile, std::vector<Point> catmullPoints) {
 			for (size_t i = 0; i < primitives.size(); i++) {
 			this->primitives.push_back(primitives.at(i));
 			}
@@ -27,8 +27,8 @@ public:
 				this->trans.push_back(trans.at(i));
 			}
 			this->nameFile = nameFile;
-			for (size_t i = 0; i < points.size(); i++) {
-				this->points.push_back(points.at(i));
+			for (size_t i = 0; i < catmullPoints.size(); i++) {
+				this->catmullPoints.push_back(catmullPoints.at(i));
 			}
 		}
 
@@ -48,8 +48,8 @@ public:
 			return nameFile;
 		}
 
-		std::vector<Point> getPoints() {
-			return points;
+		std::vector<Point> getCatmullPoints() {
+			return catmullPoints;
 		}
 
 		std::vector<Group> getGroups() {
@@ -76,8 +76,8 @@ public:
 			return trans.size();
 		}
 
-		void addPoint(Point p) {
-			points.push_back(p);
+		void addCatmullPoint(Point p) {
+			catmullPoints.push_back(p);
 		}
 
 		void addTrans(Trans t) {
@@ -105,10 +105,10 @@ public:
 
 Group::Group() : groupBuilder{new class GroupBuilder()}{}
 
-Group::Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile, std::vector<Point> points) : groupBuilder{ new GroupBuilder(primitives,groups,trans,nameFile,points) }{}
+Group::Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile, std::vector<Point> catmullPoints) : groupBuilder{ new GroupBuilder(primitives,groups,trans,nameFile,catmullPoints) }{}
 
-std::vector<Point> Group::getPoints() {
-	return groupBuilder->getPoints();
+std::vector<Point> Group::getCatmullPoints() {
+	return groupBuilder->getCatmullPoints();
 }
 
 int Group::getNrPrimitives() {
@@ -123,8 +123,8 @@ int Group::getNrTrans() {
 	return groupBuilder->getNrTrans();
 }
 
-void Group::addPoint(Point p) {
-	groupBuilder->addPoint(p);
+void Group::addCatmullPoint(Point p) {
+	groupBuilder->addCatmullPoint(p);
 }
 
 void Group::addTrans(Trans t) {

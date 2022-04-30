@@ -14,9 +14,9 @@ public:
 
 	Group();
 
-	Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile, std::vector<Point> points);
+	Group(std::vector<Primitive> primitives, std::vector<Group> groups, std::vector<Trans> trans, std::string nameFile, std::vector<Point> catmullPoints);
 
-	std::vector<Point> getPoints();
+	std::vector<Point> getCatmullPoints();
 
 	std::vector<Trans> getTrans();
 
@@ -28,7 +28,7 @@ public:
 
 	int getNrTrans();
 
-	void addPoint(Point p);
+	void addCatmullPoint(Point p);
 
 	void addTrans(Trans t);
 

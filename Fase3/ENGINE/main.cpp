@@ -13,6 +13,7 @@
 #include <algorithm>
 #include "Group.h"
 #include "Trans.h"
+#include "CatmullRom.h"
 
 #ifdef __APPLE__
 #include <unistd.h>
@@ -55,7 +56,7 @@ float min_zoom = 0.5f;
 GLdouble eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ;
 GLdouble fov, near, far;
 
-int pointcount = 1;
+//int pointcount = 1;
 vector<Point> catmullPoints; 
 float p[5][3] = { {-1,-1,0},{-1,1,0},{1,1,0},{0,0,0},{1,-1,0} };
 
@@ -147,251 +148,6 @@ Primitive readFile(string file) {
     return primitive;
 }
 
-
-
-void buildRotMatrix(float* x, float* y, float* z, float* m) {
-
-    m[0] = x[0]; m[1] = x[1]; m[2] = x[2]; m[3] = 0;
-    m[4] = y[0]; m[5] = y[1]; m[6] = y[2]; m[7] = 0;
-    m[8] = z[0]; m[9] = z[1]; m[10] = z[2]; m[11] = 0;
-    m[12] = 0; m[13] = 0; m[14] = 0; m[15] = 1;
-}
-
-
-void cross(float* a, float* b, float* res) {
-
-    res[0] = a[1] * b[2] - a[2] * b[1];
-    res[1] = a[2] * b[0] - a[0] * b[2];
-    res[2] = a[0] * b[1] - a[1] * b[0];
-}
-
-void normalize(float* a) {
-
-    float l = sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
-    a[0] = a[0] / l;
-    a[1] = a[1] / l;
-    a[2] = a[2] / l;
-}
-
-float length(float* v) {
-
-    float res = sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
-    return res;
-
-}
-
-void multMatrixVector(float m[4][4], float* v, float* res) {
-
-    for (int j = 0; j < 4; ++j) {
-        res[j] = 0;
-        for (int k = 0; k < 4; ++k) {
-            res[j] += v[k] * m[j][k];
-        }
-    }
-
-}
-
-void getCatmullRomPoint(float t, float* p0, float* p1, float* p2, float* p3, float* pos, float* deriv) {
-
-    // catmull-rom matrix
-    float m[4][4] = { {-0.5f,  1.5f, -1.5f,  0.5f},
-                        { 1.0f, -2.5f,  2.0f, -0.5f},
-                        {-0.5f,  0.0f,  0.5f,  0.0f},
-                        { 0.0f,  1.0f,  0.0f,  0.0f} };
-
-
-    for (int i = 0; i < 3; i++) {	 // i = x, y, z
-
-        float p[4] = { p0[i], p1[i], p2[i], p3[i] };
-        float a[4];
-
-        // Compute A = M * P
-        multMatrixVector(m, p, a);
-
-        pos[i] = powf(t, 3.0) * a[0] + powf(t, 2.0) * a[1] + t * a[2] + a[3];
-        // Compute pos = T * A
-
-        // compute deriv = T' * A
-        deriv[i] = 3 * powf(t, 2.0) * a[0] + 2 * t * a[1] + a[2];
-    }
-}
-
-
-// given  global t, returns the point in the curve
-void getGlobalCatmullRomPoint(float gt, float* pos, float* deriv) {
-
-    float t = gt * pointcount; // this is the real global t
-    int index = floor(t);  // which segment
-    t = t - index; // where within  the segment
-
-    // indices store the points
-    int indices[4];
-    indices[0] = (index + pointcount - 1) % pointcount;
-    indices[1] = (indices[0] + 1) % pointcount;
-    indices[2] = (indices[1] + 1) % pointcount;
-    indices[3] = (indices[2] + 1) % pointcount;
-
-    getCatmullRomPoint(t, p[indices[0]], p[indices[1]], p[indices[2]], p[indices[3]], pos, deriv);
-}
-
-void renderCatmullRomCurve() {
-
-    float pos[3];
-    float deriv[3];
-
-    // draw curve using line segments with GL_LINE_LOOP
-    glBegin(GL_LINE_LOOP);
-    float i = 0;
-    while (i < 100.0f) {
-        getGlobalCatmullRomPoint(i / 100.0f, pos, deriv);
-        glVertex3f(pos[0], pos[1], pos[2]);
-        //gt += 1.0 / TESSELATION;
-    }
-    glEnd();
-
-    glBegin(GL_LINES);
-    for (int i = 0; i < 100; i += 1) {
-        getGlobalCatmullRomPoint(i / 100.0f, pos, deriv);
-        glVertex3f(pos[0], pos[1], pos[2]);
-        pos[0] += deriv[0];
-        pos[1] += deriv[1];
-        pos[2] += deriv[2];
-        glVertex3f(pos[0], pos[1], pos[2]);
-    }
-    glEnd();
-}
-
-
-void renderSceneCatmullRom(std::vector<Trans> trans, std::vector<Primitive> primitives, float time) {
-
-    string scale = "scale";
-    string translate = "translate";
-    string rotate = "rotate";
-    string color = "color";
-
-    renderCatmullRomCurve();
-
-    glPushMatrix();
-
-    // apply transformations here
-
-    float m[16];
-    float pos[4];
-    float deriv[4];
-    float z[3];
-    float y[3];
-
-    t = ((float)glutGet(GLUT_ELAPSED_TIME) / 1000) / ((float)time);
-
-    getGlobalCatmullRomPoint(t, pos, deriv);
-
-    glTranslatef(pos[0], pos[1], pos[2]);
-
-    float x[3] = { deriv[0], deriv[1], deriv[2] };
-
-    normalize(x);
-    cross(x, prev_y, z);
-    normalize(z);
-    cross(z, x, y);
-    normalize(y);
-
-    memcpy(prev_y, y, 3 * sizeof(float));
-
-    buildRotMatrix(x, y, z, m);
-
-    glMultMatrixf(m);
-
-    for (int j = 0; j < trans.size(); j++) {
-        Trans t = trans[j];
-
-        if (translate.compare(t.getName()) == 0) {
-            if (t.getTime() == 0) {
-                glTranslatef(t.getX(), t.getY(), t.getZ());
-            }
-        }
-        else if (scale.compare(t.getName()) == 0) {
-            glScalef(t.getX(), t.getY(), t.getZ());
-        }
-        else if (color.compare(t.getName()) == 0) {
-            glColor3f(t.getX(), t.getY(), t.getZ());
-        }
-        else if (rotate.compare(t.getName()) == 0) {
-            if (t.getAngle() != 0 && t.getTime() == 0) {
-                glRotatef(t.getAngle(), t.getX(), t.getY(), t.getZ());
-            }
-        }
-    }
-    
-    for (int i = 0; i < primitives.size(); i++) {
-        Primitive primitive = primitives[i];
-
-        int nrVertices = primitive.getNrVertices();
-
-        glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-        glVertexPointer(3, GL_FLOAT, 0, 0);
-        glDrawArrays(GL_TRIANGLES, ptr, nrVertices);
-
-        ptr = ptr + nrVertices;        
-    }
-
-    glPopMatrix();
-}
-
-
-vector<float> calculateNewAngle(float time) {
-
-    angle = ((float)glutGet(GLUT_ELAPSED_TIME) * 360 / 1000) / ((float)time);
-
-    glutPostRedisplay();
-
-    vector<float> res;
-
-    res.push_back(angle);
-    return res;
-}
-
-void applyTrans(Group g) {
-
-    string translate = "translate";
-    string rotate = "rotate";
-    string scale = "scale";
-    string color = "color";
-
-    for (int j = 0; j < g.getNrTrans(); j++) {
-        Trans t = g.getTrans(j);
-
-        if (translate.compare(t.getName()) == 0) {
-            if (t.getTime() == 0) {
-                glTranslatef(t.getX(), t.getY(), t.getZ());
-            }
-        }
-        else if (scale.compare(t.getName()) == 0) {
-            glScalef(t.getX(), t.getY(), t.getZ());
-        }
-        else if (color.compare(t.getName()) == 0) {
-            glColor3f(t.getX(), t.getY(), t.getZ());
-        }
-        else if (rotate.compare(t.getName()) == 0) {
-            if (t.getAngle() != 0 && t.getTime() == 0) {
-                glRotatef(t.getAngle(), t.getX(), t.getY(), t.getZ());
-            }
-        }
-    }
-    
-    for (int z = 0; z < g.getNrPrimitives(); z++) {
-        Primitive p = g.getPrimitives(z);
-
-        int nrVer = p.getNrVertices();
-
-        glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-        glVertexPointer(3, GL_FLOAT, 0, 0);
-        glDrawArrays(GL_TRIANGLES, ptr, nrVer);
-
-        ptr = ptr + nrVer;
-
-    }
-}
-
 /**
  * Function that draws all the primitives previously stored in a vector.
  */
@@ -410,15 +166,54 @@ void drawPrimitives(Group g) {
             if (t.getTime() != 0) {
                 time = t.getTime();
 
-                catmullPoints = g.getPoints();
+                catmullPoints = g.getCatmullPoints();
 
-                pointcount = catmullPoints.size();
+                // pointcount = catmullPoints.size();
 
-                renderSceneCatmullRom(g.getTrans(), g.getPrimitives(), time);
+                glPushMatrix();/*
+                glBegin(GL_LINES);
+                for (size_t i = 0; i < catmullPoints.size() - 1; i++) {
+                    float pos1[3] = { catmullPoints[i].getX(), catmullPoints[i].getY(), catmullPoints[i].getZ() };
+                    glVertex3fv(pos1);
+                    float pos2[3] = { catmullPoints[i + 1].getX(), catmullPoints[i + 1].getY(), catmullPoints[i + 1].getZ() };
+                    glVertex3fv(pos2);
+                }
+                glEnd();*/
+                float res[3], d[3];
+                float t1 = 100.0f;
+                glBegin(GL_LINE_LOOP);
+                for (int i = 0; i < t1; i += 1) {
+                    CatmullRom::getGlobalCatmullRomPoint(catmullPoints, i / t1, res, d);
+                    glVertex3fv(res);
+                }
+                glEnd();
+
+                glPopMatrix();
+
+                float pos[3];
+                float deriv[3];
+
+                float timeT = ((float)glutGet(GLUT_ELAPSED_TIME) / 1000) / (float)(t.getTime());
+                CatmullRom::getGlobalCatmullRomPoint(g.getCatmullPoints(), timeT, (float*)pos, (float*)deriv);
+              
+                glTranslatef(pos[0], pos[1], pos[2]);
+
+                float m[4][4];
+                float x[3], z[3];
+
+                CatmullRom::cross(deriv, prev_y, z);
+                CatmullRom::cross(z, deriv, prev_y);
+                CatmullRom::normalize(deriv);
+                CatmullRom::normalize(prev_y);
+                CatmullRom::normalize(z);
+                CatmullRom::buildRotMatrix(deriv, prev_y, z, *m);
+                glMultMatrixf(*m);
+
             }
-            else if (t.getTime() == 0) {
-                glTranslatef(t.getX(), t.getY(), t.getZ());
-            }
+            //renderSceneCatmullRom(g.getTrans(), g.getPrimitives(), time);
+        }
+        else if (t.getTime() == 0) {
+            glTranslatef(t.getX(), t.getY(), t.getZ());
         }
         else if (rotate.compare(t.getName()) == 0) {
             /*if (t.getAngle() == 0 && t.getTime() != 0) { // transformação com tempo
@@ -501,9 +296,6 @@ void drawPrimitives(Group g) {
 
 
 }
-
-
-
 
 
 /**
@@ -717,7 +509,7 @@ Group parseGroup(XMLElement* group, int father) {
                                     p.setY(y);
                                     p.setZ(z);
 
-                                    g.addPoint(p);
+                                    g.addCatmullPoint(p);
 
                                     point = point->NextSiblingElement("point");
                                 }
