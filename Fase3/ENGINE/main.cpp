@@ -184,7 +184,7 @@ void drawPrimitives(Group g) {
 
                 glTranslatef(pos[0], pos[1], pos[2]);
 
-                float m[4][4];
+                /*float m[4][4];
                 float x[3], z[3];
 
                 CatmullRom::cross(deriv, prev_y, z);
@@ -193,7 +193,7 @@ void drawPrimitives(Group g) {
                 CatmullRom::normalize(prev_y);
                 CatmullRom::normalize(z);
                 CatmullRom::buildRotMatrix(deriv, prev_y, z, *m);
-                glMultMatrixf(*m);
+                glMultMatrixf(*m);*/
 
 
             }
@@ -246,19 +246,19 @@ void drawPrimitives(Group g) {
                 glRotated(6 * i, 0, 1, 0);
                 glTranslated(80 + arrx[i], arry[i], 0);
 
-                /*glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+                glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
                 glVertexPointer(3, GL_FLOAT, 0, 0);
                 glDrawArrays(GL_TRIANGLES, ptr, nrVertices);
 
-                ptr = ptr + nrVertices;*/
-
+                ptr = ptr + nrVertices;
+                /*
                 glBegin(GL_TRIANGLES);
                 for (int c = 0; c < p.getNrVertices(); c++) {
                     Point point = p.getPoint(c);
 
                     glVertex3f(point.getX(), point.getY(), point.getZ());
                 }
-                glEnd();
+                glEnd();*/
 
                 glPopMatrix();
             }
