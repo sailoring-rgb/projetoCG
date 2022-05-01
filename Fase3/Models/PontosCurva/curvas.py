@@ -3,7 +3,7 @@ import math
 import xml.etree.cElementTree as Tree
 world = Tree.Element('world')
 
-raio = 2.0
+raio = 1.252
 
 def calculate_circle(raio):
 

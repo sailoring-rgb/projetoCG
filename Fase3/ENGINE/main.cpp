@@ -155,14 +155,12 @@ void drawPrimitives(Group g) {
     string translate = "translate";
     string rotate = "rotate";
     string color = "color";
-    float time = 0;
 
     for (int j = 0; j < g.getNrTrans(); j++) {
         Trans t = g.getTrans(j);
 
         if (translate.compare(t.getName()) == 0) {
             if (t.getTime() != 0) {
-                time = t.getTime();
 
                 catmullPoints = g.getCatmullPoints();
 
@@ -196,6 +194,8 @@ void drawPrimitives(Group g) {
                 CatmullRom::normalize(z);
                 CatmullRom::buildRotMatrix(deriv, prev_y, z, *m);
                 glMultMatrixf(*m);
+
+
             }
             else if (t.getTime() == 0) {
                 glTranslatef(t.getX(), t.getY(), t.getZ());
