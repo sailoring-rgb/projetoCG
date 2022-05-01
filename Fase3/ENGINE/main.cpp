@@ -66,11 +66,6 @@ GLuint ptr = 0;
 
 vector<float> rotateTime(int time, float x, float y, float z, vector<Primitive> primitives, vector<Trans> trans, float angle) {
 
-    string scale = "scale";
-    string translate = "translate";
-    string rotate = "rotate";
-    string color = "color";
-
     glRotatef(angle, x, y, z);
 
     angle = ((float)glutGet(GLUT_ELAPSED_TIME) * 360 / 1000) / ((float)time);
@@ -197,13 +192,13 @@ void drawPrimitives(Group g) {
                 glEnd();
 
                 glPopMatrix();
-                
+
                 float pos[3];
                 float deriv[3];
 
                 float timeT = ((float)glutGet(GLUT_ELAPSED_TIME) / 1000) / (float)(t.getTime());
                 CatmullRom::getGlobalCatmullRomPoint(g.getCatmullPoints(), timeT, (float*)pos, (float*)deriv);
-              
+
                 glTranslatef(pos[0], pos[1], pos[2]);
 
                 float m[4][4];
@@ -223,8 +218,7 @@ void drawPrimitives(Group g) {
         }
         else if (rotate.compare(t.getName()) == 0) {
             if (t.getAngle() == 0 && t.getTime() != 0) { // transformação com tempo
-                float angle = (((float)glutGet(GLUT_ELAPSED_TIME) / 1000) * 360) / (float)t.getTime();
-                glRotatef(angle, t.getX(), t.getY(), t.getZ());
+                vector<float> res = rotateTime(time, t.getX(), t.getY(), t.getZ(), g.getPrimitives(), g.getTrans(), 0);
             }
             else if (t.getAngle() != 0 && t.getTime() == 0) {
                 glRotatef(t.getAngle(), t.getX(), t.getY(), t.getZ());
@@ -265,11 +259,19 @@ void drawPrimitives(Group g) {
                 glRotated(6 * i, 0, 1, 0);
                 glTranslated(80 + arrx[i], arry[i], 0);
 
-                glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+                /*glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
                 glVertexPointer(3, GL_FLOAT, 0, 0);
                 glDrawArrays(GL_TRIANGLES, ptr, nrVertices);
 
-                ptr = ptr + nrVertices;
+                ptr = ptr + nrVertices;*/
+
+                glBegin(GL_TRIANGLES);
+                for (int c = 0; c < p.getNrVertices(); c++) {
+                    Point point = p.getPoint(c);
+
+                    glVertex3f(point.getX(), point.getY(), point.getZ());
+                }
+                glEnd();
 
                 glPopMatrix();
             }
