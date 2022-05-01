@@ -12,7 +12,6 @@ private:
 	std::vector<Trans> trans;
 	std::string nameFile;
 	std::vector<Point> catmullPoints;
-	float angle;
 
 public: 
 		GroupBuilder() = default;
@@ -101,14 +100,6 @@ public:
 			this->nameFile = nameFile;
 		}
 
-		void setAngle(float angle) {
-			this->angle = angle;
-		}
-
-		float getAngle() {
-			return angle;
-		}
-
 		~GroupBuilder() = default;
 };
 
@@ -182,14 +173,6 @@ std::vector<Primitive> Group::getPrimitives() {
 
 Group Group::getGroup(int index) {
 	return groupBuilder->getGroup(index);
-}
-
-int Group::getAngle() {
-	return groupBuilder->getAngle();
-}
-
-void Group::setAngle(float angle) {
-	return groupBuilder->setAngle(angle);
 }
 
 Group::~Group() {}

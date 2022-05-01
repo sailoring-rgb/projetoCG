@@ -48,10 +48,6 @@ public:
 
 	std::vector<Group> getGroups();
 
-	int Group::getAngle();
-
-	void Group::setAngle(float angle);
-
 	Group getGroup(int index);
 
 	~Group();

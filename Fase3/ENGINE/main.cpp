@@ -521,7 +521,6 @@ Group parseGroup(XMLElement* group, int father) {
                                     float time = atof(transformation->Attribute("time"));
                                     Trans t = Trans("rotate", x, y, z, 0, time);
                                     g.addTrans(t);
-                                    g.setAngle(time);
                                 }
                                 else if (transformation->FindAttribute("angle")) {
                                     float angle = atof(transformation->Attribute("angle"));
