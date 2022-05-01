@@ -189,7 +189,7 @@ void drawPrimitives(Group g) {
                 glPushMatrix();
                 float p[3], d[3];
                 float t1 = 100.0f;
-                glBegin(GL_LINE_LOOP);
+                glBegin(GL_LINES);
                 for (int i = 0; i < t1; i += 1) {
                     CatmullRom::getGlobalCatmullRomPoint(catmullPoints, i / t1, p, d);
                     glVertex3fv(p);
