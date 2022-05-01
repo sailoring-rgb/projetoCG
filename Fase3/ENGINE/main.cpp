@@ -195,7 +195,11 @@ void drawPrimitives(Group g) {
                 CatmullRom::normalize(prev_y);
                 CatmullRom::normalize(z);
                 CatmullRom::buildRotMatrix(deriv, prev_y, z, *m);
-                glMultMatrixf(*m);   
+                glMultMatrixf(*m);
+
+                //angle = ((float)glutGet(GLUT_ELAPSED_TIME) * 360 / 1000) / ((float)time);
+
+                glutPostRedisplay();
             }
             else if (t.getTime() == 0) {
                 glTranslatef(t.getX(), t.getY(), t.getZ());
@@ -203,7 +207,9 @@ void drawPrimitives(Group g) {
         } 
         else if (rotate.compare(t.getName()) == 0) {
             if (t.getAngle() == 0 && t.getTime() != 0) { // transformação com tempo
-               
+                /*float angle = ((float)glutGet(GLUT_ELAPSED_TIME) * 360 / 1000) / ((float)time);
+                glRotatef(angle, t.getX(), t.getY(), t.getZ());
+                glutPostRedisplay();*/
             }
             else if (t.getAngle() != 0 && t.getTime() == 0) {
                 glRotatef(t.getAngle(), t.getX(), t.getY(), t.getZ());
