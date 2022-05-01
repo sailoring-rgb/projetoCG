@@ -62,7 +62,7 @@ float t = 0;
 
 vector<float> vertexB;
 GLuint buffers[1];
-GLuint ptr = 0;
+GLuint vboZone = 0;
 
 
 /**
@@ -251,9 +251,9 @@ void drawPrimitives(Group g) {
                 /*
                 glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
                 glVertexPointer(3, GL_FLOAT, 0, 0);
-                glDrawArrays(GL_TRIANGLES, ptr, nrVertices);
+                glDrawArrays(GL_TRIANGLES, vboZone, nrVertices);
 
-                ptr = ptr + nrVertices;*/
+                vboZone = vboZone + nrVertices;*/
                 
                 glBegin(GL_TRIANGLES);
                 for (int c = 0; c < p.getNrVertices(); c++) {
@@ -269,9 +269,9 @@ void drawPrimitives(Group g) {
         else {
             glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
             glVertexPointer(3, GL_FLOAT, 0, 0);
-            glDrawArrays(GL_TRIANGLES, ptr, nrVertices);
+            glDrawArrays(GL_TRIANGLES, vboZone, nrVertices);
 
-            ptr = ptr + nrVertices;
+            vboZone = vboZone + nrVertices;
         }
     }
 
@@ -329,7 +329,7 @@ void renderScene(void) {
         glPopMatrix();
     }
 
-    ptr = 0;
+    vboZone = 0;
 
     // End of frame
     glutSwapBuffers();
