@@ -155,6 +155,7 @@ void drawPrimitives(Group g) {
     string translate = "translate";
     string rotate = "rotate";
     string color = "color";
+    string isAlign = "True";
 
     for (int j = 0; j < g.getNrTrans(); j++) {
         Trans t = g.getTrans(j);
@@ -182,20 +183,22 @@ void drawPrimitives(Group g) {
                 float timeT = -(glutGet(GLUT_ELAPSED_TIME) / 1000.f) / (float)(t.getTime());
                 CatmullRom::getGlobalCatmullRomPoint(g.getCatmullPoints(), timeT, (float*)pos, (float*)deriv);
 
+
                 glTranslatef(pos[0], pos[1], pos[2]);
 
-                /*float m[4][4];
-                float x[3], z[3];
+                if (isAlign.compare(t.getAlign()) == 0) {
 
-                CatmullRom::cross(deriv, prev_y, z);
-                CatmullRom::cross(z, deriv, prev_y);
-                CatmullRom::normalize(deriv);
-                CatmullRom::normalize(prev_y);
-                CatmullRom::normalize(z);
-                CatmullRom::buildRotMatrix(deriv, prev_y, z, *m);
-                glMultMatrixf(*m);*/
+                    float m[4][4];
+                    float x[3], z[3];
 
-
+                    CatmullRom::cross(deriv, prev_y, z);
+                    CatmullRom::cross(z, deriv, prev_y);
+                    CatmullRom::normalize(deriv);
+                    CatmullRom::normalize(prev_y);
+                    CatmullRom::normalize(z);
+                    CatmullRom::buildRotMatrix(deriv, prev_y, z, *m);
+                    glMultMatrixf(*m);
+                }                
             }
             else if (t.getTime() == 0) {
                 glTranslatef(t.getX(), t.getY(), t.getZ());
@@ -245,20 +248,20 @@ void drawPrimitives(Group g) {
                 glPushMatrix();
                 glRotated(6 * i, 0, 1, 0);
                 glTranslated(80 + arrx[i], arry[i], 0);
-
+                /*
                 glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
                 glVertexPointer(3, GL_FLOAT, 0, 0);
                 glDrawArrays(GL_TRIANGLES, ptr, nrVertices);
 
-                ptr = ptr + nrVertices;
-                /*
+                ptr = ptr + nrVertices;*/
+                
                 glBegin(GL_TRIANGLES);
                 for (int c = 0; c < p.getNrVertices(); c++) {
                     Point point = p.getPoint(c);
 
                     glVertex3f(point.getX(), point.getY(), point.getZ());
                 }
-                glEnd();*/
+                glEnd();
 
                 glPopMatrix();
             }
@@ -471,7 +474,7 @@ Group parseGroup(XMLElement* group, int father) {
                             float x = atof(transformation->Attribute("x"));
                             float y = atof(transformation->Attribute("y"));
                             float z = atof(transformation->Attribute("z"));
-                            Trans t = Trans("scale", x, y, z, 0, 0);
+                            Trans t = Trans("scale", x, y, z, 0, 0, "");
                             g.addTrans(t);
                         }
                     }
@@ -498,7 +501,7 @@ Group parseGroup(XMLElement* group, int father) {
                                     point = point->NextSiblingElement("point");
                                 }
 
-                                Trans t = Trans("translate", 0, 0, 0, 0, time);
+                                Trans t = Trans("translate", 0, 0, 0, 0, time,align);
                                 g.addTrans(t);
                             }
                             else if (transformation->FindAttribute("x")) {
@@ -506,7 +509,7 @@ Group parseGroup(XMLElement* group, int father) {
                                 float y = atof(transformation->Attribute("y"));
                                 float z = atof(transformation->Attribute("z"));
 
-                                Trans t = Trans("translate", x, y, z, 0, 0);
+                                Trans t = Trans("translate", x, y, z, 0, 0,"");
                                 g.addTrans(t);
                             }
                         }
@@ -519,12 +522,12 @@ Group parseGroup(XMLElement* group, int father) {
 
                                 if (transformation->FindAttribute("time")) {
                                     float time = atof(transformation->Attribute("time"));
-                                    Trans t = Trans("rotate", x, y, z, 0, time);
+                                    Trans t = Trans("rotate", x, y, z, 0, time,"");
                                     g.addTrans(t);
                                 }
                                 else if (transformation->FindAttribute("angle")) {
                                     float angle = atof(transformation->Attribute("angle"));
-                                    Trans t = Trans("rotate", x, y, z, angle, 0);
+                                    Trans t = Trans("rotate", x, y, z, angle, 0,"");
                                     g.addTrans(t);
                                 }
                             }
@@ -534,7 +537,7 @@ Group parseGroup(XMLElement* group, int father) {
                                 float red = atof(transformation->Attribute("x"));
                                 float green = atof(transformation->Attribute("y"));
                                 float blue = atof(transformation->Attribute("z"));
-                                Trans t = Trans("color", red, green, blue, 0, 0);
+                                Trans t = Trans("color", red, green, blue, 0, 0,"");
                                 g.addTrans(t);
                             }
                     }

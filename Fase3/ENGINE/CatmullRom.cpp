@@ -8,12 +8,15 @@
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #elif _WIN32
+#include <io.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
 #else
 #endif
 
 int pointcount = 1;
+using namespace std;
+
 
 void CatmullRom::buildRotMatrix(float* x, float* y, float* z, float* m) {
 

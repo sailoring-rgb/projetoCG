@@ -12,7 +12,7 @@ public:
 
 	Trans();
 
-	Trans(std::string name, float x, float y, float z, float angle, float time);
+	Trans(std::string name, float x, float y, float z, float angle, float time, std::string align);
 
 	std::string getName();
 
@@ -25,6 +25,10 @@ public:
 	float getAngle();
 
 	float getTime();
+
+	void setAlign(std::string align);
+
+	std::string getAlign();
 };
 
 
