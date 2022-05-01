@@ -64,21 +64,6 @@ vector<float> vertexB;
 GLuint buffers[1];
 GLuint ptr = 0;
 
-vector<float> rotateTime(int time, float x, float y, float z, vector<Primitive> primitives, vector<Trans> trans, float angle) {
-
-    glRotatef(angle, x, y, z);
-
-    angle = ((float)glutGet(GLUT_ELAPSED_TIME) * 360 / 1000) / ((float)time);
-
-    glutPostRedisplay();
-
-    vector<float> res;
-
-    res.push_back(angle);
-    return res;
-}
-
-
 
 /**
  * Function that redimensionates a window.
@@ -211,14 +196,18 @@ void drawPrimitives(Group g) {
                 CatmullRom::normalize(z);
                 CatmullRom::buildRotMatrix(deriv, prev_y, z, *m);
                 glMultMatrixf(*m);
+
+                //angle = ((float)glutGet(GLUT_ELAPSED_TIME) * 360 / 1000) / ((float)time);
+
+                glutPostRedisplay();
             }
             else if (t.getTime() == 0) {
                 glTranslatef(t.getX(), t.getY(), t.getZ());
-            }
-        }
+            }            
+        } 
         else if (rotate.compare(t.getName()) == 0) {
             if (t.getAngle() == 0 && t.getTime() != 0) { // transformação com tempo
-                vector<float> res = rotateTime(time, t.getX(), t.getY(), t.getZ(), g.getPrimitives(), g.getTrans(), 0);
+               
             }
             else if (t.getAngle() != 0 && t.getTime() == 0) {
                 glRotatef(t.getAngle(), t.getX(), t.getY(), t.getZ());
@@ -411,7 +400,7 @@ bool initGlut(int argc, char** argv) {
 
     // Required callback registry
     glutDisplayFunc(renderScene);
-   // glutIdleFunc(renderScene);
+    glutIdleFunc(renderScene);
     glutReshapeFunc(changeSize);
 
     // put here the registration of the keyboard callbacks
@@ -534,9 +523,10 @@ Group parseGroup(XMLElement* group, int father) {
                                     float time = atof(transformation->Attribute("time"));
                                     Trans t = Trans("rotate", x, y, z, 0, time);
                                     g.addTrans(t);
+                                    g.setAngle(time);
                                 }
                                 else if (transformation->FindAttribute("angle")) {
-                                    float time = atof(transformation->Attribute("angle"));
+                                    float angle = atof(transformation->Attribute("angle"));
                                     Trans t = Trans("rotate", x, y, z, angle, 0);
                                     g.addTrans(t);
                                 }
