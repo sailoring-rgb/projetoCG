@@ -64,6 +64,27 @@ vector<float> vertexB;
 GLuint buffers[1];
 GLuint ptr = 0;
 
+vector<float> rotateTime(int time, float x, float y, float z, vector<Primitive> primitives, vector<Trans> trans, float angle) {
+
+    string scale = "scale";
+    string translate = "translate";
+    string rotate = "rotate";
+    string color = "color";
+
+    glRotatef(angle, x, y, z);
+
+    angle = ((float)glutGet(GLUT_ELAPSED_TIME) * 360 / 1000) / ((float)time);
+
+    glutPostRedisplay();
+
+    vector<float> res;
+
+    res.push_back(angle);
+    return res;
+}
+
+
+
 /**
  * Function that redimensionates a window.
  * @param w width of the window.
@@ -165,17 +186,7 @@ void drawPrimitives(Group g) {
 
                 catmullPoints = g.getCatmullPoints();
 
-                // pointcount = catmullPoints.size();
-
-                glPushMatrix();/*
-                glBegin(GL_LINES);
-                for (size_t i = 0; i < catmullPoints.size() - 1; i++) {
-                    float pos1[3] = { catmullPoints[i].getX(), catmullPoints[i].getY(), catmullPoints[i].getZ() };
-                    glVertex3fv(pos1);
-                    float pos2[3] = { catmullPoints[i + 1].getX(), catmullPoints[i + 1].getY(), catmullPoints[i + 1].getZ() };
-                    glVertex3fv(pos2);
-                }
-                glEnd();*/
+                glPushMatrix();
                 float p[3], d[3];
                 float t1 = 100.0f;
                 glBegin(GL_LINE_LOOP);
@@ -205,32 +216,19 @@ void drawPrimitives(Group g) {
                 CatmullRom::normalize(z);
                 CatmullRom::buildRotMatrix(deriv, prev_y, z, *m);
                 glMultMatrixf(*m);
-
             }
-            //renderSceneCatmullRom(g.getTrans(), g.getPrimitives(), time);
-        }
-        else if (t.getTime() == 0) {
-            glTranslatef(t.getX(), t.getY(), t.getZ());
+            else if (t.getTime() == 0) {
+                glTranslatef(t.getX(), t.getY(), t.getZ());
+            }
         }
         else if (rotate.compare(t.getName()) == 0) {
-            /*if (t.getAngle() == 0 && t.getTime() != 0) { // transformação com tempo
-                time = t.getTime();
-
-                float x = t.getX();
-                float y = t.getY();
-                float z = t.getZ();
-
-                glRotatef(t.getAngle(), x, y, z);
-
-                applyTrans(g);
-
-                //vector<float> res = calculateNewAngle(time, x, y, z, g.getPrimitives(), g.getTrans(), g.getAngle());
-                //g.setAngle(res[0]);*/
-            glRotatef(t.getAngle(), x, y, z);
-            /* }
+            if (t.getAngle() == 0 && t.getTime() != 0) { // transformação com tempo
+                vector<float> res = rotateTime(time, x, y, z, g.getPrimitives(), g.getTrans(), 0);
+               // g.setAngle(res[0]);
+            }
             else if (t.getAngle() != 0 && t.getTime() == 0) {
                 glRotatef(t.getAngle(), t.getX(), t.getY(), t.getZ());
-            }*/
+            }
         }
         else if (scale.compare(t.getName()) == 0) {
             glScalef(t.getX(), t.getY(), t.getZ());

@@ -8,15 +8,15 @@ def calculate_circle(raio):
 
     nrPoints = 8
 
-    angle = 360 / 8
+    angle = 360 / nrPoints
 
-    for i in range(8):
+    for i in range(nrPoints):
         point = (cos(angle*i)*raio,sin(angle*i)*raio)
         points.append(point)
 
     return points
 
-points = calculate_circle(5.5)
+points = calculate_circle(1.3)
 
 for p in points:
     point = Tree.SubElement(world, "point")
