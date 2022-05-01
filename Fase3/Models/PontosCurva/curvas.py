@@ -1,22 +1,29 @@
 from cmath import cos, sin
+import math
 import xml.etree.cElementTree as Tree
 world = Tree.Element('world')
 
+raio = 4.25
 
 def calculate_circle(raio):
+
     points = []
 
     nrPoints = 8
 
-    angle = 360 / nrPoints
-
+    i = 0
     for i in range(nrPoints):
-        point = (cos(angle*i)*raio,sin(angle*i)*raio)
+        angle = math.pi / 4
+        if i == 0 or i == 4:
+            point = (math.cos(angle*i)*raio,0)
+        elif i == 2 or i == 6:
+            point = (0,math.sin(angle*i)*raio)
+        else: point = (math.cos(angle*i)*raio,math.sin(angle*i)*raio)
         points.append(point)
 
     return points
 
-points = calculate_circle(1.3)
+points = calculate_circle(raio)
 
 for p in points:
     point = Tree.SubElement(world, "point")
@@ -26,4 +33,4 @@ for p in points:
 
 tree = Tree.ElementTree(world)
 
-tree.write('curvas.xml')
+tree.write(f'curvas{raio}.xml')
