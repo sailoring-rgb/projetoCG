@@ -181,7 +181,7 @@ void drawPrimitives(Group g) {
                 float pos[3];
                 float deriv[3];
 
-                float timeT = ((float)glutGet(GLUT_ELAPSED_TIME) / 1000) / (float)(t.getTime());
+                float timeT = -(glutGet(GLUT_ELAPSED_TIME) / 1000.f) / (float)(t.getTime());
                 CatmullRom::getGlobalCatmullRomPoint(g.getCatmullPoints(), timeT, (float*)pos, (float*)deriv);
 
                 glTranslatef(pos[0], pos[1], pos[2]);
@@ -196,31 +196,27 @@ void drawPrimitives(Group g) {
                 CatmullRom::normalize(z);
                 CatmullRom::buildRotMatrix(deriv, prev_y, z, *m);
                 glMultMatrixf(*m);
-
-                //angle = ((float)glutGet(GLUT_ELAPSED_TIME) * 360 / 1000) / ((float)time);
-
-                glutPostRedisplay();
             }
             else if (t.getTime() == 0) {
                 glTranslatef(t.getX(), t.getY(), t.getZ());
             }            
         } 
         else if (rotate.compare(t.getName()) == 0) {
-            if (t.getAngle() == 0 && t.getTime() != 0) { // transformação com tempo
-                /*float angle = ((float)glutGet(GLUT_ELAPSED_TIME) * 360 / 1000) / ((float)time);
+            if (t.getAngle() == 0 && t.getTime() != 0) {
+                float time = glutGet(GLUT_ELAPSED_TIME) / 1000.f;
+                float angle = t.getAngle() + time * (t.getTime() ? 360.f / t.getTime() : 0);
                 glRotatef(angle, t.getX(), t.getY(), t.getZ());
-                glutPostRedisplay();*/
             }
             else if (t.getAngle() != 0 && t.getTime() == 0) {
                 glRotatef(t.getAngle(), t.getX(), t.getY(), t.getZ());
             }
         }
-        else if (scale.compare(t.getName()) == 0) {
-            glScalef(t.getX(), t.getY(), t.getZ());
-        }
         else if (color.compare(t.getName()) == 0)
         {
             glColor3f(t.getX() / 255.f, t.getY() / 255.f, t.getZ() / 255.f);
+        }        
+        else if (scale.compare(t.getName()) == 0) {
+            glScalef(t.getX(), t.getY(), t.getZ());
         }
 
     }
@@ -403,7 +399,7 @@ bool initGlut(int argc, char** argv) {
     // Required callback registry
     glutDisplayFunc(renderScene);
     glutIdleFunc(renderScene);
-    glutReshapeFunc(changeSize);
+    glutReshapeFunc(changeSize);    
 
     // put here the registration of the keyboard callbacks
     glutKeyboardFunc(polygonMode);

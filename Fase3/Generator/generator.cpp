@@ -863,7 +863,7 @@ bool generatePatch(vector<string> params){
     output_file.erase(remove(output_file.begin(), output_file.end(), '.'), output_file.end());
     output_file += to_string(tessellation) + ".3d";
 
-    writeInFile(res, output_file);
+    writeInFile(res, "bezier.3d");
 
     return true;
 }

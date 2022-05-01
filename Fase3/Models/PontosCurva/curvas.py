@@ -3,7 +3,7 @@ import math
 import xml.etree.cElementTree as Tree
 world = Tree.Element('world')
 
-raio = 4.25
+raio = 2.0
 
 def calculate_circle(raio):
 
@@ -28,7 +28,7 @@ points = calculate_circle(raio)
 for p in points:
     point = Tree.SubElement(world, "point")
     point.attrib["x"]=str(p[0].real)
-    point.attrib["y"]="0"
+    point.attrib["y"]="0.3"
     point.attrib["z"]=str(p[1].real)
 
 tree = Tree.ElementTree(world)
