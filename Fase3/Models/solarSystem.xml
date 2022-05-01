@@ -630,7 +630,7 @@
             <color x="112" y="128" z="144"/>
         </transform>
         <models>
-            <model file="bezier.3d"/>
+            <model file="teapot.3d"/>
         </models >
     </group>
 </world>
