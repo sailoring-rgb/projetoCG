@@ -195,11 +195,7 @@ void drawPrimitives(Group g) {
                 CatmullRom::normalize(prev_y);
                 CatmullRom::normalize(z);
                 CatmullRom::buildRotMatrix(deriv, prev_y, z, *m);
-                glMultMatrixf(*m);
-
-                //angle = ((float)glutGet(GLUT_ELAPSED_TIME) * 360 / 1000) / ((float)time);
-
-                glutPostRedisplay();
+                glMultMatrixf(*m);   
             }
             else if (t.getTime() == 0) {
                 glTranslatef(t.getX(), t.getY(), t.getZ());
