@@ -248,12 +248,6 @@ void drawPrimitives(Group g) {
                 glPushMatrix();
                 glRotated(6 * i, 0, 1, 0);
                 glTranslated(80 + arrx[i], arry[i], 0);
-                /*
-                glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-                glVertexPointer(3, GL_FLOAT, 0, 0);
-                glDrawArrays(GL_TRIANGLES, vboZone, nrVertices);
-
-                vboZone = vboZone + nrVertices;*/
                 
                 glBegin(GL_TRIANGLES);
                 for (int c = 0; c < p.getNrVertices(); c++) {
