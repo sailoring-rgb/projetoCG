@@ -12,7 +12,7 @@
             <color x="255" y="170" z="0"/>
         </transform>
         <models>
-            <model file="teapotpatch10.3d"/>
+            <model file="teapot.3d"/>
         </models >
     </group>
 </world>

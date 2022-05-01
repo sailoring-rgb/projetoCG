@@ -859,11 +859,9 @@ bool generatePatch(vector<string> params){
         res += to_string(p.getX()) + ", " + to_string(p.getY()) + ", "+ to_string(p.getZ()) + "\n";
     }
 
-    string output_file = params[0];
-    output_file.erase(remove(output_file.begin(), output_file.end(), '.'), output_file.end());
-    output_file += to_string(tessellation) + ".3d";
+    string output_file = params[2];
 
-    writeInFile(res, "bezier.3d");
+    writeInFile(res, output_file);
 
     return true;
 }
@@ -881,7 +879,7 @@ bool parseInput(string primitive, vector<string> params) {
     else if (primitive.compare("asteroids") == 0) option = 4;
     else if (primitive.compare("ellipsoid") == 0) option = 7;
     else if (primitive.compare("hsphere") == 0) option = 8;
-    else if (primitive.compare("patch") == 0) option = 9;
+    else if (primitive.compare("bezier") == 0) option = 9;
 
     bool ret = false;
 
@@ -935,7 +933,7 @@ bool parseInput(string primitive, vector<string> params) {
         else ret = false;
         break;
     case 9:
-        if (params.size() == 2) {
+        if (params.size() == 3) {
             ret = generatePatch(params);
         }
         else ret = false;
