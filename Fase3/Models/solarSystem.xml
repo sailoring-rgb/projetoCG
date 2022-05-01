@@ -20,7 +20,7 @@
     <group>
         <transform>
             <rotate time="185" x="0" y="1" z="0"/>
-            <translate time="4" align="True">
+            <translate time="-17" align="True">
                 <point x="1.3" y="0" z="0.0" />
                 <point x="0.6829185854630487" y="0" z="1.106174581894354" />
                 <point x="-0.5824957009679211" y="0" z="1.1621956626807253" />
@@ -38,7 +38,7 @@
     <!-- Vénus -->
     <group>
         <transform>
-            <translate time="4" align="True">
+            <translate time="-30" align="True">
                 <point x="1.5" y="0" z="0.0" />
                 <point x="0.7879829832265945" y="0" z="1.2763552868011776" />
                 <point x="-0.6721104241937552" y="0" z="1.3409949954008367" />
@@ -57,7 +57,7 @@
     <group>
         <transform>
             <rotate time="235" x="0" y="1" z="0"/>
-            <translate time="4" align="True">
+            <translate time="-50" align="True">
                 <point x="1.75" y="0" z="0.0" />
                 <point x="0.919313480431027" y="0" z="1.4890811679347074" />
                 <point x="-0.7841288282260477" y="0" z="1.5644941613009762" />
@@ -87,7 +87,7 @@
     <group>
         <transform>            
             <rotate time="-35" x="0" y="1" z="0"/>
-            <translate time="4" align="True">
+            <translate time="70" align="True">
                 <point x="2.0" y="0" z="0.0" />
                 <point x="1.0506439776354595" y="0" z="1.7018070490682369" />
                 <point x="-0.8961472322583403" y="0" z="1.7879933272011157" />
@@ -126,7 +126,7 @@
     <group>
         <transform>
             <rotate time="200" x="0" y="1" z="0"/>
-            <translate time="4" align="True">
+            <translate time="110" align="True">
                 <point x="3.3" y="0" z="0.0" />
                 <point x="1.733562563098508" y="0" z="2.807981630962591" />
                 <point x="-1.4786429332262614" y="0" z="2.9501889898818408" />
@@ -195,7 +195,7 @@
     <group>
         <transform>
             <rotate time="20" x="0" y="1" z="0"/>
-            <translate time="4" align="True">
+            <translate time="160" align="True">
                 <point x="4.25" y="0" z="0.0" />
                 <point x="2.2326184524753514" y="0" z="3.6163399792700033" />
                 <point x="-1.904312868548973" y="0" z="3.7994858203023707" />
@@ -274,7 +274,7 @@
     <group>
         <transform>  
             <rotate time="-35" x="0" y="1" z="0"/> 
-            <translate time="4" align="True">
+            <translate time="230" align="True">
                 <point x="5.0" y="0" z="0.0" />
                 <point x="2.626609944088649" y="0" z="4.254517622670592" />
                 <point x="-2.2403680806458506" y="0" z="4.4699833180027895" />
@@ -342,8 +342,8 @@
     <!-- Neptuno -->
     <group>
         <transform>                     
-            <rotate time="225" x="0" y="1" z="0"/>
-            <translate time="4" align="True">
+            <rotate time="10" x="0" y="1" z="0"/>
+            <translate time="250" align="True">
                 <point x="5.5" y="0" z="0.0" />
                 <point x="2.8892709384975137" y="0" z="4.679969384937651" />
                 <point x="-2.4644048887104355" y="0" z="4.916981649803068" />

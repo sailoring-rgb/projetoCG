@@ -120,31 +120,6 @@ void CatmullRom::getGlobalCatmullRomPoint(std::vector<Point> catmullPoints, floa
 }
 
 
-void CatmullRom::renderCatmullRomCurve(std::vector<Point> catmullPoints) {
-
-    float pos[3];
-    float deriv[3];
-
-    // draw curve using line segments with GL_LINE_LOOP
-    glBegin(GL_LINE_LOOP);
-    float i = 0;
-    while (i < 100.0f) {
-        getGlobalCatmullRomPoint(catmullPoints, i / 100.0f, pos, deriv);
-        glVertex3f(pos[0], pos[1], pos[2]);
-    }
-    glEnd();
-
-    glBegin(GL_LINES);
-    for (int i = 0; i < 100; i += 1) {
-        getGlobalCatmullRomPoint(catmullPoints, i / 100.0f, pos, deriv);
-        glVertex3f(pos[0], pos[1], pos[2]);
-        pos[0] += deriv[0];
-        pos[1] += deriv[1];
-        pos[2] += deriv[2];
-        glVertex3f(pos[0], pos[1], pos[2]);
-    }
-    glEnd();
-}
 
 
 

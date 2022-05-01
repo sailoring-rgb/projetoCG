@@ -189,7 +189,7 @@ void drawPrimitives(Group g) {
                 glPushMatrix();
                 float p[3], d[3];
                 float t1 = 100.0f;
-                glBegin(GL_LINES);
+                glBegin(GL_LINE_LOOP);
                 for (int i = 0; i < t1; i += 1) {
                     CatmullRom::getGlobalCatmullRomPoint(catmullPoints, i / t1, p, d);
                     glVertex3fv(p);
@@ -197,7 +197,7 @@ void drawPrimitives(Group g) {
                 glEnd();
 
                 glPopMatrix();
-
+                
                 float pos[3];
                 float deriv[3];
 
@@ -223,8 +223,8 @@ void drawPrimitives(Group g) {
         }
         else if (rotate.compare(t.getName()) == 0) {
             if (t.getAngle() == 0 && t.getTime() != 0) { // transformação com tempo
-                vector<float> res = rotateTime(time, x, y, z, g.getPrimitives(), g.getTrans(), 0);
-               // g.setAngle(res[0]);
+                float angle = (((float)glutGet(GLUT_ELAPSED_TIME) / 1000) * 360) / (float)t.getTime();
+                glRotatef(angle, t.getX(), t.getY(), t.getZ());
             }
             else if (t.getAngle() != 0 && t.getTime() == 0) {
                 glRotatef(t.getAngle(), t.getX(), t.getY(), t.getZ());
