@@ -23,3 +23,5 @@ Fase3/ENGINE/build/cmake_install.cmake
 Fase3/ENGINE/build/CMakeCache.txt
 Fase3/ENGINE/build/CMakeFiles/cmake.check_cache
 Fase3/ENGINE/build/CMakeFiles/TargetDirectories.txt
+Fase4/ENGINE/build/*
+Fase4/Generator/build/*
