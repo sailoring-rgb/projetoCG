@@ -95,12 +95,12 @@ void writeInFile(string res, string file) {
         doc.LoadFile(tmp);
         XMLNode* pRoot = doc.FirstChild();
 
-        XMLElement* pElement = doc.NewElement("model");
-        pElement->SetAttribute("file", c);
-
-        pRoot->InsertEndChild(pElement);
-
-        doc.SaveFile(tmp);
+        if (pRoot != NULL) {
+            XMLElement* pElement = doc.NewElement("model");
+            pElement->SetAttribute("model", c);
+            pRoot->InsertEndChild(pElement);
+            doc.SaveFile(tmp);
+        }
     }
 }
 
@@ -223,6 +223,15 @@ vector<float> vectorGenerator(float f) {
     return vect;
 }
 
+void normalize(float* a) {
+
+    float l = sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
+    if (l != 0) {
+        a[0] = a[0] / l;
+        a[1] = a[1] / l;
+        a[2] = a[2] / l;
+    }
+}
 
 // Função para criação dos pontos dos triângulos de um patch
 vector<Point> triangulacao(vector<vector<vector<Point>>> patches_set, int tessellation_lvl) {
@@ -289,6 +298,7 @@ bool generatePlane(vector<string> params) {
     if (found <= 0) return false;
 
     string p1, p2, p3, p4;
+    float pn[3] = {0.0, 1.0, 0.0};
     float x = length / divisions, z = length / divisions;
 
     // string que guarda os pontos que estruturam a figura
@@ -300,10 +310,10 @@ bool generatePlane(vector<string> params) {
         for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
             double tempC = column;
             double nextColumn = tempC - 1;
-            p1 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "\n";
-            p2 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * row) + "\n";
-            p3 = to_string(x * (nextColumn)) + "," + to_string(0.000000) + "," + to_string(z * row) + "\n";
-            p4 = to_string(x * nextColumn) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "\n";
+            p1 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "," + to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "\n";
+            p2 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * row) + "," + to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "\n";
+            p3 = to_string(x * (nextColumn)) + "," + to_string(0.000000) + "," + to_string(z * row) + "," + to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "\n";
+            p4 = to_string(x * nextColumn) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "," + to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
         }
     }
@@ -325,6 +335,8 @@ bool generateBox(vector<string> params) {
     if (found <= 0) return false;
 
     string p1, p2, p3, p4;
+    float pnd[3] = {0.0, -1.0, 0.0}, pnu[3] = { 0.0, 1.0, 0.0 }, pnr[3] = { 1.0, 0.0, 0.0 };
+    float pnl[3] = { -1.0, 0.0, 0.0 }, pnf[3] = { 0.0, 0.0, 1.0 }, pnb[3] = { 0.0, 0.0, -1.0 };;
 
     float step = length / divisions;
     float deviation = length / 2;
@@ -336,45 +348,45 @@ bool generateBox(vector<string> params) {
     for (int j = 0; j < divisions; j++) {
         for (int i = 0; i < divisions; i++) {
             // DOWN FACE
-            p1 = to_string(i * step - deviation) + "," + to_string(-deviation) + "," + to_string(j * step - deviation) + "\n";
-            p2 = to_string(i * step - deviation) + "," + to_string(-deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
-            p3 = to_string((i + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
-            p4 = to_string((i + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string(j * step - deviation) + "\n";
+            p1 = to_string(i * step - deviation) + "," + to_string(-deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnd[0]) + "," + to_string(pnd[1]) + "," + to_string(pnd[2]) + "\n";
+            p2 = to_string(i * step - deviation) + "," + to_string(-deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnd[0]) + "," + to_string(pnd[1]) + "," + to_string(pnd[2]) + "\n";
+            p3 = to_string((i + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnd[0]) + "," + to_string(pnd[1]) + "," + to_string(pnd[2]) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnd[0]) + "," + to_string(pnd[1]) + "," + to_string(pnd[2]) + "\n";
             res = res + p1 + p3 + p2 + p3 + p1 + p4;
 
             // RIGHT FACE
-            p1 = to_string(length - deviation) + "," + to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "\n";
-            p2 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
-            p3 = to_string(length - deviation) + "," + to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
-            p4 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "\n";
+            p1 = to_string(length - deviation) + "," + to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnr[0]) + "," + to_string(pnr[1]) + "," + to_string(pnr[2]) + "\n";
+            p2 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnr[0]) + "," + to_string(pnr[1]) + "," + to_string(pnr[2]) + "\n";
+            p3 = to_string(length - deviation) + "," + to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnr[0]) + "," + to_string(pnr[1]) + "," + to_string(pnr[2]) + "\n";
+            p4 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnr[0]) + "," + to_string(pnr[1]) + "," + to_string(pnr[2]) + "\n";
             res = res + p1 + p2 + p3 + p4 + p2 + p1;
 
             // UP FACE
-            p1 = to_string(i * step - deviation) + "," + to_string(length - deviation) + "," + to_string(j * step - deviation) + "\n";
-            p2 = to_string(i * step - deviation) + "," + to_string(length - deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
-            p3 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
-            p4 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string(j * step - deviation) + "\n";
+            p1 = to_string(i * step - deviation) + "," + to_string(length - deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnu[0]) + "," + to_string(pnu[1]) + "," + to_string(pnu[2]) + "\n";
+            p2 = to_string(i * step - deviation) + "," + to_string(length - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnu[0]) + "," + to_string(pnu[1]) + "," + to_string(pnu[2]) + "\n";
+            p3 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnu[0]) + "," + to_string(pnu[1]) + "," + to_string(pnu[2]) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnu[0]) + "," + to_string(pnu[1]) + "," + to_string(pnu[2]) + "\n";
             res = res + p1 + p2 + p3 + p4 + p1 + p3;
 
             // LEFT FACE
-            p1 = to_string(-deviation) + "," + to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
-            p2 = to_string(-deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "\n";
-            p3 = to_string(-deviation) + "," + to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "\n";
-            p4 = to_string(-deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "\n";
+            p1 = to_string(-deviation) + "," + to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnl[0]) + "," + to_string(pnl[1]) + "," + to_string(pnl[2]) + "\n";
+            p2 = to_string(-deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnl[0]) + "," + to_string(pnl[1]) + "," + to_string(pnl[2]) + "\n";
+            p3 = to_string(-deviation) + "," + to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnl[0]) + "," + to_string(pnl[1]) + "," + to_string(pnl[2]) + "\n";
+            p4 = to_string(-deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnl[0]) + "," + to_string(pnl[1]) + "," + to_string(pnl[2]) + "\n";
             res = res + p1 + p2 + p3 + p2 + p4 + p3;
 
             // FRONT FACE
-            p1 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(length - deviation) + "\n";
-            p2 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(length - deviation) + "\n";
-            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(length - deviation) + "\n";
-            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(length - deviation) + "\n";
+            p1 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string(pnf[0]) + "," + to_string(pnf[1]) + "," + to_string(pnf[2]) + "\n";
+            p2 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string(pnf[0]) + "," + to_string(pnf[1]) + "," + to_string(pnf[2]) + "\n";
+            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(length - deviation) + "," + to_string(pnf[0]) + "," + to_string(pnf[1]) + "," + to_string(pnf[2]) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(length - deviation) + "," + to_string(pnf[0]) + "," + to_string(pnf[1]) + "," + to_string(pnf[2]) + "\n";
             res = res + p1 + p2 + p3 + p4 + p1 + p3;
 
             // BACK FACE
-            p1 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(-deviation) + "\n";
-            p2 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(-deviation) + "\n";
-            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(-deviation) + "\n";
-            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(-deviation) + "\n";
+            p1 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string(pnb[0]) + "," + to_string(pnb[1]) + "," + to_string(pnb[2]) + "\n";
+            p2 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string(pnb[0]) + "," + to_string(pnb[1]) + "," + to_string(pnb[2]) + "\n";
+            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(-deviation) + "," + to_string(pnb[0]) + "," + to_string(pnb[1]) + "," + to_string(pnb[2]) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(-deviation) + "," + to_string(pnb[0]) + "," + to_string(pnb[1]) + "," + to_string(pnb[2]) + "\n";
             res = res + p1 + p2 + p3 + p3 + p2 + p4;
         }
     }
@@ -436,10 +448,19 @@ bool generateCone(vector<string> params) {
             float p4y = HeightofStack * (i + 1);
             float p4z = -sin(alpha2) * topstackRadius;
 
-            string p1 = to_string(p1x) + "," + to_string(p1y) + "," + to_string(p1z) + "\n";
-            string p2 = to_string(p2x) + "," + to_string(p2y) + "," + to_string(p2z) + "\n";
-            string p3 = to_string(p3x) + "," + to_string(p3y) + "," + to_string(p3z) + "\n";
-            string p4 = to_string(p4x) + "," + to_string(p4y) + "," + to_string(p4z) + "\n";
+            float p1n[3] = { p1x, p1y, p1z };
+            float p2n[3] = { p2x, p1y, p2z };
+            float p3n[3] = { p3x, p3y, p3z };
+            float p4n[3] = { p4x, p3y, p4z };
+            normalize(p1n);
+            normalize(p2n);
+            normalize(p3n);
+            normalize(p4n);
+
+            string p1 = to_string(p1x) + "," + to_string(p1y) + "," + to_string(p1z) + "," + to_string(p1n[0]) + "," + to_string(p1n[1]) + "," + to_string(p1n[2]) + "\n";
+            string p2 = to_string(p2x) + "," + to_string(p2y) + "," + to_string(p2z) + "," + to_string(p2n[0]) + "," + to_string(p2n[1]) + "," + to_string(p2n[2]) + "\n";
+            string p3 = to_string(p3x) + "," + to_string(p3y) + "," + to_string(p3z) + "," + to_string(p3n[0]) + "," + to_string(p3n[1]) + "," + to_string(p3n[2]) + "\n";
+            string p4 = to_string(p4x) + "," + to_string(p4y) + "," + to_string(p4z) + "," + to_string(p4n[0]) + "," + to_string(p4n[1]) + "," + to_string(p4n[2]) + "\n";
 
             if (i == 0) {
                 //Base
@@ -534,6 +555,8 @@ bool generateSphere(vector<string> params) {
     // Pontos
     double x0, x1, x2, x3, y0, y1, y2, y3, z0, z1, z2, z3;
 
+    double xn0, xn1, xn2, xn3, yn0, yn1, yn2, yn3, zn0, zn1, zn2, zn3;
+
     // Ciclo para determinar os pontos da esfera
     for (int i = 0; i < totalSlices; i++) {
         for (int j = 0; j < totalStacks; j++) {
@@ -545,22 +568,45 @@ bool generateSphere(vector<string> params) {
             x0 = cos(u) * sin(v) * radius;
             y0 = cos(v) * radius;
             z0 = sin(u) * sin(v) * radius;
+            xn0 = cos(u) * sin(v);
+            yn0 = cos(v);
+            zn0 = sin(u) * sin(v);
+            float p0n[3] = { xn0, yn0, xn0 };
+            normalize(p0n);
+
             x1 = cos(u) * sin(vn) * radius;
             y1 = cos(vn) * radius;
             z1 = sin(u) * sin(vn) * radius;
+            xn1 = cos(u) * sin(vn);
+            yn1 = cos(vn);
+            zn1 = sin(u) * sin(vn);
+            float p1n[3] = { xn1, yn1, xn1 };
+            normalize(p1n);
+
             x2 = cos(un) * sin(v) * radius;
             y2 = cos(v) * radius;
             z2 = sin(un) * sin(v) * radius;
+            xn2 = cos(un) * sin(v);
+            yn2 = cos(v);
+            zn2 = sin(un) * sin(v);
+            float p2n[3] = { xn2, yn2, xn2 };
+            normalize(p2n);
+
             x3 = cos(un) * sin(vn) * radius;
             y3 = cos(vn) * radius;
             z3 = sin(un) * sin(vn) * radius;
+            xn3 = cos(un) * sin(vn);
+            yn3 = cos(vn);
+            zn3 = sin(un) * sin(vn);
+            float p3n[3] = { xn3, yn3, xn3 };
+            normalize(p3n);
 
             totalPoints += 6;
 
-            string p0 = to_string(x0) + "," + to_string(y0) + "," + to_string(z0) + "\n";
-            string p1 = to_string(x1) + "," + to_string(y1) + "," + to_string(z1) + "\n";
-            string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(z2) + "\n";
-            string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) + "\n";
+            string p0 = to_string(x0) + "," + to_string(y0) + "," + to_string(z0) + "," + to_string(p0n[0]) + "," + to_string(p0n[1]) + "," + to_string(p0n[2]) + "\n";
+            string p1 = to_string(x1) + "," + to_string(y1) + "," + to_string(z1) + "," + to_string(p1n[0]) + "," + to_string(p1n[1]) + "," + to_string(p1n[2]) + "\n";
+            string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(z2) + "," + to_string(p2n[0]) + "," + to_string(p2n[1]) + "," + to_string(p2n[2]) + "\n";
+            string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) + "," + to_string(p3n[0]) + "," + to_string(p3n[1]) + "," + to_string(p3n[2]) + "\n";
             aux = aux + p3 + p1 + p2 + p2 + p1 + p0;
 
         }

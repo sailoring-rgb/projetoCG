@@ -1,2 +1,4 @@
 <world>
+    <model model="box.3d"/>
+    <model model="sphere.3d"/>
 </world>

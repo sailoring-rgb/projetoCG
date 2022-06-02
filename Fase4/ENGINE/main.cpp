@@ -60,7 +60,7 @@ float p[5][3] = { {-1,-1,0},{-1,1,0},{1,1,0},{0,0,0},{1,-1,0} };
 float prev_y[3] = { 0, 1, 0 };
 float t = 0;
 
-vector<float> vertexB;
+vector<float> vertexB, coordNormal;
 GLuint buffers[1];
 GLuint vboZone = 0;
 
@@ -133,10 +133,20 @@ Primitive readFile(string file) {
         point.setY(tokens[1]);
         point.setZ(tokens[2]);
 
+        Point normal;
+        normal.setX(tokens[0]);
+        normal.setY(tokens[1]);
+        normal.setZ(tokens[2]);
+
         //VBO
         vertexB.push_back(tokens[0]);
         vertexB.push_back(tokens[1]);
         vertexB.push_back(tokens[2]);
+
+        //VBO normal
+        coordNormal.push_back(tokens[3]);
+        coordNormal.push_back(tokens[4]);
+        coordNormal.push_back(tokens[5]);
 
         primitive.addPoint(point);
     }
@@ -414,11 +424,15 @@ bool initGlut(int argc, char** argv) {
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_INDEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
+    //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
     //Create VBO
-    glGenBuffers(1, buffers);
+    glGenBuffers(2, buffers);
     glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertexB.size(), vertexB.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertexB.size(), &(vertexB[0]), GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, buffers[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * coordNormal.size(), &(coordNormal[0]), GL_STATIC_DRAW);
 
     // enter GLUT's main cycle
     glutMainLoop();
