@@ -13,6 +13,7 @@
 #include <algorithm>
 #include "Group.h"
 #include "Trans.h"
+#include "Light.h"
 #include "CatmullRom.h"
 
 #ifdef __APPLE__
@@ -37,6 +38,8 @@ vector<string> files;
 
 //Vector that stores all the groups
 vector<Group> groups;
+
+vector<Light> lights;
 
 string pathFile;
 
@@ -673,28 +676,54 @@ void parseCamera(XMLElement* camera) {
     }        
 }
 
-void parseLights(XMLElement* lights) {
-    string light = "light";
+void parseLights(XMLElement* light) {
+    string lig = "light";
     string point = "point";
     string directional = "directional";
     string spotlight = "spotlight";
+    Light l = Light();
+    Point p;
+    p.setX(0);
+    p.setY(0);
+    p.setZ(0);
 
-    XMLElement* element = lights->FirstChildElement();
+    XMLElement* element = light->FirstChildElement();
 
     while (element != nullptr) {
 
-        if (light.compare(element->Name()) == 0) {
+        if (lig.compare(element->Name()) == 0) {
             string type = element->Attribute("type");
+            l.setType(type);    
             
             if (point.compare(type) == 0) {
                 float posX = stod(element->Attribute("posX"));
                 float posY = stod(element->Attribute("posY"));
                 float posZ = stod(element->Attribute("posZ"));
+
+                Point pos;
+                pos.setX(posX);
+                pos.setY(posY);
+                pos.setZ(posZ);
+                l.setPos(pos);
+                l.setDir(p);
+                l.setCutoff(0);
+
+                lights.push_back(l);
             }
             else if (directional.compare(type) == 0) {
                 float dirX = stod(element->Attribute("dirX"));
                 float dirY = stod(element->Attribute("dirY"));
                 float dirZ = stod(element->Attribute("dirZ"));
+
+                Point dir;
+                dir.setX(dirX);
+                dir.setY(dirY);
+                dir.setZ(dirZ);
+                l.setDir(dir);
+                l.setPos(p);
+                l.setCutoff(0);
+
+                lights.push_back(l);
             }
             else if (spotlight.compare(type) == 0) {
                 float posX = stod(element->Attribute("posX"));
@@ -704,6 +733,19 @@ void parseLights(XMLElement* lights) {
                 float dirY = stod(element->Attribute("dirY"));
                 float dirZ = stod(element->Attribute("dirZ"));
                 float cutoff = stod(element->Attribute("cutoff"));
+
+                Point pos,dir;
+                pos.setX(posX);
+                pos.setY(posY);
+                pos.setZ(posZ);
+                l.setPos(pos);
+                dir.setX(dirX);
+                dir.setY(dirY);
+                dir.setZ(dirZ);
+                l.setDir(dir);
+                l.setCutoff(cutoff);
+
+                lights.push_back(l);
             }
         }
         element = element->NextSiblingElement();
