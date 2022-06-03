@@ -60,7 +60,7 @@ float p[5][3] = { {-1,-1,0},{-1,1,0},{1,1,0},{0,0,0},{1,-1,0} };
 float prev_y[3] = { 0, 1, 0 };
 float t = 0;
 
-vector<float> vertexB, coordNormal;
+vector<float> vertexB, coordNormal, coordTextura;
 GLuint buffers[1];
 GLuint vboZone = 0;
 
@@ -134,9 +134,14 @@ Primitive readFile(string file) {
         point.setZ(tokens[2]);
 
         Point normal;
-        normal.setX(tokens[0]);
-        normal.setY(tokens[1]);
-        normal.setZ(tokens[2]);
+        normal.setX(tokens[3]);
+        normal.setY(tokens[4]);
+        normal.setZ(tokens[5]);
+
+        Point textura;
+        textura.setX(tokens[6]);
+        textura.setY(tokens[7]);
+        textura.setZ(tokens[2]);
 
         //VBO
         vertexB.push_back(tokens[0]);
@@ -147,6 +152,11 @@ Primitive readFile(string file) {
         coordNormal.push_back(tokens[3]);
         coordNormal.push_back(tokens[4]);
         coordNormal.push_back(tokens[5]);
+
+        //VBO normal
+        /*coordTextura.push_back(tokens[6]);
+        coordTextura.push_back(tokens[7]);
+        coordTextura.push_back(0);*/
 
         primitive.addPoint(point);
     }
@@ -430,12 +440,15 @@ bool initGlut(int argc, char** argv) {
     //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
     //Create VBO
-    glGenBuffers(2, buffers);
+    glGenBuffers(3, buffers);
     glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertexB.size(), &(vertexB[0]), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, buffers[1]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * coordNormal.size(), &(coordNormal[0]), GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * coordTextura.size(), &(coordTextura[0]), GL_STATIC_DRAW);
 
     // enter GLUT's main cycle
     glutMainLoop();
@@ -600,7 +613,6 @@ Group parseGroup(XMLElement* group, int father) {
                                 g.addTrans(t);
                             }
                     }
-
                     transformation = transformation->NextSiblingElement();
                 }
             }

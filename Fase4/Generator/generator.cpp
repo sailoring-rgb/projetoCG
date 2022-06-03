@@ -294,17 +294,21 @@ vector<Point> triangulacao(vector<vector<vector<Point>>> patches_set, int tessel
         for (j = 0; j < tessellation_lvl; j++) {
             for (k = 0; k < tessellation_lvl; k++) {
                 triangles.push_back(grid[j][k]);
-                triangles.push_back(grid[j+1][k]);
-                triangles.push_back(grid[j][k+1]);
-                triangles.push_back(grid[j+1][k]);
-                triangles.push_back(grid[j+1][k+1]);
-                triangles.push_back(grid[j][k+1]);
-
                 triangles.push_back(gridN[j][k]);
+
+                triangles.push_back(grid[j+1][k]);
                 triangles.push_back(gridN[j + 1][k]);
+
+                triangles.push_back(grid[j][k+1]);
                 triangles.push_back(gridN[j][k + 1]);
+
+                triangles.push_back(grid[j+1][k]);
                 triangles.push_back(gridN[j + 1][k]);
+
+                triangles.push_back(grid[j+1][k+1]);
                 triangles.push_back(gridN[j + 1][k + 1]);
+
+                triangles.push_back(grid[j][k+1]);
                 triangles.push_back(gridN[j][k + 1]);
             }
         }
@@ -987,7 +991,7 @@ bool generatePatch(vector<string> params){
 
     string line, res;
     int i = 0, n, totalPatches, totalControlPoints = 0, count, index, tessellation = stoi(params[1]);
-    Point p;
+    Point p, normal;
     vector<string> all_patches;
     vector<Point> controlPoints, coordenadas;
     vector<vector<vector<Point>>> patches;
@@ -1042,9 +1046,10 @@ bool generatePatch(vector<string> params){
 
     res = to_string(coordenadas.size())+"\n";
 
-    for(i = 0; i < coordenadas.size(); i++){
+    for (i = 0; i < coordenadas.size() / 2; i = i + 2) {
         p = coordenadas[i];
-        res += to_string(p.getX()) + ", " + to_string(p.getY()) + ", "+ to_string(p.getZ()) + "\n";
+        normal = coordenadas[i + 1];
+        res += to_string(p.getX()) + ", " + to_string(p.getY()) + ", " + to_string(p.getZ()) + ", " + to_string(normal.getX()) + ", " + to_string(normal.getY()) + ", " + to_string(normal.getZ()) + "\n";
     }
 
     string output_file = params[2];
