@@ -267,6 +267,9 @@ void drawPrimitives(Group g) {
                 }
                 glEnd();
 
+                glBegin(GL_LINES);
+                glEnd();
+
                 glPopMatrix();
             }
         }
@@ -611,6 +614,43 @@ void parseCamera(XMLElement* camera) {
     }        
 }
 
+void parseLights(XMLElement* lights) {
+    string light = "light";
+    string point = "point";
+    string directional = "directional";
+    string spotlight = "spotlight";
+
+    XMLElement* element = lights->FirstChildElement();
+
+    while (element != nullptr) {
+
+        if (light.compare(element->Name()) == 0) {
+            string type = element->Attribute("type");
+            
+            if (point.compare(type) == 0) {
+                float posX = stod(element->Attribute("posX"));
+                float posY = stod(element->Attribute("posY"));
+                float posZ = stod(element->Attribute("posZ"));
+            }
+            else if (directional.compare(type) == 0) {
+                float dirX = stod(element->Attribute("dirX"));
+                float dirY = stod(element->Attribute("dirY"));
+                float dirZ = stod(element->Attribute("dirZ"));
+            }
+            else if (spotlight.compare(type) == 0) {
+                float posX = stod(element->Attribute("posX"));
+                float posY = stod(element->Attribute("posY"));
+                float posZ = stod(element->Attribute("posZ"));
+                float dirX = stod(element->Attribute("dirX"));
+                float dirY = stod(element->Attribute("dirY"));
+                float dirZ = stod(element->Attribute("dirZ"));
+                float cutoff = stod(element->Attribute("cutoff"));
+            }
+        }
+        element = element->NextSiblingElement();
+    }
+}
+
 /**
  * Function that reads a XML file.
  * @return bool true if everything goes well. Otherwise, returns false.
@@ -648,6 +688,9 @@ bool parseDocument() {
 
     XMLElement* camera = world->FirstChildElement("camera");
     parseCamera(camera);
+
+    XMLElement* lights = world->FirstChildElement("lights");
+    parseLights(lights);
 
     XMLElement* group = world->FirstChildElement("group");
     parseGroup(group, 0);

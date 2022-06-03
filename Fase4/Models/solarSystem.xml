@@ -5,6 +5,13 @@
         <up x="0.0" y="1.0" z="0.0"/>
         <projection fov="45" near="1" far="1000"/>
     </camera>
+    <lights>
+        <light type="point" posX="0" posY="0" posZ="0"/>
+        <light type="directional" dirX="1" dirY="1" dirZ="1"/>
+        <light type="spotlight" posX="0" posY="10" posZ="0"
+                                dirX="1" dirY="1" dirZ="1"
+                                cutoff="45"/>
+    </lights>
     <!-- Sol -->
     <group>
         <transform>
@@ -13,7 +20,16 @@
             <color x="255" y="170" z="0"/>
         </transform>
         <models>
-            <model file="sphere.3d"/>
+            <model file="sphere.3d">
+                <texture file="sun.jpg"/>
+                <color>
+                    <diffuse R="200" G="200" B="200"/>
+                    <ambient R="50" G="50" B="50"/>
+                    <specular R="0" G="0" B="0"/>
+                    <emissive R="0" G="0" B="0"/>
+                    <shininness value="0"/>
+                </color>
+            </model>
         </models >
     </group>
     <!-- Mercúrio -->

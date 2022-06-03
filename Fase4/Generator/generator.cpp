@@ -223,6 +223,18 @@ vector<float> vectorGenerator(float f) {
     return vect;
 }
 
+// Funcção para gerar os vetores u e v 
+vector<float> vectorGeneratorDerivate(float f) {
+    vector<float> vect(4);
+
+    vect[0] = 3 * pow(f, 2);
+    vect[1] = 2 * f;
+    vect[2] = 1;
+    vect[3] = 0;
+
+    return vect;
+}
+
 void normalize(float* a) {
 
     float l = sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
@@ -237,11 +249,13 @@ void normalize(float* a) {
 vector<Point> triangulacao(vector<vector<vector<Point>>> patches_set, int tessellation_lvl) {
     int i, j, k;
     float pu = 0.0f, pv = 0.0f;
-    vector<float> u, v;
-    vector<Point> triangles, res;
+    vector<float> u, v, du, dv;
+    vector<Point> triangles, res, res2;
     vector<vector<Point>> aux, matrix;
     vector<vector<Point>> grid(tessellation_lvl + 1, vector<Point> (tessellation_lvl + 1));
+    vector<vector<Point>> gridN(tessellation_lvl + 1, vector<Point>(tessellation_lvl + 1));
     Point final;
+    Point normal;
     
     vector<vector<float>> m
     {
@@ -262,12 +276,18 @@ vector<Point> triangulacao(vector<vector<vector<Point>>> patches_set, int tessel
         for (int j = 0; j <= tessellation_lvl; j++) {
             pv = ((float) j) / ((float) tessellation_lvl);
             v = vectorGenerator(pv);
+            dv = vectorGeneratorDerivate(pv);
             for (int k = 0; k <= tessellation_lvl; k++) {
                 pu = ((float) k) / ((float) tessellation_lvl);
                 u = vectorGenerator(pu);
+                du = vectorGeneratorDerivate(pu);
                 res = multVectorMatrix(u, matrix);
                 final = multVectors(res, v);
                 grid[j][k] = Point(final.getX(), final.getY(), final.getZ());
+
+                res2 = multVectorMatrix(du,matrix);
+                normal = multVectors(res2, dv);
+                gridN[j][k] = Point(normal.getX(), normal.getY(), normal.getZ());
             }
         }
 
@@ -279,6 +299,13 @@ vector<Point> triangulacao(vector<vector<vector<Point>>> patches_set, int tessel
                 triangles.push_back(grid[j+1][k]);
                 triangles.push_back(grid[j+1][k+1]);
                 triangles.push_back(grid[j][k+1]);
+
+                triangles.push_back(gridN[j][k]);
+                triangles.push_back(gridN[j + 1][k]);
+                triangles.push_back(gridN[j][k + 1]);
+                triangles.push_back(gridN[j + 1][k]);
+                triangles.push_back(gridN[j + 1][k + 1]);
+                triangles.push_back(gridN[j][k + 1]);
             }
         }
     }
