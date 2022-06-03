@@ -442,6 +442,7 @@ bool initGlut(int argc, char** argv) {
     return true;
 }
 
+
 Group parseGroup(XMLElement* group, int father) {
     string models = "models";
     string scale = "scale";
@@ -450,6 +451,14 @@ Group parseGroup(XMLElement* group, int father) {
     string grupo = "group";
     string color = "color";
     string transform = "transform";
+    string model = "model";
+    string texture = "texture";
+    string diffuse = "diffuse";
+    string ambient = "ambient";
+    string specular = "specular";
+    string emissive = "emissive";
+    string shininess = "shininess";
+
     Group g;
 
     do {
@@ -461,7 +470,7 @@ Group parseGroup(XMLElement* group, int father) {
             if (models.compare(element->Name()) == 0) {
 
                 XMLElement* file = element->FirstChildElement("model");
-
+          
                 while (file != nullptr) {
 
                     const char* strfile = file->Attribute("file");
@@ -472,6 +481,45 @@ Group parseGroup(XMLElement* group, int father) {
                     g.addPrimitives(primitive);
                     g.setNameFile(namefile);
 
+                    XMLElement* model = file->FirstChildElement();
+
+                    while (model != nullptr) {
+                        if (texture.compare(model->Name()) == 0) {
+                            string textura = model->Attribute("file");
+                            cout << textura << endl;
+                        }
+                        else if (color.compare(model->Name()) == 0) {
+                            XMLElement* color = model->FirstChildElement();
+
+                            while (color != nullptr) {
+                                if (diffuse.compare(color->Name()) == 0) {
+                                    float R = atof(color->Attribute("R"));
+                                    float G = atof(color->Attribute("G"));
+                                    float B = atof(color->Attribute("B"));
+                                }
+                                else if (ambient.compare(color->Name()) == 0) {
+                                    float R = atof(color->Attribute("R"));
+                                    float G = atof(color->Attribute("G"));
+                                    float B = atof(color->Attribute("B"));
+                                }
+                                else if (specular.compare(color->Name()) == 0) {
+                                    float R = atof(color->Attribute("R"));
+                                    float G = atof(color->Attribute("G"));
+                                    float B = atof(color->Attribute("B"));
+                                }
+                                else if (emissive.compare(color->Name()) == 0) {
+                                    float R = atof(color->Attribute("R"));
+                                    float G = atof(color->Attribute("G"));
+                                    float B = atof(color->Attribute("B"));
+                                }
+                                else if (shininess.compare(color->Name()) == 0) {
+                                    string value = model->Attribute("value");
+                                }
+                                color = color->NextSiblingElement("color");
+                            }
+                        }
+                        model = model->NextSiblingElement("model");
+                    }
                     file = file->NextSiblingElement();
                 }
             }

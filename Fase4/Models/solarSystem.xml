@@ -27,7 +27,7 @@
                     <ambient R="50" G="50" B="50"/>
                     <specular R="0" G="0" B="0"/>
                     <emissive R="0" G="0" B="0"/>
-                    <shininness value="0"/>
+                    <shininess value="0"/>
                 </color>
             </model>
         </models >
@@ -50,8 +50,17 @@
             <color x="238" y="154" z="73"/>
         </transform>
         <models>
-            <model file="sphere.3d"/>
-        </models >
+            <model file="sphere.3d">
+                <texture file="mercury.jpg"/>
+                <color>
+                    <diffuse R="200" G="200" B="200"/>
+                    <ambient R="50" G="50" B="50"/>
+                    <specular R="0" G="0" B="0"/>
+                    <emissive R="0" G="0" B="0"/>
+                    <shininess value="0"/>
+                </color>
+            </model>
+        </models>
      </group>
     <!-- Vénus -->
     <group>
@@ -69,9 +78,18 @@
             <scale x="0.09" y="0.09" z="0.09"/>
             <color x="255" y="165" z="79"/>
         </transform>
-        <models >
-            <model file="sphere.3d"/>
-        </models >
+        <models>
+            <model file="sphere.3d">
+                <texture file="venusSurface.jpg"/>
+                <color>
+                    <diffuse R="200" G="200" B="200"/>
+                    <ambient R="50" G="50" B="50"/>
+                    <specular R="0" G="0" B="0"/>
+                    <emissive R="0" G="0" B="0"/>
+                    <shininess value="0"/>
+                </color>
+            </model>
+        </models>
     </group>
     <!-- Terra -->
     <group>
@@ -91,7 +109,16 @@
             <color x="0" y="0" z="205"/>
         </transform>
         <models >
-            <model file="sphere.3d"/>
+            <model file="sphere.3d">
+                <texture file="earth.jpg"/>
+                <color>
+                    <diffuse R="200" G="200" B="200"/>
+                    <ambient R="50" G="50" B="50"/>
+                    <specular R="0" G="0" B="0"/>
+                    <emissive R="0" G="0" B="0"/>
+                    <shininess value="0"/>
+                </color>
+            </model>
         </models >
         <!-- LUA -->
         <group>
@@ -110,7 +137,16 @@
                 <color x="150" y="150" z="150"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
     </group>
@@ -132,7 +168,16 @@
             <color x="205" y="0" z="0"/>
         </transform>
         <models >
-            <model file="sphere.3d"/>
+            <model file="sphere.3d">
+                <texture file="mars.jpg"/>
+                <color>
+                    <diffuse R="200" G="200" B="200"/>
+                    <ambient R="50" G="50" B="50"/>
+                    <specular R="0" G="0" B="0"/>
+                    <emissive R="0" G="0" B="0"/>
+                    <shininess value="0"/>
+                </color>
+            </model>
         </models >
         <group>
             <transform>
@@ -150,7 +195,16 @@
                 <color x="238" y="233" z="233"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -169,7 +223,16 @@
                 <color x="255" y="239" z="219"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
     </group>
@@ -191,7 +254,16 @@
             <color x="245" y="222" z="179"/>
         </transform>
         <models >
-            <model file="sphere.3d"/>
+            <model file="sphere.3d">
+                <texture file="jupiter.jpg"/>
+                <color>
+                    <diffuse R="200" G="200" B="200"/>
+                    <ambient R="50" G="50" B="50"/>
+                    <specular R="0" G="0" B="0"/>
+                    <emissive R="0" G="0" B="0"/>
+                    <shininess value="0"/>
+                </color>
+            </model>
         </models >
         <group>
             <transform>
@@ -209,7 +281,16 @@
                 <color x="205" y="201" z="201"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -228,7 +309,16 @@
                 <color x="211" y="211" z="211"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -247,7 +337,16 @@
                 <color x="190" y="190" z="190"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -266,7 +365,16 @@
                 <color x="211" y="211" z="211"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -285,7 +393,16 @@
                 <color x="238" y="233" z="233"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
     </group>
@@ -307,18 +424,36 @@
             <color x="255" y="246" z="143"/>
         </transform>
         <models >
-            <model file="sphere.3d"/>
+            <model file="sphere.3d">
+                <texture file="saturn.jpg"/>
+                <color>
+                    <diffuse R="200" G="200" B="200"/>
+                    <ambient R="50" G="50" B="50"/>
+                    <specular R="0" G="0" B="0"/>
+                    <emissive R="0" G="0" B="0"/>
+                    <shininess value="0"/>
+                </color>
+            </model>
         </models >
-        <!-- group>
+        <group>
             <transform>
                 <rotate angle="90" x="0" y="1" z="0"/>
                 <scale x="0.55" y="0.55" z="0.55"/>
                 <color x="225" y="164" z="88"/>
             </transform>
             <models >
-                <model file="torus.3d"/>
+                <model file="torus.3d">
+                    <texture file="saturnRing.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
-        </group-->
+        </group>
         <group>
             <transform>
                 <translate time="160" align="True">
@@ -335,7 +470,16 @@
                 <color x="238" y="221" z="130"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -354,7 +498,16 @@
                 <color x="211" y="211" z="211"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -373,7 +526,16 @@
                 <color x="190" y="190" z="190"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -392,7 +554,16 @@
                 <color x="211" y="211" z="211"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -402,7 +573,16 @@
                 <color x="211" y="211" z="211"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
     </group>
@@ -424,7 +604,16 @@
             <color x="100" y="149" z="237"/>
         </transform>
         <models >
-            <model file="sphere.3d"/>
+            <model file="sphere.3d">
+                <texture file="uranus.jpg"/>
+                <color>
+                    <diffuse R="200" G="200" B="200"/>
+                    <ambient R="50" G="50" B="50"/>
+                    <specular R="0" G="0" B="0"/>
+                    <emissive R="0" G="0" B="0"/>
+                    <shininess value="0"/>
+                </color>
+            </model>
         </models >
         <group>
             <transform>
@@ -442,7 +631,16 @@
                 <color x="211" y="211" z="211"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -461,7 +659,16 @@
                 <color x="176" y="196" z="222"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -480,7 +687,16 @@
                 <color x="190" y="190" z="190"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -499,7 +715,16 @@
                 <color x="176" y="196" z="222"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -518,7 +743,16 @@
                 <color x="205" y="201" z="201"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
     </group>
@@ -540,7 +774,16 @@
             <color x="65" y="105" z="255"/>
         </transform>
         <models >
-            <model file="sphere.3d"/>
+            <model file="sphere.3d">
+                <texture file="neptune.jpg"/>
+                <color>
+                    <diffuse R="200" G="200" B="200"/>
+                    <ambient R="50" G="50" B="50"/>
+                    <specular R="0" G="0" B="0"/>
+                    <emissive R="0" G="0" B="0"/>
+                    <shininess value="0"/>
+                </color>
+            </model>
         </models >
         <group>
             <transform>
@@ -558,7 +801,16 @@
                 <color x="211" y="211" z="211"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -577,7 +829,16 @@
                 <color x="176" y="196" z="222"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -596,7 +857,16 @@
                 <color x="190" y="190" z="190"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
         <group>
@@ -615,12 +885,21 @@
                 <color x="176" y="196" z="222"/>
             </transform>
             <models >
-                <model file="sphere.3d"/>
+                <model file="sphere.3d">
+                    <texture file="moon.jpg"/>
+                    <color>
+                        <diffuse R="200" G="200" B="200"/>
+                        <ambient R="50" G="50" B="50"/>
+                        <specular R="0" G="0" B="0"/>
+                        <emissive R="0" G="0" B="0"/>
+                        <shininess value="0"/>
+                    </color>
+                </model>
             </models >
         </group>
     </group>
     <!-- Cintura -->
-    <group>
+    <!-- group>
         <transform>
             <scale x="0.03" y="0.03" z="0.03"/>
             <color x="112" y="128" z="144"/>
@@ -628,7 +907,7 @@
         <models>
             <model file="asteroids.3d"/>
         </models >
-    </group>
+    </group-->
     <!-- Cometa -->
     <!-- group>
         <transform>
