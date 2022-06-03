@@ -337,10 +337,10 @@ bool generatePlane(vector<string> params) {
         for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
             double tempC = column;
             double nextColumn = tempC - 1;
-            p1 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "," + to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "\n";
-            p2 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * row) + "," + to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "\n";
-            p3 = to_string(x * (nextColumn)) + "," + to_string(0.000000) + "," + to_string(z * row) + "," + to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "\n";
-            p4 = to_string(x * nextColumn) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "," + to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "\n";
+            p1 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "," + to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + to_string(1) + to_string(0) + "\n";
+            p2 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * row) + "," + to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + to_string(1) + to_string(1) + "\n";
+            p3 = to_string(x * (nextColumn)) + "," + to_string(0.000000) + "," + to_string(z * row) + "," + to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + to_string(0) + to_string(1) + "\n";
+            p4 = to_string(x * nextColumn) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "," + to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + to_string(0) + to_string(0) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
         }
     }
@@ -362,12 +362,21 @@ bool generateBox(vector<string> params) {
     if (found <= 0) return false;
 
     string p1, p2, p3, p4;
-    float pnd[3] = {0.0, -1.0, 0.0}, pnu[3] = { 0.0, 1.0, 0.0 }, pnr[3] = { 1.0, 0.0, 0.0 };
+    float pnd[3] = { 0.0, -1.0, 0.0 }, pnu[3] = { 0.0, 1.0, 0.0 }, pnr[3] = { 1.0, 0.0, 0.0 };
     float pnl[3] = { -1.0, 0.0, 0.0 }, pnf[3] = { 0.0, 0.0, 1.0 }, pnb[3] = { 0.0, 0.0, -1.0 };;
 
     float step = length / divisions;
     float deviation = length / 2;
 
+    float textureHoriz = (1.0f / 3.0f) / divisions;
+    float textureVert = (1.0f / 2.0f) / divisions;
+
+    float downHoriz = 0, downVert = 0;
+    float upHoriz = 1.0f / 3.0f, upVert = 1.0f / 2.0f - textureVert;
+    float rightHoriz = (1.0f / 3.0f) * 2, rightVert = (1.0f / 2.0f) - textureVert;
+    float leftHoriz = 0, leftVert = 1 - textureVert;
+    float frontHoriz = 1.0f / 3.0f, frontVert = 1 - textureVert;
+    float backHoriz = (1.0f / 3.0f) * 2, backVert = 1 - textureVert;
 
     // string que guarda os pontos que estruturam a figura
     string res = to_string(6 * (int)(pow(divisions, 2) * 6)) + "\n";
@@ -375,47 +384,101 @@ bool generateBox(vector<string> params) {
     for (int j = 0; j < divisions; j++) {
         for (int i = 0; i < divisions; i++) {
             // DOWN FACE
-            p1 = to_string(i * step - deviation) + "," + to_string(-deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnd[0]) + "," + to_string(pnd[1]) + "," + to_string(pnd[2]) + "\n";
-            p2 = to_string(i * step - deviation) + "," + to_string(-deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnd[0]) + "," + to_string(pnd[1]) + "," + to_string(pnd[2]) + "\n";
-            p3 = to_string((i + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnd[0]) + "," + to_string(pnd[1]) + "," + to_string(pnd[2]) + "\n";
-            p4 = to_string((i + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnd[0]) + "," + to_string(pnd[1]) + "," + to_string(pnd[2]) + "\n";
+            p1 = to_string(i * step - deviation) + "," + to_string(-deviation) + "," + to_string(j * step - deviation) + "," +
+                    to_string(pnd[0]) + "," + to_string(pnd[1]) + "," + to_string(pnd[2]) +
+                    to_string(downHoriz) + to_string(downVert) + "\n";
+            p2 = to_string(i * step - deviation) + "," + to_string(-deviation) + "," + to_string((j + 1) * step - deviation) + "," +
+                    to_string(pnd[0]) + "," + to_string(pnd[1]) + "," + to_string(pnd[2]) +
+                    to_string(downHoriz + textureHoriz) + to_string(downVert) + "\n";
+            p3 = to_string((i + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string((j + 1) * step - deviation) + "," +
+                    to_string(pnd[0]) + "," + to_string(pnd[1]) + "," + to_string(pnd[2]) +
+                    to_string(downHoriz + textureHoriz) + to_string(downVert + textureVert) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string(j * step - deviation) + "," +
+                    to_string(pnd[0]) + "," + to_string(pnd[1]) + "," + to_string(pnd[2]) +
+                    to_string(downHoriz) + to_string(downVert + textureVert) + "\n";
             res = res + p1 + p3 + p2 + p3 + p1 + p4;
 
             // RIGHT FACE
-            p1 = to_string(length - deviation) + "," + to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnr[0]) + "," + to_string(pnr[1]) + "," + to_string(pnr[2]) + "\n";
-            p2 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnr[0]) + "," + to_string(pnr[1]) + "," + to_string(pnr[2]) + "\n";
-            p3 = to_string(length - deviation) + "," + to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnr[0]) + "," + to_string(pnr[1]) + "," + to_string(pnr[2]) + "\n";
-            p4 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnr[0]) + "," + to_string(pnr[1]) + "," + to_string(pnr[2]) + "\n";
+            p1 = to_string(length - deviation) + "," + to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," +
+                    to_string(pnr[0]) + "," + to_string(pnr[1]) + "," + to_string(pnr[2]) +
+                    to_string(rightHoriz) + to_string(rightVert + textureVert) + "\n";
+            p2 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," +
+                    to_string(pnr[0]) + "," + to_string(pnr[1]) + "," + to_string(pnr[2]) +
+                    to_string(rightHoriz) + to_string(rightVert) + "\n";
+            p3 = to_string(length - deviation) + "," + to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," +
+                    to_string(pnr[0]) + "," + to_string(pnr[1]) + "," + to_string(pnr[2]) +
+                    to_string(rightHoriz + textureHoriz) + to_string(rightVert) + "\n";
+            p4 = to_string(length - deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," +
+                    to_string(pnr[0]) + "," + to_string(pnr[1]) + "," + to_string(pnr[2]) +
+                    to_string(rightHoriz + textureHoriz) + to_string(rightVert + textureVert) + "\n";
             res = res + p1 + p2 + p3 + p4 + p2 + p1;
 
             // UP FACE
-            p1 = to_string(i * step - deviation) + "," + to_string(length - deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnu[0]) + "," + to_string(pnu[1]) + "," + to_string(pnu[2]) + "\n";
-            p2 = to_string(i * step - deviation) + "," + to_string(length - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnu[0]) + "," + to_string(pnu[1]) + "," + to_string(pnu[2]) + "\n";
-            p3 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnu[0]) + "," + to_string(pnu[1]) + "," + to_string(pnu[2]) + "\n";
-            p4 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnu[0]) + "," + to_string(pnu[1]) + "," + to_string(pnu[2]) + "\n";
+            p1 = to_string(i * step - deviation) + "," + to_string(length - deviation) + "," + to_string(j * step - deviation) + "," +
+                    to_string(pnu[0]) + "," + to_string(pnu[1]) + "," + to_string(pnu[2]) +
+                    to_string(upHoriz + textureHoriz) + to_string(upVert) + "\n";
+            p2 = to_string(i * step - deviation) + "," + to_string(length - deviation) + "," + to_string((j + 1) * step - deviation) + "," +
+                    to_string(pnu[0]) + "," + to_string(pnu[1]) + "," + to_string(pnu[2]) +
+                    to_string(upHoriz + textureHoriz) + to_string(upVert + textureVert) + "\n";
+            p3 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string((j + 1) * step - deviation) + "," +
+                    to_string(pnu[0]) + "," + to_string(pnu[1]) + "," + to_string(pnu[2]) +
+                    to_string(upHoriz) + to_string(upVert + textureVert) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string(j * step - deviation) + "," +
+                    to_string(pnu[0]) + "," + to_string(pnu[1]) + "," + to_string(pnu[2]) +
+                    to_string(upHoriz) + to_string(upVert) + "\n";
             res = res + p1 + p2 + p3 + p4 + p1 + p3;
 
             // LEFT FACE
-            p1 = to_string(-deviation) + "," + to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnl[0]) + "," + to_string(pnl[1]) + "," + to_string(pnl[2]) + "\n";
-            p2 = to_string(-deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(pnl[0]) + "," + to_string(pnl[1]) + "," + to_string(pnl[2]) + "\n";
-            p3 = to_string(-deviation) + "," + to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnl[0]) + "," + to_string(pnl[1]) + "," + to_string(pnl[2]) + "\n";
-            p4 = to_string(-deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(pnl[0]) + "," + to_string(pnl[1]) + "," + to_string(pnl[2]) + "\n";
+            p1 = to_string(-deviation) + "," + to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," +
+                    to_string(pnl[0]) + "," + to_string(pnl[1]) + "," + to_string(pnl[2]) +
+                    to_string(leftHoriz) + to_string(leftVert + textureVert) + "\n";
+            p2 = to_string(-deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," +
+                    to_string(pnl[0]) + "," + to_string(pnl[1]) + "," + to_string(pnl[2]) +
+                    to_string(leftHoriz) + to_string(leftVert) +"\n";
+            p3 = to_string(-deviation) + "," + to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," +
+                    to_string(pnl[0]) + "," + to_string(pnl[1]) + "," + to_string(pnl[2]) +
+                    to_string(leftHoriz + textureHoriz) + to_string(leftVert) + "\n";
+            p4 = to_string(-deviation) + "," + to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," +
+                    to_string(pnl[0]) + "," + to_string(pnl[1]) + "," + to_string(pnl[2]) +
+                    to_string(leftHoriz + textureHoriz) + to_string(leftVert + textureVert) + "\n";
             res = res + p1 + p2 + p3 + p2 + p4 + p3;
 
             // FRONT FACE
-            p1 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string(pnf[0]) + "," + to_string(pnf[1]) + "," + to_string(pnf[2]) + "\n";
-            p2 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(length - deviation) + "," + to_string(pnf[0]) + "," + to_string(pnf[1]) + "," + to_string(pnf[2]) + "\n";
-            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(length - deviation) + "," + to_string(pnf[0]) + "," + to_string(pnf[1]) + "," + to_string(pnf[2]) + "\n";
-            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(length - deviation) + "," + to_string(pnf[0]) + "," + to_string(pnf[1]) + "," + to_string(pnf[2]) + "\n";
+            p1 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(length - deviation) + "," +
+                    to_string(pnf[0]) + "," + to_string(pnf[1]) + "," + to_string(pnf[2]) +
+                    to_string(frontHoriz) + to_string(frontVert + textureVert) + "\n";
+            p2 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(length - deviation) + "," +
+                    to_string(pnf[0]) + "," + to_string(pnf[1]) + "," + to_string(pnf[2]) +
+                    to_string(frontHoriz) + to_string(frontVert) + "\n";
+            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(length - deviation) + "," +
+                    to_string(pnf[0]) + "," + to_string(pnf[1]) + "," + to_string(pnf[2]) +
+                    to_string(frontHoriz + textureHoriz) + to_string(frontVert) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(length - deviation) + "," +
+                    to_string(pnf[0]) + "," + to_string(pnf[1]) + "," + to_string(pnf[2]) +
+                    to_string(frontHoriz + textureHoriz) + to_string(frontVert + textureVert) + "\n";
             res = res + p1 + p2 + p3 + p4 + p1 + p3;
 
             // BACK FACE
-            p1 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string(pnb[0]) + "," + to_string(pnb[1]) + "," + to_string(pnb[2]) + "\n";
-            p2 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(-deviation) + "," + to_string(pnb[0]) + "," + to_string(pnb[1]) + "," + to_string(pnb[2]) + "\n";
-            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(-deviation) + "," + to_string(pnb[0]) + "," + to_string(pnb[1]) + "," + to_string(pnb[2]) + "\n";
-            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(-deviation) + "," + to_string(pnb[0]) + "," + to_string(pnb[1]) + "," + to_string(pnb[2]) + "\n";
+            p1 = to_string(i * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(-deviation) + "," +
+                    to_string(pnb[0]) + "," + to_string(pnb[1]) + "," + to_string(pnb[2]) +
+                    to_string(backHoriz) + to_string(backVert + textureVert) + "\n";
+            p2 = to_string((i + 1) * step - deviation) + "," + to_string((j + 1) * step - deviation) + "," + to_string(-deviation) + "," +
+                    to_string(pnb[0]) + "," + to_string(pnb[1]) + "," + to_string(pnb[2]) +
+                    to_string(backHoriz) + to_string(backVert) + "\n";
+            p3 = to_string(i * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(-deviation) + "," +
+                    to_string(pnb[0]) + "," + to_string(pnb[1]) + "," + to_string(pnb[2]) +
+                    to_string(backHoriz + textureHoriz) + to_string(backVert) + "\n";
+            p4 = to_string((i + 1) * step - deviation) + "," + to_string(j * step - deviation) + "," + to_string(-deviation) + "," +
+                    to_string(pnb[0]) + "," + to_string(pnb[1]) + "," + to_string(pnb[2]) +
+                    to_string(backHoriz + textureHoriz) + to_string(backVert + textureVert) + "\n";
             res = res + p1 + p2 + p3 + p3 + p2 + p4;
         }
+        downHoriz += textureHoriz; downVert = 0;
+        upHoriz += textureHoriz; upVert = 1.0f / 2.0f - textureVert;
+        rightHoriz = (1.0f / 3.0f) * 2; rightVert -= textureVert;
+        leftHoriz = 0; leftVert -= textureVert;
+        frontHoriz = 1.0f / 3.0f; frontVert -= textureVert
+        backHoriz = (1.0f / 3.0f) * 2; backVert -= textureVert;
     }
 
     writeInFile(res, file);
@@ -582,7 +645,7 @@ bool generateSphere(vector<string> params) {
     // Pontos
     double x0, x1, x2, x3, y0, y1, y2, y3, z0, z1, z2, z3;
 
-    double xn0, xn1, xn2, xn3, yn0, yn1, yn2, yn3, zn0, zn1, zn2, zn3;
+    float xn0, xn1, xn2, xn3, yn0, yn1, yn2, yn3, zn0, zn1, zn2, zn3;
 
     // Ciclo para determinar os pontos da esfera
     for (int i = 0; i < totalSlices; i++) {
