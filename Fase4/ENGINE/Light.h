@@ -15,15 +15,23 @@ public:
 
     Light();
 
-    Light(std::string type, Point coord);
+    Light(std::string type, Point pos, Point dir, float cutoff);
 
     void setType(std::string type);
 
+    void setCutoff(float cutoff);
+
     std::string getType();
 
-    void setCoord(Point p);
+    float getCutoff();
 
-    Point getCoord();
+    void setPos(Point p);
+
+    void setDir(Point d);
+
+    Point getPos();
+
+    Point getDir();
 
     ~Light();
 

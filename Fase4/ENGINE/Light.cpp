@@ -19,14 +19,18 @@ class Light::LightBuilder {
 
     private:
         std::string type;
-        Point coord;
+        Point pos;
+        Point dir;
+        float cutoff;
 
     public:
         LightBuilder() = default;
 
-        LightBuilder(std::string type, Point coord) {
+        LightBuilder(std::string type, Point pos, Point dir, float cutoff) {
             this->type = type;
-            this->coord = coord;
+            this->pos = pos;
+            this->dir = dir;
+            this->cutoff = cutoff;
         }
 
         void setType(std::string type) {
@@ -37,14 +41,32 @@ class Light::LightBuilder {
             return type;
         }
 
-        void setCoord(Point p) {
-            coord.setX(p.getX());
-            coord.setY(p.getY());
-            coord.setZ(p.getZ());
+        void setCutoff(float cutoff) {
+            this->cutoff = cutoff;
         }
 
-        Point getCoord() {
-            return coord;
+        float getCutoff() {
+            return cutoff;
+        }
+
+        void setPos(Point p) {
+            pos.setX(p.getX());
+            pos.setY(p.getY());
+            pos.setZ(p.getZ());
+        }
+
+        Point getPos() {
+            return pos;
+        }
+
+        void setDir(Point d) {
+            dir.setX(d.getX());
+            dir.setY(d.getY());
+            dir.setZ(d.getZ());
+        }
+
+        Point getDir() {
+            return dir;
         }
 
         ~LightBuilder() = default;
@@ -52,22 +74,38 @@ class Light::LightBuilder {
 
 Light::Light() : lightBuilder{ new class LightBuilder() } {}
 
-Light::Light(std::string type, Point coord) : lightBuilder{ new class LightBuilder(type,coord) } {}
+Light::Light(std::string type, Point pos, Point dir, float cutoff) : lightBuilder{ new class LightBuilder(type, pos, dir, cutoff) } {}
 
 void Light::setType(std::string type) {
     lightBuilder->setType(type);
 }
 
-void Light::setCoord(Point coord) {
-    lightBuilder->setCoord(coord);
+void Light::setCutoff(float cutoff) {
+    lightBuilder->setCutoff(cutoff);
+}
+
+void Light::setPos(Point pos) {
+    lightBuilder->setPos(pos);
+}
+
+void Light::setDir(Point dir) {
+    lightBuilder->setDir(dir);
 }
 
 std::string Light::getType() {
     return lightBuilder->getType();
 }
 
-Point Light::getCoord() {
-    return lightBuilder->getCoord();
+float Light::getCutoff() {
+    return lightBuilder->getCutoff();
+}
+
+Point Light::getPos() {
+    return lightBuilder->getPos();
+}
+
+Point Light::getDir() {
+    return lightBuilder->getDir();
 }
 
 

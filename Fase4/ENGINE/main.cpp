@@ -505,24 +505,24 @@ Group parseGroup(XMLElement* group, int father) {
 
                             while (color != nullptr) {
                                 if (diffuse.compare(color->Name()) == 0) {
-                                    float R = atof(color->Attribute("R"));
-                                    float G = atof(color->Attribute("G"));
-                                    float B = atof(color->Attribute("B"));
+                                    float difR = atof(color->Attribute("R"));
+                                    float difG = atof(color->Attribute("G"));
+                                    float difB = atof(color->Attribute("B"));
                                 }
                                 else if (ambient.compare(color->Name()) == 0) {
-                                    float R = atof(color->Attribute("R"));
-                                    float G = atof(color->Attribute("G"));
-                                    float B = atof(color->Attribute("B"));
+                                    float ambR = atof(color->Attribute("R"));
+                                    float ambG = atof(color->Attribute("G"));
+                                    float ambB = atof(color->Attribute("B"));
                                 }
                                 else if (specular.compare(color->Name()) == 0) {
-                                    float R = atof(color->Attribute("R"));
-                                    float G = atof(color->Attribute("G"));
-                                    float B = atof(color->Attribute("B"));
+                                    float speR = atof(color->Attribute("R"));
+                                    float speG = atof(color->Attribute("G"));
+                                    float speB = atof(color->Attribute("B"));
                                 }
                                 else if (emissive.compare(color->Name()) == 0) {
-                                    float R = atof(color->Attribute("R"));
-                                    float G = atof(color->Attribute("G"));
-                                    float B = atof(color->Attribute("B"));
+                                    float emiR = atof(color->Attribute("R"));
+                                    float emiG = atof(color->Attribute("G"));
+                                    float emiB = atof(color->Attribute("B"));
                                 }
                                 else if (shininess.compare(color->Name()) == 0) {
                                     string value = model->Attribute("value");
