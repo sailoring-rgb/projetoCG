@@ -477,7 +477,7 @@ bool generateBox(vector<string> params) {
         upHoriz += textureHoriz; upVert = 1.0f / 2.0f - textureVert;
         rightHoriz = (1.0f / 3.0f) * 2; rightVert -= textureVert;
         leftHoriz = 0; leftVert -= textureVert;
-        frontHoriz = 1.0f / 3.0f; frontVert -= textureVert
+        frontHoriz = 1.0f / 3.0f; frontVert -= textureVert;
         backHoriz = (1.0f / 3.0f) * 2; backVert -= textureVert;
     }
 
