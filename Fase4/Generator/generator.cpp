@@ -869,10 +869,14 @@ bool generateHalfSphere(vector<string> params) {
 
             totalPoints += 6;
 
-            string p0 = to_string(x0) + "," + to_string(y0) + "," + to_string(z0) + "\n";
-            string p1 = to_string(x1) + "," + to_string(y1) + "," + to_string(z1) + "\n";
-            string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(z2) + "\n";
-            string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) + "\n";
+            string p0 = to_string(x0) + "," + to_string(y0) + "," + to_string(z0) +
+                    to_string(j * textureHoriz) + "," + to_string(i * textureVert + textureVert) + "\n";
+            string p1 = to_string(x1) + "," + to_string(y1) + "," + to_string(z1) +
+                    to_string(j * textureHoriz) + "," + to_string(i * textureVert) + "\n";
+            string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(z2) +
+                    to_string(j * textureHoriz + textureHoriz) + "," + to_string(i * textureVert) + "\n";
+            string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) +
+                    to_string(j * textureHoriz + textureHoriz) + "," + to_string(i * textureVert + textureVert) + "\n";
             aux = aux + p3 + p1 + p2 + p2 + p1 + p0;
 
         }
