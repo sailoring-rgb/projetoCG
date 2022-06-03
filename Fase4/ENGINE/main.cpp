@@ -499,7 +499,6 @@ Group parseGroup(XMLElement* group, int father) {
                     while (model != nullptr) {
                         if (texture.compare(model->Name()) == 0) {
                             string textura = model->Attribute("file");
-                            cout << textura << endl;
                         }
                         else if (color.compare(model->Name()) == 0) {
                             XMLElement* color = model->FirstChildElement();
