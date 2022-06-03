@@ -32,9 +32,6 @@ public:
     Point getPos();
 
     Point getDir();
-
-    ~Light();
-
 };
 
 #endif

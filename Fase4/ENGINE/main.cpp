@@ -681,7 +681,6 @@ void parseLights(XMLElement* light) {
     string point = "point";
     string directional = "directional";
     string spotlight = "spotlight";
-    Light l = Light();
     Point p;
     p.setX(0);
     p.setY(0);
@@ -690,6 +689,8 @@ void parseLights(XMLElement* light) {
     XMLElement* element = light->FirstChildElement();
 
     while (element != nullptr) {
+
+        Light l = Light();
 
         if (lig.compare(element->Name()) == 0) {
             string type = element->Attribute("type");
@@ -706,7 +707,7 @@ void parseLights(XMLElement* light) {
                 pos.setZ(posZ);
                 l.setPos(pos);
                 l.setDir(p);
-                l.setCutoff(0);
+                l.setCutoff(0.0);
 
                 lights.push_back(l);
             }
@@ -721,7 +722,7 @@ void parseLights(XMLElement* light) {
                 dir.setZ(dirZ);
                 l.setDir(dir);
                 l.setPos(p);
-                l.setCutoff(0);
+                l.setCutoff(0.0);
 
                 lights.push_back(l);
             }
@@ -733,7 +734,7 @@ void parseLights(XMLElement* light) {
                 float dirY = stod(element->Attribute("dirY"));
                 float dirZ = stod(element->Attribute("dirZ"));
                 float cutoff = stod(element->Attribute("cutoff"));
-
+                
                 Point pos,dir;
                 pos.setX(posX);
                 pos.setY(posY);
