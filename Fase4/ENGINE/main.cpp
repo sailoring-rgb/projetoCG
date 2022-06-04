@@ -570,7 +570,7 @@ Group parseGroup(XMLElement* group, int father) {
 
             if (models.compare(element->Name()) == 0) {
 
-                XMLElement* file = element->FirstChildElement("model");
+                XMLElement* file = element->FirstChildElement();
           
                 while (file != nullptr) {
 
@@ -598,33 +598,62 @@ Group parseGroup(XMLElement* group, int father) {
                             XMLElement* color = model->FirstChildElement();
 
                             while (color != nullptr) {
+                                
                                 if (diffuse.compare(color->Name()) == 0) {
-                                    float difR = atof(color->Attribute("R"));
-                                    float difG = atof(color->Attribute("G"));
-                                    float difB = atof(color->Attribute("B"));
+                                    if (color != nullptr) {
+                                        float difR = atof(color->Attribute("R"));
+                                        float difG = atof(color->Attribute("G"));
+                                        float difB = atof(color->Attribute("B"));
+
+                                        primitive.setDifR(difR);
+                                        primitive.setDifG(difG);
+                                        primitive.setDifB(difB);
+                                    }
                                 }
                                 else if (ambient.compare(color->Name()) == 0) {
-                                    float ambR = atof(color->Attribute("R"));
-                                    float ambG = atof(color->Attribute("G"));
-                                    float ambB = atof(color->Attribute("B"));
+                                    if (color != nullptr) {
+                                        float ambR = atof(color->Attribute("R"));
+                                        float ambG = atof(color->Attribute("G"));
+                                        float ambB = atof(color->Attribute("B"));
+
+                                        primitive.setAmbR(ambR);
+                                        primitive.setAmbG(ambG);
+                                        primitive.setAmbB(ambB);
+                                    }
                                 }
                                 else if (specular.compare(color->Name()) == 0) {
-                                    float speR = atof(color->Attribute("R"));
-                                    float speG = atof(color->Attribute("G"));
-                                    float speB = atof(color->Attribute("B"));
+                                    if (color != nullptr) {
+                                        float speR = atof(color->Attribute("R"));
+                                        float speG = atof(color->Attribute("G"));
+                                        float speB = atof(color->Attribute("B"));
+
+                                        primitive.setSpeR(speR);
+                                        primitive.setSpeG(speG);
+                                        primitive.setSpeB(speB);
+                                    }                                
                                 }
                                 else if (emissive.compare(color->Name()) == 0) {
-                                    float emiR = atof(color->Attribute("R"));
-                                    float emiG = atof(color->Attribute("G"));
-                                    float emiB = atof(color->Attribute("B"));
+                                    if (color != nullptr) {
+                                        float emiR = atof(color->Attribute("R"));
+                                        float emiG = atof(color->Attribute("G"));
+                                        float emiB = atof(color->Attribute("B"));
+
+                                        primitive.setEmiR(emiR);
+                                        primitive.setEmiG(emiG);
+                                        primitive.setEmiB(emiB);
+                                    }
                                 }
                                 else if (shininess.compare(color->Name()) == 0) {
-                                    string value = model->Attribute("value");
+                                    if (color != nullptr) {
+                                        float value = atof(color->Attribute("value"));
+
+                                        primitive.setShininess(value);
+                                    }
                                 }
-                                color = color->NextSiblingElement("color");
+                                color = color->NextSiblingElement();
                             }
                         }
-                        model = model->NextSiblingElement("model");
+                        model = model->NextSiblingElement();
                     }
                     g.addPrimitives(primitive);
                     file = file->NextSiblingElement();
