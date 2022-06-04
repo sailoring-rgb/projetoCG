@@ -591,12 +591,12 @@ bool generateCone(vector<string> params) {
             if (i == 0) {
                 //Base
                 string base = "0.000000,0.000000,0.000000,";
-                string normalBase = to_string(0) + "," + to_string(-1) + "," + to_string(0);
-                string baseTexture = to_string(0.8125) + "," + to_string(0.1875);
+                string normalBase = to_string(0) + "," + to_string(-1) + "," + to_string(0) + "\n";
+                string baseTexture = to_string(0.8125) + "," + to_string(0.1875) + "\n";
 
-                string p1BaseTexture = to_string(0.8125 + 0.1875 * cos(alpha)) + "," + to_string(0.1875 + 0.1875 * sin(alpha));
+                string p1BaseTexture = to_string(0.8125 + 0.1875 * cos(alpha)) + "," + to_string(0.1875 + 0.1875 * sin(alpha)) + "\n";
 
-                string p2BaseTexture = to_string(0.8125 + 0.1875 * cos(alpha2)) + "," + to_string(0.1875 + 0.1875 * sin(alpha2));
+                string p2BaseTexture = to_string(0.8125 + 0.1875 * cos(alpha2)) + "," + to_string(0.1875 + 0.1875 * sin(alpha2)) + "\n";
 
                 res = res + p3 + normalBase + p1 + normalBase + p2 + normalBase + p3 + normalBase + p2 + normalBase + p4 + normalBase;
                 res = res + base + normalBase + p2 + normalBase + p2BaseTexture + p1 + normalBase + p1BaseTexture;
@@ -904,13 +904,13 @@ bool generateHalfSphere(vector<string> params) {
 
             totalPoints += 6;
 
-            string p0 = to_string(x0) + "," + to_string(y0) + "," + to_string(z0) +
+            string p0 = to_string(x0) + "," + to_string(y0) + "," + to_string(z0) +  "," +
                     to_string(j * textureHoriz) + "," + to_string(i * textureVert + textureVert) + "\n";
-            string p1 = to_string(x1) + "," + to_string(y1) + "," + to_string(z1) +
+            string p1 = to_string(x1) + "," + to_string(y1) + "," + to_string(z1) +  "," +
                     to_string(j * textureHoriz) + "," + to_string(i * textureVert) + "\n";
-            string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(z2) +
+            string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(z2) +  "," +
                     to_string(j * textureHoriz + textureHoriz) + "," + to_string(i * textureVert) + "\n";
-            string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) +
+            string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) +  "," +
                     to_string(j * textureHoriz + textureHoriz) + "," + to_string(i * textureVert + textureVert) + "\n";
             aux = aux + p3 + p1 + p2 + p2 + p1 + p0;
 
