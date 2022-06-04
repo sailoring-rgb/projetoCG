@@ -11,6 +11,8 @@
 #include <cstring>
 #include <string>
 #include <algorithm>
+#include <iterator>
+#include <unordered_map>
 #include "Group.h"
 #include "Trans.h"
 #include "Light.h"
@@ -41,6 +43,8 @@ vector<Group> groups;
 
 vector<Light> lights;
 
+unordered_map<string, GLuint> texturas;
+
 string pathFile;
 
 //Variables needed to the keyboard function.
@@ -52,6 +56,9 @@ float angle2 = 0.0f;
 float zoomFactor = 1.0f;
 float max_zoom = 2.5f;
 float min_zoom = 0.5f;
+float camX = 0, camY, camZ = 5;
+int startX, startY, tracking = 0;
+int alpha = 0, beta = 0, r = 5;
 
 GLdouble eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ;
 GLdouble fov, near, far;
@@ -64,7 +71,7 @@ float prev_y[3] = { 0, 1, 0 };
 float t = 0;
 
 vector<float> vertexB, coordNormal, coordTextura;
-GLuint buffers[1];
+GLuint buffers[3];
 GLuint vboZone = 0;
 
 
@@ -97,7 +104,28 @@ void changeSize(int w, int h) {
     // return to the model view matrix mode
     glMatrixMode(GL_MODELVIEW);
 }
+/*
+* Function that founds the path to a certain image.
+* @param image
+*/
+string getImagePath(string imagem) {
 
+    char tmp[256];
+
+    getcwd(tmp, 256); 
+
+    string path(tmp);
+
+    int found = path.find("ENGINE"); 
+
+    replace(path.begin(), path.end(), '\\', '/');
+    path.erase(path.begin() + found, path.end());
+
+    //caminho para o ficheiro XML
+    path = path + "Textures/" + imagem;
+
+    return path;
+}
 
 /**
  * Function that reads a file, given the filename.
@@ -113,6 +141,7 @@ Primitive readFile(string file) {
     getline(MyReadFile, myText);
     int vertices = stoi(myText);
 
+    //cout << myText << endl;
     Primitive primitive;
 
     //nós temos 3 pontos que equivale a 9 floats
@@ -156,10 +185,10 @@ Primitive readFile(string file) {
         coordNormal.push_back(tokens[4]);
         coordNormal.push_back(tokens[5]);
 
-        //VBO normal
-        /*coordTextura.push_back(tokens[6]);
+        //VBO texturas
+        coordTextura.push_back(tokens[6]);
         coordTextura.push_back(tokens[7]);
-        coordTextura.push_back(0);*/
+        coordTextura.push_back(0);
 
         primitive.addPoint(point);
     }
@@ -271,18 +300,11 @@ void drawPrimitives(Group g) {
                 glPushMatrix();
                 glRotated(6 * i, 0, 1, 0);
                 glTranslated(80 + arrx[i], arry[i], 0);
+               
+                glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+                glVertexPointer(3, GL_FLOAT, 0, 0);
+                glDrawArrays(GL_TRIANGLES, vboZone, nrVertices);
                 
-                glBegin(GL_TRIANGLES);
-                for (int c = 0; c < p.getNrVertices(); c++) {
-                    Point point = p.getPoint(c);
-
-                    glVertex3f(point.getX(), point.getY(), point.getZ());
-                }
-                glEnd();
-
-                glBegin(GL_LINES);
-                glEnd();
-
                 glPopMatrix();
             }
         }
@@ -404,6 +426,69 @@ void polygonMode(unsigned char key_code, int x, int y) {
     glutPostRedisplay();
 }
 
+void processMouseButtons(int button, int state, int xx, int yy)
+{
+    if (state == GLUT_DOWN) {
+        startX = xx;
+        startY = yy;
+        if (button == GLUT_LEFT_BUTTON)
+            tracking = 1;
+        else if (button == GLUT_RIGHT_BUTTON)
+            tracking = 2;
+        else
+            tracking = 0;
+    }
+    else if (state == GLUT_UP) {
+        if (tracking == 1) {
+            alpha += (xx - startX);
+            beta += (yy - startY);
+        }
+        else if (tracking == 2) {
+
+            r -= yy - startY;
+            if (r < 3)
+                r = 3.0;
+        }
+        tracking = 0;
+    }
+}
+
+void processMouseMotion(int xx, int yy)
+{
+    int deltaX, deltaY;
+    int alphaAux, betaAux;
+    int rAux;
+
+    if (!tracking)
+        return;
+
+    deltaX = xx - startX;
+    deltaY = yy - startY;
+
+    if (tracking == 1) {
+
+        alphaAux = alpha + deltaX;
+        betaAux = beta + deltaY;
+
+        if (betaAux > 85.0)
+            betaAux = 85.0;
+        else if (betaAux < -85.0)
+            betaAux = -85.0;
+
+        rAux = r;
+    }
+    else if (tracking == 2) {
+
+        alphaAux = alpha;
+        betaAux = beta;
+        rAux = r - deltaY;
+        if (rAux < 3)
+            rAux = 3;
+    }
+    camX = rAux * sin(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
+    camZ = rAux * cos(alphaAux * 3.14 / 180.0) * cos(betaAux * 3.14 / 180.0);
+    camY = rAux * sin(betaAux * 3.14 / 180.0);
+}
 
 /**
  * Function that inits glut.
@@ -426,17 +511,17 @@ bool initGlut(int argc, char** argv) {
 
     // put here the registration of the keyboard callbacks
     glutKeyboardFunc(polygonMode);
+    glutMouseFunc(processMouseButtons);
     glutSpecialFunc(rodar);
+    glutMotionFunc(processMouseMotion);
 
     glewInit();  
 
     //  OpenGL settings
-    glEnableClientState(GL_VERTEX_ARRAY);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glPolygonMode(GL_FRONT, GL_LINE);
 
-    //glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_INDEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
@@ -494,7 +579,6 @@ Group parseGroup(XMLElement* group, int father) {
                     string path = pathFile + namefile;
                     Primitive primitive = readFile(path);
 
-                    g.addPrimitives(primitive);
                     g.setNameFile(namefile);
 
                     XMLElement* model = file->FirstChildElement();
@@ -502,6 +586,13 @@ Group parseGroup(XMLElement* group, int father) {
                     while (model != nullptr) {
                         if (texture.compare(model->Name()) == 0) {
                             string textura = model->Attribute("file");
+                            
+                            if (textura.size() != 0) {
+                                string pathImg = getImagePath(textura);
+                                primitive.setTextura(pathImg);
+                                texturas.insert({ pathImg, -1 });
+                            }
+                            else primitive.setTextura("null");
                         }
                         else if (color.compare(model->Name()) == 0) {
                             XMLElement* color = model->FirstChildElement();
@@ -535,6 +626,7 @@ Group parseGroup(XMLElement* group, int father) {
                         }
                         model = model->NextSiblingElement("model");
                     }
+                    g.addPrimitives(primitive);
                     file = file->NextSiblingElement();
                 }
             }
@@ -689,7 +781,7 @@ void parseLights(XMLElement* light) {
     XMLElement* element = light->FirstChildElement();
 
     while (element != nullptr) {
-
+                
         Light l = Light();
 
         if (lig.compare(element->Name()) == 0) {

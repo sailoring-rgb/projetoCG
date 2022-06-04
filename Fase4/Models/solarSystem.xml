@@ -899,7 +899,7 @@
         </group>
     </group>
     <!-- Cintura -->
-    <!-- group>
+    <group>
         <transform>
             <scale x="0.03" y="0.03" z="0.03"/>
             <color x="112" y="128" z="144"/>
@@ -907,7 +907,7 @@
         <models>
             <model file="asteroids.3d"/>
         </models >
-    </group-->
+    </group>
     <!-- Cometa -->
     <!-- group>
         <transform>
