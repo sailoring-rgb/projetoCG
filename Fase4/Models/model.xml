@@ -1,24 +1,22 @@
 <world>
-    <model model="box.3d"/>
-    <model model="sphere.3d"/>
-    <model model="plane.3d"/>
-    <model model="box.3d"/>
-    <model model="sphere.3d"/>
-    <model model="cone.3d"/>
-    <model model="cylinder.3d"/>
-    <model model="torus.3d"/>
-    <model model="sphere.3d"/>
-    <model model="sphere.3d"/>
-    <model model="sphere.3d"/>
-    <model model="torus.3d"/>
-    <model model="torus.3d"/>
-    <model model="torus.3d"/>
-    <model model="torus.3d"/>
-    <model model="torus.3d"/>
-    <model model="torus.3d"/>
-    <model model="sphere.3d"/>
-    <model model="box.3d"/>
-    <model model="plane.3d"/>
-    <model model="cone.3d"/>
-    <model model="cylinder.3d"/>
+    <camera>
+        <position x="5.0" y="5.0" z="5.0"/>
+        <lookAt x="0.0" y="0.0" z="0.0"/>
+        <up x="0.0" y="1.0" z="0.0"/>
+        <projection fov="45" near="1" far="1000"/>
+    </camera>
+    <lights>
+        <light type="point" posX="0" posY="0" posZ="0"/>
+        <light type="directional" dirX="1" dirY="1" dirZ="1"/>
+        <light type="spotlight" posX="0" posY="10" posZ="0" dirX="1" dirY="1" dirZ="1" cutoff="45"/>
+    </lights>
+    <group>
+        <transform>
+            <scale x="0.5" y="0.5" z="0.5"/>
+            <color x="255" y="170" z="0"/>
+        </transform>
+        <models>
+            <model file="torus.3d"/>
+        </models>
+    </group>
 </world>
