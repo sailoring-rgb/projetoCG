@@ -1,4 +1,10 @@
 <world>
     <model model="box.3d"/>
     <model model="sphere.3d"/>
+    <model model="plane.3d"/>
+    <model model="box.3d"/>
+    <model model="sphere.3d"/>
+    <model model="cone.3d"/>
+    <model model="cylinder.3d"/>
+    <model model="torus.3d"/>
 </world>
