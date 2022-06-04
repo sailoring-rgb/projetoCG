@@ -785,32 +785,54 @@ bool generateTorus(vector<string>params) {
     float stepStack = (2 * M_PI) / stacks;
 
     int totalPoints = 0;
-    float x, y, z;
+    float x, y, z, xn, yn, zn;
 
+    /*
+     * f.addNormalPoint(cos(phi) * cos(theta), cos(phi) * sin(theta), sin(phi));
+            f.addNormalPoint(cos(phi) * cos(theta + delta1), cos(phi) * sin(theta + delta1), sin(phi));
+            f.addNormalPoint(cos(phi + delta2) * cos(theta + delta1), cos(phi + delta2) * sin(theta + delta1), sin(phi + delta2));
+            f.addNormalPoint(cos(phi + delta2) * cos(theta), cos(phi + delta2) * sin(theta), sin(phi + delta2));
+     */
     for (int i = 0; i < slices; i++) {
         for (int j = 0; j < stacks; j++) {
             x = (rad + dist * cos(stepSlice * i)) * cos(stepStack * j);
             y = dist * sin(stepSlice * i);
             z = (rad + dist * cos(stepSlice * i)) * sin(stepStack * j);
-            string p1 = to_string(x) + "," + to_string(y) + "," + to_string(z) +
+            xn = cos(stepSlice * i) * cos(stepStack * j);
+            yn = sin(stepSlice * i);
+            zn = cos(stepSlice * i) * sin(stepStack * j);
+            string p1 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "," +
+                        to_string(xn) + "," + to_string(yn) + "," + to_string(zn) + "," +
                         to_string(i * textureHoriz) + "," + to_string(j * textureVert) + "\n";
 
             x = (rad + dist * cos(stepSlice * (i + 1))) * cos(stepStack * j);
             y = dist * sin(stepSlice * (i + 1));
             z = (rad + dist * cos(stepSlice * (i + 1))) * sin(stepStack * j);
-            string p2 = to_string(x) + "," + to_string(y) + "," + to_string(z) +
+            xn = cos(stepSlice * (i + 1)) * cos(stepStack * j);
+            yn = sin(stepSlice * (i + 1));
+            zn = cos(stepSlice * (i + 1)) * sin(stepStack * j);
+            string p2 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "," +
+                        to_string(xn) + "," + to_string(yn) + "," + to_string(zn) + "," +
                         to_string((i+1) * textureHoriz) + "," + to_string(j * textureVert) + "\n";
 
             x = (rad + dist * cos(stepSlice * (i + 1))) * cos(stepStack * (j + 1));
             y = dist * sin(stepSlice * (i + 1));
             z = (rad + dist * cos(stepSlice * (i + 1))) * sin(stepStack * (j + 1));
-            string p3 = to_string(x) + "," + to_string(y) + "," + to_string(z) +
+            xn = cos(stepSlice * (i + 1)) * cos(stepStack * (j + 1));
+            yn = sin(stepSlice * (i + 1));
+            zn = cos(stepSlice * (i + 1)) * sin(stepStack * (j + 1));
+            string p3 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "," +
+                        to_string(xn) + "," + to_string(yn) + "," + to_string(zn) + "," +
                         to_string((i+1) * textureHoriz) + "," + to_string((j+1) * textureVert) + "\n";
 
             x = (rad + dist * cos(stepSlice * i)) * cos(stepStack * (j + 1));
             y = dist * sin(stepSlice * i);
             z = (rad + dist * cos(stepSlice * i)) * sin(stepStack * (j + 1));
-            string p4 = to_string(x) + "," + to_string(y) + "," + to_string(z) +
+            xn = cos(stepSlice * i) * cos(stepStack * (j + 1));
+            yn = sin(stepSlice * i);
+            zn = cos(stepSlice * i) * sin(stepStack * (j + 1));
+            string p4 = to_string(x) + "," + to_string(y) + "," + to_string(z) + "," +
+                        to_string(xn) + "," + to_string(yn) + "," + to_string(zn) + "," +
                         to_string(i * textureHoriz) + "," + to_string((j+1) * textureVert) + "\n";
 
             aux = aux + p1 + p2 + p4 + p2 + p3 + p4;
