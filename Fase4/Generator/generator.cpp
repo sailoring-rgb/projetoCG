@@ -523,6 +523,7 @@ bool generateCone(vector<string> params) {
 
     //calcular a altura de cada stack
     double HeightofStack = height / stack;
+    double normalized_y = cos(atan(height / radius));
 
     //Circunferencia de pontos, dados os slices a altura e o raio construido por stack
     for (double i = 0; i < stack; i++) {
@@ -551,46 +552,54 @@ bool generateCone(vector<string> params) {
             float p4y = HeightofStack * (i + 1);
             float p4z = -sin(alpha2) * topstackRadius;
 
-            float p1n[3] = { p1x, p1y, p1z };
-            float p2n[3] = { p2x, p1y, p2z };
-            float p3n[3] = { p3x, p3y, p3z };
-            float p4n[3] = { p4x, p3y, p4z };
-            normalize(p1n);
-            normalize(p2n);
-            normalize(p3n);
-            normalize(p4n);
+            float n1x = cos(alpha);
+            float n1y = normalized_y;
+            float n1z = sin(alpha);
+
+            float n2x = cos(alpha2);
+            float n2y = normalized_y;
+            float n2z = sin(alpha2);
+
+            float n3x = cos(alpha);
+            float n3y = normalized_y;
+            float n3z = sin(alpha);
+
+            float n4x = cos(alpha2);
+            float n4y = normalized_y;
+            float n4z = sin(alpha2);
 
             string p1 = to_string(p1x) + "," + to_string(p1y) + "," + to_string(p1z) + "," +
-                    to_string(p1n[0]) + "," + to_string(p1n[1]) + "," + to_string(p1n[2]) +
+                    to_string(n1x) + "," + to_string(n1y) + "," + to_string(n1z) +
                     to_string(0.4375 + (0.1875 / stack) * (stack - i) * cos(alpha)) + "," +
                     to_string(0.1875 + (0.1875 / stack) * (stack - i) * sin(alpha)) + "\n";
 
             string p2 = to_string(p2x) + "," + to_string(p2y) + "," + to_string(p2z) + "," +
-                    to_string(p2n[0]) + "," + to_string(p2n[1]) + "," + to_string(p2n[2]) +
+                    to_string(n2x) + "," + to_string(n2y) + "," + to_string(n2z) +
                     to_string(0.4375 + (0.1875 / stack) * (stack - i) * cos(alpha2)) + "," +
                     to_string(0.1875 + (0.1875 / stack) * (stack - i) * sin(alpha2)) + "\n";
 
             string p3 = to_string(p3x) + "," + to_string(p3y) + "," + to_string(p3z) + "," +
-                    to_string(p3n[0]) + "," + to_string(p3n[1]) + "," + to_string(p3n[2]) +
+                    to_string(n3x) + "," + to_string(n3y) + "," + to_string(n3z) +
                     to_string(0.4375 + (0.1875 / stack) * (stack - (i + 1)) * cos(alpha)) + "," +
                     to_string(0.1875 + (0.1875 / stack) * (stack - (i + 1)) * sin(alpha)) + "\n";
 
             string p4 = to_string(p4x) + "," + to_string(p4y) + "," + to_string(p4z) + "," +
-                    to_string(p4n[0]) + "," + to_string(p4n[1]) + "," + to_string(p4n[2]) +
+                    to_string(n4x) + "," + to_string(n4y) + "," + to_string(n4z) +
                     to_string(0.4375 + (0.1875 / stack) * (stack - (i + 1)) * cos(alpha2)) + "," +
                     to_string(0.1875 + (0.1875 / stack) * (stack - (i + 1)) * sin(alpha2)) + "\n";
 
             if (i == 0) {
                 //Base
                 string base = "0.000000,0.000000,0.000000,";
+                string normalBase = to_string(0) + "," + to_string(-1) + "," + to_string(0) + "\n";
                 string baseTexture = to_string(0.8125) + "," + to_string(0.1875) + "\n";
 
-                string p1Texture = to_string(0.8125 + 0.1875 * cos(alpha)) + "," + to_string(0.1875 + 0.1875 * sin(alpha)) + "\n";
+                string p1BaseTexture = to_string(0.8125 + 0.1875 * cos(alpha)) + "," + to_string(0.1875 + 0.1875 * sin(alpha)) + "\n";
 
-                string p2Texture = to_string(0.8125 + 0.1875 * cos(alpha2)) + "," + to_string(0.1875 + 0.1875 * sin(alpha2)) + "\n";
+                string p2BaseTexture = to_string(0.8125 + 0.1875 * cos(alpha2)) + "," + to_string(0.1875 + 0.1875 * sin(alpha2)) + "\n";
 
-                res = res + p3 + p1 + p2 + p3 + p2 + p4;
-                res = res + base + p2 + p2Texture + p1 + p1Texture;
+                res = res + p3 + normalBase + p1 + normalBase + p2 + normalBase + p3 + normalBase + p2 + normalBase + p4 + normalBase;
+                res = res + base + normalBase + p2 + normalBase + p2BaseTexture + p1 + normalBase + p1BaseTexture;
             }
             else if (i != (stack - 1)) {
                 res = res + p3 + p1 + p2 + p3 + p2 + p4;
