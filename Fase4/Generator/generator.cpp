@@ -318,6 +318,7 @@ bool generatePlane(vector<string> params) {
     string p1, p2, p3, p4;
     float pn[3] = {0.0, 1.0, 0.0};
     float x = length / divisions, z = length / divisions;
+    float size = length / (divisions * divisions);
 
     // string que guarda os pontos que estruturam a figura
     string res = to_string(6 * (int)(pow(divisions, 2))) + "\n";
@@ -330,16 +331,16 @@ bool generatePlane(vector<string> params) {
             double nextColumn = tempC - 1;
             p1 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "," +
                     to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "," +
-                    to_string(1) + "," + to_string(0) + "\n";
+                    to_string(size) + "," + to_string(size) + "\n";
             p2 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * row) + "," +
                     to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "," +
-                    to_string(1) + "," + to_string(1) + "\n";
+                    to_string(size) + "," + to_string(size) + "\n";
             p3 = to_string(x * (nextColumn)) + "," + to_string(0.000000) + "," + to_string(z * row) + "," +
                     to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "," +
-                    to_string(0) + "," + to_string(1) + "\n";
+                    to_string(size) + "," + to_string(size) + "\n";
             p4 = to_string(x * nextColumn) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "," +
                     to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "," +
-                    to_string(0) + "," + to_string(0) + "\n";
+                    to_string(size) + "," + to_string(size) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
         }
     }
