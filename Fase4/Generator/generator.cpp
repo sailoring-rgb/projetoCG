@@ -88,6 +88,19 @@ void writeInFile(string res, string file) {
         ofstream File3D(path3D);
         File3D << res;
         File3D.close();
+
+        const char* c = file.c_str();
+
+        XMLDocument doc;
+        doc.LoadFile(tmp);
+        XMLNode* pRoot = doc.FirstChild();
+
+        if (pRoot != NULL) {
+            XMLElement* pElement = doc.NewElement("model");
+            pElement->SetAttribute("model", c);
+            pRoot->InsertEndChild(pElement);
+            doc.SaveFile(tmp);
+        }
     }
 }
 
@@ -641,7 +654,7 @@ bool generateCylinder(vector<string> params) {
     printf("File gerado com sucesso");
     return true;
 }
-
+/*
 // Função para gerar os pontos da esfera
 bool generateSphere(vector<string> params) {
     double radius = stod(params[0]);
@@ -745,7 +758,117 @@ bool generateSphere(vector<string> params) {
     printf("File gerado com sucesso");
     return true;
 }
+*/
+bool generateSphere(vector<string> params) {
+    float radius = stod(params[0]);
+    int slices = stoi(params[1]);
+    int stacks = stoi(params[2]);
 
+    string file = params[3];
+    int found = file.find(".3d");
+    if (found <= 0) return false;
+
+    if (radius < 0 || slices < 0 || stacks < 0) {
+        return false;
+    }
+
+    int maxTrianglePoints = 6 * slices * (stacks - 1);
+    string res = to_string(maxTrianglePoints) + "\n";
+
+    //calcute height of each stack
+    float stackHeight = (2 * radius) / stacks;
+    //calcute angle of each slice
+    float angle = (2 * M_PI) / slices;
+    float stack = 0;
+    //circunference of points, given slices, height and radius
+    for (float i = radius; i > 0.000001; i -= stackHeight) {
+
+        float stackRadius = sqrt(pow(radius, 2) - pow(i, 2));
+        float stackRadius2 = sqrt(pow(radius, 2) - pow((i - stackHeight), 2));
+
+        for (int c = 0; c < slices; c++) {
+
+            float alpha = angle * c;
+            float alpha2 = angle * (c + 1);
+            float p1x = cos(alpha) * stackRadius;
+            float p1y = i;
+            float p1z = -sin(alpha) * stackRadius;
+            float p2x = cos(alpha2) * stackRadius;
+            //float p2y = i;
+            float p2z = -sin(alpha2) * stackRadius;
+            float p3x = cos(alpha) * stackRadius2;
+            float p3y = (i - stackHeight);
+            float p3z = -sin(alpha) * stackRadius2;
+            float p4x = cos(alpha2) * stackRadius2;
+            //float p4y = (i - stackHeight);
+            float p4z = -sin(alpha2) * stackRadius2;
+
+            // Normals
+            float p1n[3] = { p1x, p1y, p1z};
+            float p2n[3] = { p2x, p1y, p2z };
+            float p3n[3] = { p3x, p3y, p3z };
+            float p4n[3] = { p4x, p3y, p4z };
+            normalize( p1n );
+            normalize( p2n );
+            normalize( p3n );
+            normalize( p4n );
+
+
+            string coordinatesYMinus = to_string((-1 * i));
+            string coordinatesY3Minus = to_string((-1 * (i - stackHeight)));
+
+            string p1 = to_string(p1x) + "," + to_string(p1y) + "," + to_string(p1z) + "," +
+                        to_string(p1n[0]) + "," + to_string(p1n[1]) + "," + to_string(p1n[2]) + "," +
+                        to_string(alpha / (2 * M_PI)) + "," + to_string(-1*stack /stacks ) + "\n";
+
+            string p2 = to_string(p2x) + "," + to_string(p1y) + "," + to_string(p2z) + "," +
+                        to_string(p2n[0]) + "," + to_string(p2n[1]) + "," + to_string(p2n[2]) + "," +
+                        to_string(alpha2 / (2 * M_PI)) + "," + to_string( -1*(stack) /stacks ) + "\n";
+
+            string p3 = to_string(p3x) + "," + to_string(p3y) + "," + to_string(p3z) + "," +
+                        to_string(p3n[0]) + "," + to_string(p3n[1]) + "," + to_string(p3n[2]) + "," +
+                        to_string(alpha / (2 * M_PI)) + "," + to_string(-1* (stack+1) / stacks) + "\n";
+
+            string p4 = to_string(p4x) + "," + to_string(p3y) + "," + to_string(p4z) + "," +
+                        to_string(p4n[0]) + "," + to_string(p4n[1]) + "," + to_string(p4n[2]) + "," +
+                        to_string(alpha2 / (2 * M_PI)) + "," + to_string( -1* (stack + 1) / stacks ) + "\n";
+
+
+            string p1Minus = to_string(p1x) + "," + to_string((-1 * i)) + "," + to_string(p1z) + "," +
+                             to_string(p1n[0]) + "," + to_string(-p1n[1]) + "," + to_string(p1n[2]) + "," +
+                             to_string(alpha / (2 * M_PI)) + "," + to_string(-1*(stacks - stack) / stacks) + "\n";
+
+            string p2Minus = to_string(p2x) + "," + to_string((-1 * i)) + "," + to_string(p2z) + "," +
+                             to_string(p2n[0]) + "," + to_string(-p2n[1]) + "," + to_string(p2n[2]) + "," +
+                             to_string(alpha2 / (2 * M_PI)) + "," + to_string(-1*(stacks - stack) / stacks) + "\n";
+
+            string p3Minus = to_string(p3x) + "," + coordinatesY3Minus + "," + to_string(p3z) + "," +
+                             to_string(p3n[0]) + "," + to_string(-p3n[1]) + "," + to_string(p3n[2]) + "," +
+                             to_string(alpha / (2 * M_PI)) + "," + to_string(-1*(stacks - (stack + 1))/stacks) + "\n";
+
+            string p4Minus = to_string(p4x) + "," + coordinatesY3Minus + "," + to_string(p4z) + "," +
+                             to_string(p4n[0]) + "," + to_string(-p4n[1]) + "," + to_string(p4n[2]) + "," +
+                             to_string(alpha2 / (2 * M_PI)) + "," + to_string(-1*(stacks - (stack + 1)) / stacks) + "\n";
+
+            //side
+            if (i != radius) {
+                res = res + p1 + p3 + p4 + p1 + p4 + p2;
+                //mirroring
+                if (!((stacks % 2 != 0) && (i - stackHeight) < 0))
+                    res = res + p1Minus + p2Minus + p3Minus + p2Minus + p4Minus + p3Minus;
+            }
+                //top
+            else {
+                res = res + p1 + p3 + p4;
+                res = res + p3Minus + p1Minus + p4Minus;
+            }
+        }
+        stack++;
+    }
+
+    writeInFile(res, file);
+    return true;
+}
 // Função para gerar os pontos do Toro
 bool generateTorus(vector<string>params) {
     float innerR = stof(params[0]);

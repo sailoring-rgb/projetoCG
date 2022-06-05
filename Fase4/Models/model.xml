@@ -19,4 +19,8 @@
             <model file="torus.3d"/>
         </models>
     </group>
+    <model model="sphere.3d"/>
+    <model model="sphere.3d"/>
+    <model model="sphere.3d"/>
+    <model model="sphere.3d"/>
 </world>
