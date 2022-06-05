@@ -60,6 +60,7 @@ float min_zoom = 0.5f;
 float camX = 1, camY = 1, camZ = 1;
 int startX, startY, tracking = 0;
 int alpha = 0, beta = 0, r = 5;
+int timebase = 0, frame = 0;
 
 GLdouble eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ;
 GLdouble fov, near, far;
@@ -105,11 +106,9 @@ void changeSize(int w, int h) {
     // return to the model view matrix mode
     glMatrixMode(GL_MODELVIEW);
 }
-/*
-* Function that founds the path to a certain image.
-* @param image
-*/
-string getImagePath(string imagem) {
+
+
+string getTexturaPath(string imagem) {
 
     char tmp[256];
 
@@ -199,126 +198,30 @@ Primitive readFile(string file) {
 
     return primitive;
 }
-/*
-unsigned int loadTextura(std::string textura) {
-    unsigned int t, tw, th;
-    unsigned char* texData;
-    unsigned int texID;
-
-    ilInit();
-    ilEnable(IL_ORIGIN_SET);
-    ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-
-    ilGenImages(1, &t);
-    ilBindImage(t);
-    ilLoadImage((ILstring)textura.c_str());
-
-    tw = ilGetInteger(IL_IMAGE_WIDTH);
-    th = ilGetInteger(IL_IMAGE_HEIGHT);
-    ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-    texData = ilGetData();
-
-    glGenTextures(1, &texID);
-
-    glBindTexture(GL_TEXTURE_2D, texID);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-    return texID;
-}
-
-/*unsigned int loadTextura(std::string s) {
-    cout << "entrei" << endl;
-    unsigned int t, tw, th;
-    unsigned char* texData;
-    unsigned int texID;
-
-    ilInit();
-    ilEnable(IL_ORIGIN_SET);
-    ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-    ilGenImages(1, &t);
-    ilBindImage(t);
-    ilLoadImage((ILstring)s.c_str());
-    tw = ilGetInteger(IL_IMAGE_WIDTH);
-    th = ilGetInteger(IL_IMAGE_HEIGHT);
-    printf("%d\n", tw);
-    printf("%d\n", th);
-    ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-    texData = ilGetData();
-
-    glGenTextures(1, &texID);
-
-    glBindTexture(GL_TEXTURE_2D, texID);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    printf("hjfecebvrcbje");
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-    printf("-----------------\n");
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    printf("<<<<<<<<<<<<<<<\n");
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-    printf("///////////////////\n");
-
-    cout << "fim" << endl;
-    printf("%d\n", texID);
-    return texID;
-}*/
 
 int loadTextura(std::string s) {
-    cout << "entrei" << endl;
     unsigned int t, tw, th;
     unsigned char* texData;
     unsigned GLuint;
-    // for each image �
-
     ilInit();
     glEnable(GL_TEXTURE_2D);
     ilEnable(IL_ORIGIN_SET);
     ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-
     ilGenImages(1, &t);
     ilBindImage(t);
     ilLoadImage((ILstring)s.c_str());
-
     tw = ilGetInteger(IL_IMAGE_WIDTH);
     th = ilGetInteger(IL_IMAGE_HEIGHT);
     ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
     texData = ilGetData();
-
-    // create a texture slot
     glGenTextures(1, &GLuint);
-    // bind the slot
     glBindTexture(GL_TEXTURE_2D, GLuint);
-
-    // define texture parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    // send texture data to OpenGL
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
-    //glGenerateMipmap(GL_TEXTURE_2D);
-
     glBindTexture(GL_TEXTURE_2D, 0);
-    
-    cout << "fim" << endl;
     return GLuint;
 
 }
@@ -349,7 +252,7 @@ void drawPrimitives(Group g) {
                 glBegin(GL_LINE_LOOP);
                 for (int i = 0; i < t1; i += 1) {
                     CatmullRom::getGlobalCatmullRomPoint(catmullPoints, i / t1, p, d);
-                    glVertex3fv(p);
+                    //glVertex3fv(p);
                 }
                 glEnd();
 
@@ -455,8 +358,8 @@ void drawPrimitives(Group g) {
                 glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
                 glTexCoordPointer(2, GL_FLOAT, 0, 0);
 
-                glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-                glVertexPointer(3, GL_FLOAT, 0, 0);
+                //glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+                //glVertexPointer(3, GL_FLOAT, 0, 0);
                 glDrawArrays(GL_TRIANGLES, vboZone, nrVertices);
 
                 glBindTexture(GL_TEXTURE_2D, 0);
@@ -481,6 +384,16 @@ void drawPrimitives(Group g) {
  * Function that creates a scene.
  */
 void renderScene(void) {
+    string point = "point";
+    string directional = "directional";
+    string spotlight = "spotlight";
+
+    float pos[4] = { 1.0, 1.0, 1.0, 0.0 };
+    float fps;
+    int time;
+    char s[64];
+
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
     // clear buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -495,6 +408,28 @@ void renderScene(void) {
     glTranslatef(x, 0.0, z);
     glRotatef(angle, 0.0, 1.0, 0.0);
     glRotatef(angle2, 1.0, 0.0, 0.0);
+
+    /*for (int i = 0; i < lights.size(); i++) {
+        Point pP, pD;
+
+        if (point.compare(lights[i].getType())) {
+            pP = lights[i].getPos();
+            float pos[4] = { pP.getX(), pP.getY(), pP.getZ(), 0.0 };
+            glLightfv(GL_LIGHT0, GL_POSITION, pos);
+        }
+        else if (directional.compare(lights[i].getType())) {
+            pD = lights[i].getDir();
+            float dir[4] = { pD.getX(), pD.getY(), pD.getZ(), 1.0 };
+            glLightfv(GL_LIGHT0, GL_POSITION, dir);
+        }
+        else if (spotlight.compare(lights[i].getType())) {
+            pP = lights[i].getPos();
+            pD = lights[i].getDir();
+            //float posS[3] = { p.getX(), p.getY(), p.getZ() };
+            // place light
+            //glLightfv(GL_LIGHT0, GL_SPOT_CUTOFF, posS);
+        }
+    }*/
 
     /*
     //AXIS
@@ -522,6 +457,16 @@ void renderScene(void) {
     }
 
     vboZone = 0;
+
+    frame++;
+    time = glutGet(GLUT_ELAPSED_TIME);
+    if (time - timebase > 1000) {
+        fps = frame * 1000.0 / (time - timebase);
+        timebase = time;
+        frame = 0;
+        sprintf(s, "FPS: %f6.2", fps);
+        glutSetWindowTitle(s);
+    }
 
     // End of frame
     glutSwapBuffers();
@@ -679,6 +624,14 @@ bool initGlut(int argc, char** argv) {
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
+    glClearColor(0, 0, 0, 0);
+
+    // enable light
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    /*glEnable(GL_RESCALE_NORMAL);
+    glEnable(GL_TEXTURE_2D);*/
+
     //Create VBO
     glGenBuffers(3, buffers);
     glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
@@ -753,12 +706,10 @@ Group parseGroup(XMLElement* group, int father) {
                             string textura = model->Attribute("file");
                             
                             if (textura.size() != 0) {
-                                string pathImg = getImagePath(textura);
+                                string pathImg = getTexturaPath(textura);
                                 cout << pathImg << endl;
                                 texturas.insert({ pathImg, -1 });
-                                //unsigned int texId = loadTextura(pathImg);
                                 primitive.setTextura(pathImg);
-                                //cout << texId << endl;
                             }
                             else primitive.setTextura("null");
                         }
