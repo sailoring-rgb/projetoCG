@@ -15,7 +15,7 @@ public:
 
     Light();
 
-    Light(std::string type, Point pos, Point dir, float cutoff);
+    Light(GLenum id, std::string type, Point pos, Point dir, float cutoff);
 
     void setType(std::string type);
 
@@ -32,6 +32,8 @@ public:
     Point getPos();
 
     Point getDir();
+
+    void setId(GLenum id);
 };
 
 #endif

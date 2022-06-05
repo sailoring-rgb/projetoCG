@@ -14,10 +14,10 @@
 #else
 #endif
 
-
 class Light::LightBuilder {
 
     private:
+        GLenum id;
         std::string type;
         Point pos;
         Point dir;
@@ -26,11 +26,16 @@ class Light::LightBuilder {
     public:
         LightBuilder() = default;
 
-        LightBuilder(std::string type, Point pos, Point dir, float cutoff) {
+        LightBuilder(GLenum id, std::string type, Point pos, Point dir, float cutoff) {
+            this->id = id;
             this->type = type;
             this->pos = pos;
             this->dir = dir;
             this->cutoff = cutoff;
+        }
+
+        void setId(GLenum id) {
+            this->id = id;
         }
 
         void setType(std::string type) {
@@ -74,7 +79,7 @@ class Light::LightBuilder {
 
 Light::Light() : lightBuilder{ new class LightBuilder() } {}
 
-Light::Light(std::string type, Point pos, Point dir, float cutoff) : lightBuilder{ new class LightBuilder(type, pos, dir, cutoff) } {}
+Light::Light(GLenum id, std::string type, Point pos, Point dir, float cutoff) : lightBuilder{ new class LightBuilder(id, type, pos, dir, cutoff) } {}
 
 void Light::setType(std::string type) {
     lightBuilder->setType(type);
@@ -108,5 +113,8 @@ Point Light::getDir() {
     return lightBuilder->getDir();
 }
 
+void Light::setId(GLenum id) {
+    lightBuilder->setId(id);
+}
 
 

@@ -421,7 +421,7 @@ void renderScene(void) {
     glRotatef(angle, 0.0, 1.0, 0.0);
     glRotatef(angle2, 1.0, 0.0, 0.0);
 
-    /*for (int i = 0; i < lights.size(); i++) {
+    for (int i = 0; i < lights.size(); i++) {
         Point pP, pD;
 
         if (point.compare(lights[i].getType())) {
@@ -441,7 +441,7 @@ void renderScene(void) {
             // place light
             //glLightfv(GL_LIGHT0, GL_SPOT_CUTOFF, posS);
         }
-    }*/
+    }
 
     /*
     //AXIS
@@ -640,7 +640,9 @@ bool initGlut(int argc, char** argv) {
 
     // enable light
     glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+    for (int i = 0; i < lights.size(); i++) {
+        glEnable(GL_LIGHT0 + i);
+    }
    /* glEnable(GL_RESCALE_NORMAL);
     glEnable(GL_TEXTURE_2D);*/
 
@@ -938,7 +940,9 @@ void parseLights(XMLElement* light) {
 
     while (element != nullptr) {
                 
-        Light l = Light();
+        Light l = Light(); 
+
+        static GLenum l1 = GL_LIGHT0;
 
         if (lig.compare(element->Name()) == 0) {
             string type = element->Attribute("type");
