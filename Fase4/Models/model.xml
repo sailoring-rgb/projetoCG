@@ -23,4 +23,6 @@
     <model model="sphere.3d"/>
     <model model="sphere.3d"/>
     <model model="sphere.3d"/>
+    <model model="sphere.3d"/>
+    <model model="box.3d"/>
 </world>

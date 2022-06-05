@@ -361,7 +361,7 @@ bool generatePlane(vector<string> params) {
     printf("File gerado com sucesso");
     return true;
 }
-
+/*
 // Função para determinar os pontos do cubo
 bool generateBox(vector<string> params) {
 
@@ -495,6 +495,311 @@ bool generateBox(vector<string> params) {
 
     writeInFile(res, file);
     printf("File gerado com sucesso");
+    return true;
+}
+*/
+vector<vector<double>> addPoints(vector<vector<double>> points, int i, double x, double y, double z) {
+
+    points[i][0] = x;
+    points[i][1] = y;
+    points[i][2] = z;
+    return points;
+}
+
+string buildTriangles(vector<vector<double>> points, vector<vector<double>> normals, vector<vector<double>> texture, double npoints) {
+
+    string res = "";
+
+    for (int j = 0; j < npoints; j++) {
+
+        double x = points[j][0];
+        double y = points[j][1];
+        double z = points[j][2];
+
+        double nx = normals[j][0];
+        double ny = normals[j][1];
+        double nz = normals[j][2];
+
+        double tx = texture[j][0];
+        double ty = texture[j][1];
+
+        string coordinatesX = to_string(x);
+        string coordinatesY = to_string(y);
+        string coordinatesZ = to_string(z);
+
+        string coordinatesnX = to_string(nx);
+        string coordinatesnY = to_string(ny);
+        string coordinatesnZ = to_string(nz);
+
+        string coordinatestX = to_string(tx);
+        string coordinatestY = to_string(ty);
+
+        string coordinates = coordinatesX + "," + coordinatesY + "," + coordinatesZ + "," +
+                coordinatesnX + "," + coordinatesnY + "," + coordinatesnZ + "," +
+                coordinatestX + "," + coordinatestY + "\n";
+        res = res + coordinates;
+    }
+    return res;
+}
+
+/**
+  * Function that creats planes in a 3d framework
+  * @param lx firts positive value of x in the plane;
+  * @param ly firts positive value of Y in the plane;
+  * @param lz firts positive value of Z in the plane;
+  * @param dx space between points in x axis;
+  * @param dy space between points in y axis;
+  * @param dz space between points in z axis;
+  * @param edges the box's edges
+  * @param face string containing the vertices
+  * @return
+  */
+
+string buildPlanes(double lx, double ly, double lz, double dx, double dy, double dz, int edges, int face) {
+
+    // number of points per plane
+    int npoints = pow(edges, 2) * 2 * 3;
+
+    //vector where to add the points
+    vector<vector<double>> points(npoints, vector<double>(3));
+    vector<vector<double>> normals(npoints, vector<double>(3));
+    vector<vector<double>> texture(npoints, vector<double>(3));
+
+    double p1, l1, d1;
+    double p2, l2, d2;
+    int signal;
+    int order;
+    int tx = 1;
+    int ty = 1;
+
+    //Defines which face we are building
+    switch (face) {
+        case 1: {
+            p1 = lx;
+            p2 = ly;
+
+            l1 = lx;
+            l2 = ly;
+
+            d1 = dx;
+            d2 = dy;
+
+            //defines if the triangles in the plane rotate clockwise or anticlockwise
+            if (lz >= 0) {
+                signal = 1;
+                order = 1;
+
+            } else {
+                signal = -1;
+                order = -1;
+            }
+            break;
+        }
+        case 2: {
+            p1 = ly;
+            p2 = lz;
+
+            l1 = ly;
+            l2 = lz;
+
+            d1 = dy;
+            d2 = dz;
+
+            if (lx >= 0) {
+                signal = 1;
+                order = 1;
+
+            } else {
+                signal = -1;
+                order = -1;
+            }
+            break;
+        }
+        case 3: {
+
+            p1 = lz;
+            p2 = lx;
+
+            l1 = lz;
+            l2 = lx;
+
+            d1 = dz;
+            d2 = dx;
+
+            if (ly >= 0) {
+                signal = 1;
+                order = 1;
+
+            } else {
+                signal = -1;
+                order = -1;
+            }
+            break;
+        }
+
+    }
+
+    int n = 0;
+    int triangle = 1;
+    int count = 0;
+
+    // cycle that creats the coordinates and adds to the vector
+    for (int i = 0; i < npoints; i++) {
+
+        n++;
+        // counts how many times the algorithm its the end of a row (the end of a plane)
+        if ((((-l1) < p1 + 0.0001 && (-l1) > p1 - 0.0001) && order == 1) ||
+            (((-l2) < p2 + 0.0001 && (-l2) > p2 - 0.0001) && order == -1)) {
+            count++;
+        }
+
+        // changes the row if the count is 3
+        if (count == 3) {
+
+            //the row change depends if the triangles are build clockwise or not
+            if (order == 1) {
+                p1 = l1;
+                p2 = p2 - d2;
+            } else {
+                p1 = p1 - d1;
+                p2 = l2;
+
+            }
+            count = 0;
+        }
+
+        //adds coordinates in the vector
+        if (face == 1) {
+            points = addPoints(points, i, p1, p2, lz);
+            if(order == -1) normals = addPoints(normals,i,0,0,-1);
+            else normals = addPoints(normals,i,0,0,1);
+            texture = addPoints(texture,i,tx,ty,0);
+        }
+        else if (face == 2) {
+            points = addPoints(points, i, lx, p1, p2);
+            if(order == -1) normals = addPoints(normals,i,0,-1,0);
+            else normals = addPoints(normals,i,0,1,0);
+            texture = addPoints(texture,i,tx,ty,0);
+        }
+        else if (face == 3) {
+            points = addPoints(points, i, p2, ly, p1);
+            if(order == -1) normals = addPoints(normals,i,-1,0,0);
+            else normals = addPoints(normals,i,1,0,0);
+            texture = addPoints(texture,i,tx,ty,0);
+        }
+
+        //after building 1 triangle
+        if (n == 3) {
+            //if its the first triangle in the square, it repeats the coordinates from the iteration before
+            if ((i + 1) % 6 != 0) {
+                i++;
+                //adds coordinates in the vector
+                if (face == 1) {
+                    points = addPoints(points, i, p1, p2, lz);
+                    if(order == -1) normals = addPoints(normals,i,0,0,-1);
+                    else normals = addPoints(normals,i,0,0,1);
+                    texture = addPoints(texture,i,tx,ty,0);
+                }
+                else if (face == 2) {
+                    points = addPoints(points, i, lx, p1, p2);
+                    if(order == -1) normals = addPoints(normals,i,0,-1,0);
+                    else normals = addPoints(normals,i,0,1,0);
+                    texture = addPoints(texture,i,tx,ty,0);
+                }
+                else if (face == 3) {
+                    points = addPoints(points, i, p2, ly, p1);
+                    if(order == -1) normals = addPoints(normals,i,-1,0,0);
+                    else normals = addPoints(normals,i,1,0,0);
+                    texture = addPoints(texture,i,tx,ty,0);
+                }
+                n = 1;
+                triangle = 2;
+            } else {
+                n = 0;
+                triangle = 1;
+            }
+        }
+
+        //after we build a square (two triangles)
+        if (i % 6 == 0 && i >= 6) {
+            signal = signal * (-1);
+        }
+
+        //it builds the next coordinate depending if we are moving horizontally or vertically through the plane
+        if (triangle == 1) {
+            if (signal == 1) {
+                p1 = p1 - d1;
+                tx = tx - 1;
+            } else {
+                p2 = p2 - d2;
+                ty = ty - 1;
+            }
+        } else {
+            if (signal == 1) {
+                p1 = p1 + d1;
+                tx = tx + 1;
+            } else {
+                p2 = p2 + d2;
+                ty = ty +1;
+            }
+        }
+
+        // changes the way we are moving in the plane
+        signal = signal * (-1);
+    }
+    return buildTriangles(points,normals,texture,npoints);
+}
+bool generateBox(vector<string> params) {
+
+    int edges;
+    string file;
+
+    if (params.size() == 5) {
+        edges = stoi(params[3]);
+        if (edges < 0) return false;
+        file = params[4];
+    } else {
+        edges = 1;
+        file = params[3];
+    }
+
+    int found = file.find(".3d");
+    if (found <= 0) return false;
+
+    double lx = stod(params[0]) / edges;
+    double ly = stod(params[1]) / edges;
+    double lz = stod(params[2]) / edges;
+
+    double x = stod(params[0]) / 2;
+    double y = stod(params[1]) / 2;
+    double z = stod(params[2]) / 2;
+
+    if (lx < 0 || ly < 0 || lz < 0 || x < 0 || y < 0 || z < 0) {
+        return false;
+    }
+
+    int vertices = pow(edges, 2) * 36;
+
+    string verticesStr = to_string(vertices);
+
+    string res;
+
+    res = res + verticesStr + "\n";
+
+    //PLANE XY
+    res = res + buildPlanes(x, y, z, lx, ly, lz, edges, 1);
+    res = res + buildPlanes(x, y, -z, lx, ly, lz, edges, 1);
+
+    //PLANE YX
+    res = res + buildPlanes(x, y, z, lx, ly, lz, edges, 2);
+    res = res + buildPlanes(-x, y, z, lx, ly, lz, edges, 2);
+
+    //PLANE XZ
+    res = res + buildPlanes(x, y, z, lx, ly, lz, edges, 3);
+    res = res + buildPlanes(x, -y, z, lx, ly, lz, edges, 3);
+
+    writeInFile(res, file);
+
     return true;
 }
 
