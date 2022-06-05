@@ -59,6 +59,7 @@ else (WIN32) #Linux and Mac
 	link_directories(${GLUT_LIBRARY_DIRS})
 	add_definitions(${GLUT_DEFINITIONS})
 
+
 	if (NOT APPLE)
 		find_package(GLEW REQUIRED)
 		include_directories(${GLEW_INCLUDE_DIRS})

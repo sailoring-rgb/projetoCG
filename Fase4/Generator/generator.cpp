@@ -570,37 +570,24 @@ bool generateCone(vector<string> params) {
             float n4z = sin(alpha2);
 
             string p1 = to_string(p1x) + "," + to_string(p1y) + "," + to_string(p1z) + "," +
-                    to_string(n1x) + "," + to_string(n1y) + "," + to_string(n1z) +  "," +
-                    to_string(0.4375 + (0.1875 / stack) * (stack - i) * cos(alpha)) + "," +
-                    to_string(0.1875 + (0.1875 / stack) * (stack - i) * sin(alpha)) + "\n";
+                    to_string(n1x) + "," + to_string(n1y) + "," + to_string(n1z) + "\n";
 
             string p2 = to_string(p2x) + "," + to_string(p2y) + "," + to_string(p2z) + "," +
-                    to_string(n2x) + "," + to_string(n2y) + "," + to_string(n2z) +  "," +
-                    to_string(0.4375 + (0.1875 / stack) * (stack - i) * cos(alpha2)) + "," +
-                    to_string(0.1875 + (0.1875 / stack) * (stack - i) * sin(alpha2)) + "\n";
+                    to_string(n2x) + "," + to_string(n2y) + "," + to_string(n2z) + "\n";
 
             string p3 = to_string(p3x) + "," + to_string(p3y) + "," + to_string(p3z) + "," +
-                    to_string(n3x) + "," + to_string(n3y) + "," + to_string(n3z) +  "," +
-                    to_string(0.4375 + (0.1875 / stack) * (stack - (i + 1)) * cos(alpha)) + "," +
-                    to_string(0.1875 + (0.1875 / stack) * (stack - (i + 1)) * sin(alpha)) + "\n";
+                    to_string(n3x) + "," + to_string(n3y) + "," + to_string(n3z) + "\n";
 
             string p4 = to_string(p4x) + "," + to_string(p4y) + "," + to_string(p4z) + "," +
-                    to_string(n4x) + "," + to_string(n4y) + "," + to_string(n4z) +  "," +
-                    to_string(0.4375 + (0.1875 / stack) * (stack - (i + 1)) * cos(alpha2)) + "," +
-                    to_string(0.1875 + (0.1875 / stack) * (stack - (i + 1)) * sin(alpha2)) + "\n";
+                    to_string(n4x) + "," + to_string(n4y) + "," + to_string(n4z) + "\n";
 
             if (i == 0) {
                 //Base
                 string base = "0.000000,0.000000,0.000000,";
                 string normalBase = to_string(0) + "," + to_string(-1) + "," + to_string(0) + "\n";
-                string baseTexture = to_string(0.8125) + "," + to_string(0.1875) + "\n";
-
-                string p1BaseTexture = to_string(0.8125 + 0.1875 * cos(alpha)) + "," + to_string(0.1875 + 0.1875 * sin(alpha)) + "\n";
-
-                string p2BaseTexture = to_string(0.8125 + 0.1875 * cos(alpha2)) + "," + to_string(0.1875 + 0.1875 * sin(alpha2)) + "\n";
 
                 res = res + p3 + normalBase + p1 + normalBase + p2 + normalBase + p3 + normalBase + p2 + normalBase + p4 + normalBase;
-                res = res + base + normalBase + p2 + normalBase + p2BaseTexture + p1 + normalBase + p1BaseTexture;
+                res = res + base + normalBase + p2 + normalBase + p1 + normalBase;
             }
             else if (i != (stack - 1)) {
                 res = res + p3 + p1 + p2 + p3 + p2 + p4;
@@ -640,12 +627,18 @@ bool generateCylinder(vector<string> params) {
         x2 = radius * sin(next_alpha);
         z2 = radius * cos(next_alpha);
 
-        string p0 = to_string(0) + "," + to_string(upper_h) + "," + to_string(0) + "\n";
-        string p1 = to_string(x1) + "," + to_string(upper_h) + "," + to_string(z1) + "\n";
-        string p2 = to_string(x2) + "," + to_string(upper_h) + "," + to_string(z2) + "\n";
-        string p3 = to_string(0) + "," + to_string(lower_h) + "," + to_string(0) + "\n";
-        string p4 = to_string(x1) + "," + to_string(lower_h) + "," + to_string(z1) + "\n";
-        string p5 = to_string(x2) + "," + to_string(lower_h) + "," + to_string(z2) + "\n";
+        string p0 = to_string(0) + "," + to_string(upper_h) + "," + to_string(0) + "," +
+                    to_string(0) + "," + to_string(1) + "," + to_string(0) + "\n";
+        string p1 = to_string(x1) + "," + to_string(upper_h) + "," + to_string(z1) + "," +
+                    to_string(0) + "," + to_string(1) + "," + to_string(0) + "\n";
+        string p2 = to_string(x2) + "," + to_string(upper_h) + "," + to_string(z2) + "," +
+                    to_string(0) + "," + to_string(1) + "," + to_string(0) + "\n";
+        string p3 = to_string(0) + "," + to_string(lower_h) + "," + to_string(0) + "," +
+                    to_string(0) + "," + to_string(-1) + "," + to_string(0) + "\n";
+        string p4 = to_string(x1) + "," + to_string(lower_h) + "," + to_string(z1) + "," +
+                    to_string(0) + "," + to_string(-1) + "," + to_string(0) + "\n";
+        string p5 = to_string(x2) + "," + to_string(lower_h) + "," + to_string(z2) + "," +
+                    to_string(0) + "," + to_string(-1) + "," + to_string(0) + "\n";
         aux += p2 + p0 + p1 + p4 + p3 + p5 + p1 + p4 + p5 + p1 + p5 + p2;
 
         totalPoints += 12;
@@ -705,8 +698,8 @@ bool generateSphere(vector<string> params) {
             y0 = cos(v) * radius;
             z0 = sin(u) * sin(v) * radius;
             xn0 = cos(u) * sin(v);
-            yn0 = cos(v);
-            zn0 = sin(u) * sin(v);
+            yn0 = sin(v);
+            zn0 = cos(u) * cos(v);
             float p0n[3] = { xn0, yn0, xn0 };
             normalize(p0n);
 
@@ -714,8 +707,8 @@ bool generateSphere(vector<string> params) {
             y1 = cos(vn) * radius;
             z1 = sin(u) * sin(vn) * radius;
             xn1 = cos(u) * sin(vn);
-            yn1 = cos(vn);
-            zn1 = sin(u) * sin(vn);
+            yn1 = sin(vn);
+            zn1 = cos(u) * cos(vn);
             float p1n[3] = { xn1, yn1, xn1 };
             normalize(p1n);
 
@@ -723,8 +716,8 @@ bool generateSphere(vector<string> params) {
             y2 = cos(v) * radius;
             z2 = sin(un) * sin(v) * radius;
             xn2 = cos(un) * sin(v);
-            yn2 = cos(v);
-            zn2 = sin(un) * sin(v);
+            yn2 = sin(v);
+            zn2 = cos(un) * cos(v);
             float p2n[3] = { xn2, yn2, xn2 };
             normalize(p2n);
 
@@ -732,8 +725,8 @@ bool generateSphere(vector<string> params) {
             y3 = cos(vn) * radius;
             z3 = sin(un) * sin(vn) * radius;
             xn3 = cos(un) * sin(vn);
-            yn3 = cos(vn);
-            zn3 = sin(un) * sin(vn);
+            yn3 = sin(vn);
+            zn3 = cos(un) * cos(vn);
             float p3n[3] = { xn3, yn3, xn3 };
             normalize(p3n);
 
@@ -905,14 +898,10 @@ bool generateHalfSphere(vector<string> params) {
 
             totalPoints += 6;
 
-            string p0 = to_string(x0) + "," + to_string(y0) + "," + to_string(z0) +  "," +
-                    to_string(j * textureHoriz) + "," + to_string(i * textureVert + textureVert) + "\n";
-            string p1 = to_string(x1) + "," + to_string(y1) + "," + to_string(z1) +  "," +
-                    to_string(j * textureHoriz) + "," + to_string(i * textureVert) + "\n";
-            string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(z2) +  "," +
-                    to_string(j * textureHoriz + textureHoriz) + "," + to_string(i * textureVert) + "\n";
-            string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) +  "," +
-                    to_string(j * textureHoriz + textureHoriz) + "," + to_string(i * textureVert + textureVert) + "\n";
+            string p0 = to_string(x0) + "," + to_string(y0) + "," + to_string(z0) +  "\n";
+            string p1 = to_string(x1) + "," + to_string(y1) + "," + to_string(z1) +  "\n";
+            string p2 = to_string(x2) + "," + to_string(y2) + "," + to_string(z2) +  "\n";
+            string p3 = to_string(x3) + "," + to_string(y3) + "," + to_string(z3) +  "\n";
             aux = aux + p3 + p1 + p2 + p2 + p1 + p0;
 
         }
