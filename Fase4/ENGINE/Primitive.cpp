@@ -13,6 +13,8 @@ class Primitive::PrimitiveBuilder {
 	//vari�vel privada que guarda os v�rtices
 private:
 	std::vector<Point> vertices;
+	std::vector<Point> normal;
+	std::vector<Point> coordText;
 	std::string textura;
 	float difR, difG, difB;
 	float ambR, ambG, ambB;
@@ -24,11 +26,17 @@ public:
 
 	PrimitiveBuilder() = default;
 
-	PrimitiveBuilder(std::vector<Point> vertices, std::string textura, float difR, float difG, float difN,
+	PrimitiveBuilder(std::vector<Point> vertices, std::vector<Point> normal, std::vector<Point> coordText, std::string textura, float difR, float difG, float difN,
 		float ambR, float ambG, float ambB, float speR, float speG, float speB, float emiR,
 		float emiG, float emiB, float shininess) {
 		for (size_t i = 0; i < vertices.size(); i++) {
 			this->vertices.push_back(vertices.at(i));
+		}
+		for (size_t i = 0; i < normal.size(); i++) {
+			this->vertices.push_back(normal.at(i));
+		}
+		for (size_t i = 0; i < coordText.size(); i++) {
+			this->vertices.push_back(coordText.at(i));
 		}
 		this->textura = textura;
 		this->difR = difR; this->difG = difG; this->difB = difB;
@@ -40,6 +48,14 @@ public:
 
 	std::vector<Point> getVertices() {
 		return vertices;
+	}
+
+	std::vector<Point> getNormal() {
+		return normal;
+	}
+
+	std::vector<Point> getCoordText() {
+		return coordText;
 	}
 
 	std::string getTextura() {
@@ -64,6 +80,14 @@ public:
 
 	void addPoint(Point p) {
 		vertices.push_back(p);
+	}
+
+	void addNormal(Point p) {
+		normal.push_back(p);
+	}
+
+	void addCoordText(Point p) {
+		coordText.push_back(p);
 	}
 
 	float getDifR() { return difR; }
@@ -103,13 +127,14 @@ public:
 
 Primitive::Primitive() : primitiveBuilder{ new class PrimitiveBuilder() } {}
 
-Primitive::Primitive(std::vector<Point> vertices, std::string textura, float difR, float difG, float difN,
+Primitive::Primitive(std::vector<Point> vertices, std::vector<Point> normal, std::vector<Point> coordText,std::string textura, float difR, float difG, float difN,
 					float ambR, float ambG, float ambB, float speR, float speG, float speB, float emiR,
-					float emiG, float emiB, float shininess) : primitiveBuilder{ new PrimitiveBuilder(vertices,textura,difR,difG,difN,
+					float emiG, float emiB, float shininess) : primitiveBuilder{ new PrimitiveBuilder(vertices,normal,coordText,textura,difR,difG,difN,
 																									  ambR,ambG,ambB,speR,speG,speB,emiR,
 																									  emiG,emiB,shininess) } {}
 
-Primitive::Primitive(const Primitive& p) : primitiveBuilder{ new PrimitiveBuilder(p.primitiveBuilder->getVertices(), p.primitiveBuilder->getTextura(),
+Primitive::Primitive(const Primitive& p) : primitiveBuilder{ new PrimitiveBuilder(p.primitiveBuilder->getVertices(),p.primitiveBuilder->getNormal(), 
+																				  p.primitiveBuilder->getCoordText(),p.primitiveBuilder->getTextura(),
 																				  p.primitiveBuilder->getDifR(),p.primitiveBuilder->getDifG(),p.primitiveBuilder->getDifB(),
 																				  p.primitiveBuilder->getAmbR(),p.primitiveBuilder->getAmbG(),p.primitiveBuilder->getAmbB(),
 																				  p.primitiveBuilder->getSpeR(),p.primitiveBuilder->getSpeG(),p.primitiveBuilder->getSpeB(),
@@ -120,8 +145,24 @@ std::vector<Point> Primitive::getVertices() {
 	return primitiveBuilder->getVertices();
 }
 
+std::vector<Point> Primitive::getNormal() {
+	return primitiveBuilder->getNormal();
+}
+
+std::vector<Point> Primitive::getCoordText() {
+	return primitiveBuilder->getCoordText();
+}
+
 void Primitive::addPoint(Point p) {
 	primitiveBuilder->addPoint(p);
+}
+
+void Primitive::addNormal(Point p) {
+	primitiveBuilder->addNormal(p);
+}
+
+void Primitive::addCoordText(Point p) {
+	primitiveBuilder->addCoordText(p);
 }
 
 int Primitive::getNrVertices() {

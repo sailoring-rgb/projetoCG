@@ -14,13 +14,17 @@ public:
 
 	Primitive();
 
-	Primitive(std::vector<Point> vertices, std::string textura, float difR, float difG, float difN,
+	Primitive(std::vector<Point> vertices, std::vector<Point> normal, std::vector<Point> coordText, std::string textura, float difR, float difG, float difN,
 		float ambR, float ambG, float ambB, float speR, float speG, float speB, float emiR,
 		float emiG, float emiB, float shininess);
 
 	Primitive(const Primitive& p);
 
 	std::vector<Point> getVertices();
+
+	std::vector<Point> getNormal();
+
+	std::vector<Point> getCoordText();
 
 	std::string getTextura();
 
@@ -33,6 +37,10 @@ public:
 	Point getPoint(int index);
 
 	void addPoint(Point p);
+
+	void addNormal(Point p);
+
+	void addCoordText(Point p);
 
 	float getShininess();
 

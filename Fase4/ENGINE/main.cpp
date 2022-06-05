@@ -1,6 +1,7 @@
 ﻿#define  _USE_MATH_DEFINES
 #include <math.h>
 #include <stdlib.h>
+#include <IL/il.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -54,9 +55,9 @@ float z = 0.1;
 float angle = 0.0f;
 float angle2 = 0.0f;
 float zoomFactor = 1.0f;
-float max_zoom = 2.5f;
+float max_zoom = 3.5f;
 float min_zoom = 0.5f;
-float camX = 0, camY, camZ = 5;
+float camX = 1, camY = 1, camZ = 1;
 int startX, startY, tracking = 0;
 int alpha = 0, beta = 0, r = 5;
 
@@ -121,7 +122,6 @@ string getImagePath(string imagem) {
     replace(path.begin(), path.end(), '\\', '/');
     path.erase(path.begin() + found, path.end());
 
-    //caminho para o ficheiro XML
     path = path + "Textures/" + imagem;
 
     return path;
@@ -173,7 +173,7 @@ Primitive readFile(string file) {
         Point textura;
         textura.setX(tokens[6]);
         textura.setY(tokens[7]);
-        textura.setZ(tokens[2]);
+        textura.setZ(0.0);
 
         //VBO
         vertexB.push_back(tokens[0]);
@@ -191,12 +191,138 @@ Primitive readFile(string file) {
         coordTextura.push_back(0);
 
         primitive.addPoint(point);
+       // primitive.addNormal(normal);
+       // primitive.addCoordText(textura);
     }
 
     MyReadFile.close();
 
     return primitive;
 }
+/*
+unsigned int loadTextura(std::string textura) {
+    unsigned int t, tw, th;
+    unsigned char* texData;
+    unsigned int texID;
+
+    ilInit();
+    ilEnable(IL_ORIGIN_SET);
+    ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
+    ilGenImages(1, &t);
+    ilBindImage(t);
+    ilLoadImage((ILstring)textura.c_str());
+
+    tw = ilGetInteger(IL_IMAGE_WIDTH);
+    th = ilGetInteger(IL_IMAGE_HEIGHT);
+    ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+    texData = ilGetData();
+
+    glGenTextures(1, &texID);
+
+    glBindTexture(GL_TEXTURE_2D, texID);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return texID;
+}
+
+/*unsigned int loadTextura(std::string s) {
+    cout << "entrei" << endl;
+    unsigned int t, tw, th;
+    unsigned char* texData;
+    unsigned int texID;
+
+    ilInit();
+    ilEnable(IL_ORIGIN_SET);
+    ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+    ilGenImages(1, &t);
+    ilBindImage(t);
+    ilLoadImage((ILstring)s.c_str());
+    tw = ilGetInteger(IL_IMAGE_WIDTH);
+    th = ilGetInteger(IL_IMAGE_HEIGHT);
+    printf("%d\n", tw);
+    printf("%d\n", th);
+    ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+    texData = ilGetData();
+
+    glGenTextures(1, &texID);
+
+    glBindTexture(GL_TEXTURE_2D, texID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    printf("hjfecebvrcbje");
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+    printf("-----------------\n");
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    printf("<<<<<<<<<<<<<<<\n");
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    printf("///////////////////\n");
+
+    cout << "fim" << endl;
+    printf("%d\n", texID);
+    return texID;
+}*/
+
+int loadTextura(std::string s) {
+    cout << "entrei" << endl;
+    unsigned int t, tw, th;
+    unsigned char* texData;
+    unsigned GLuint;
+    // for each image �
+
+    ilInit();
+    glEnable(GL_TEXTURE_2D);
+    ilEnable(IL_ORIGIN_SET);
+    ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
+    ilGenImages(1, &t);
+    ilBindImage(t);
+    ilLoadImage((ILstring)s.c_str());
+
+    tw = ilGetInteger(IL_IMAGE_WIDTH);
+    th = ilGetInteger(IL_IMAGE_HEIGHT);
+    ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+    texData = ilGetData();
+
+    // create a texture slot
+    glGenTextures(1, &GLuint);
+    // bind the slot
+    glBindTexture(GL_TEXTURE_2D, GLuint);
+
+    // define texture parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    // send texture data to OpenGL
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+    //glGenerateMipmap(GL_TEXTURE_2D);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    
+    cout << "fim" << endl;
+    return GLuint;
+
+}
+
 
 /**
  * Function that draws all the primitives previously stored in a vector.
@@ -250,12 +376,12 @@ void drawPrimitives(Group g) {
                     CatmullRom::normalize(z);
                     CatmullRom::buildRotMatrix(deriv, prev_y, z, *m);
                     glMultMatrixf(*m);
-                }                
+                }
             }
             else if (t.getTime() == 0) {
                 glTranslatef(t.getX(), t.getY(), t.getZ());
-            }            
-        } 
+            }
+        }
         else if (rotate.compare(t.getName()) == 0) {
             if (t.getAngle() == 0 && t.getTime() != 0) {
                 float time = glutGet(GLUT_ELAPSED_TIME) / 1000.f;
@@ -269,7 +395,7 @@ void drawPrimitives(Group g) {
         else if (color.compare(t.getName()) == 0)
         {
             glColor3f(t.getX() / 255.f, t.getY() / 255.f, t.getZ() / 255.f);
-        }        
+        }
         else if (scale.compare(t.getName()) == 0) {
             glScalef(t.getX(), t.getY(), t.getZ());
         }
@@ -282,7 +408,7 @@ void drawPrimitives(Group g) {
         int nrVertices = p.getNrVertices();
 
         if (g.getNameFile().compare("asteroids.3d") == 0) {
-            
+
             int arrx[180];
             int arry[180];
 
@@ -294,26 +420,50 @@ void drawPrimitives(Group g) {
             for (int i = 0; i < 100; i++) {
                 arry[i] = rand() % 18 + (-5);
             }
-            
+
             for (int i = 0; i < 180; i++) {
-                 
+
                 glPushMatrix();
                 glRotated(6 * i, 0, 1, 0);
                 glTranslated(80 + arrx[i], arry[i], 0);
-               
+
                 glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
                 glVertexPointer(3, GL_FLOAT, 0, 0);
                 glDrawArrays(GL_TRIANGLES, vboZone, nrVertices);
-                
+
                 glPopMatrix();
             }
         }
         else {
-            glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-            glVertexPointer(3, GL_FLOAT, 0, 0);
-            glDrawArrays(GL_TRIANGLES, vboZone, nrVertices);
+            //glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+            //glVertexPointer(3, GL_FLOAT, 0, 0);
+            //glDrawArrays(GL_TRIANGLES, vboZone, nrVertices);
 
-            vboZone = vboZone + nrVertices;
+            //vboZone = vboZone + nrVertices;
+            if (p.getTextura().compare("null") != 0) {
+
+                auto id = texturas.find(p.getTextura());
+
+                glBindTexture(GL_TEXTURE_2D, id->second);
+
+                glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+                glVertexPointer(3, GL_FLOAT, 0, 0);
+
+                glBindBuffer(GL_ARRAY_BUFFER, buffers[1]);
+                glNormalPointer(GL_FLOAT, 0, 0);
+
+                glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
+                glTexCoordPointer(2, GL_FLOAT, 0, 0);
+
+                glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+                glVertexPointer(3, GL_FLOAT, 0, 0);
+                glDrawArrays(GL_TRIANGLES, vboZone, nrVertices);
+
+                glBindTexture(GL_TEXTURE_2D, 0);
+
+                vboZone = vboZone + nrVertices;
+
+            }
         }
     }
 
@@ -338,7 +488,7 @@ void renderScene(void) {
     // set the camera
     glLoadIdentity();
 
-   gluLookAt(eyeX * zoomFactor, eyeY * zoomFactor, eyeZ * zoomFactor,
+    gluLookAt(eyeX * camX * zoomFactor, eyeY * camY * zoomFactor, eyeZ * camZ * zoomFactor,
         centerX, centerY, centerZ,
         upX, upY, upZ);
 
@@ -515,7 +665,9 @@ bool initGlut(int argc, char** argv) {
     glutSpecialFunc(rodar);
     glutMotionFunc(processMouseMotion);
 
-    glewInit();  
+    #ifndef __APPLE__
+        glewInit();
+    #endif  
 
     //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
@@ -525,7 +677,7 @@ bool initGlut(int argc, char** argv) {
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_INDEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
-    //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
     //Create VBO
     glGenBuffers(3, buffers);
@@ -537,6 +689,19 @@ bool initGlut(int argc, char** argv) {
 
     glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * coordTextura.size(), &(coordTextura[0]), GL_STATIC_DRAW);
+
+    std::unordered_map<std::string, GLuint>::iterator it = texturas.begin();
+    cout << "cheguei aqui" << endl;
+    while (it != texturas.end()){
+        cout << "-----------------" << endl;
+        cout << "entrei no while" << endl;
+        std::string file = it->first;
+        cout << file << endl;
+        it->second = loadTextura(file);
+        cout << it->second << endl;
+        it++;
+    }
+    cout << "sai do while" << endl;
 
     // enter GLUT's main cycle
     glutMainLoop();
@@ -589,8 +754,11 @@ Group parseGroup(XMLElement* group, int father) {
                             
                             if (textura.size() != 0) {
                                 string pathImg = getImagePath(textura);
-                                primitive.setTextura(pathImg);
+                                cout << pathImg << endl;
                                 texturas.insert({ pathImg, -1 });
+                                //unsigned int texId = loadTextura(pathImg);
+                                primitive.setTextura(pathImg);
+                                //cout << texId << endl;
                             }
                             else primitive.setTextura("null");
                         }

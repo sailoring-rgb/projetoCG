@@ -121,7 +121,7 @@
             </model>
         </models >
         <!-- LUA -->
-        <group>
+        <!--group>
             <transform>
                 <translate time="30" align="True">
                     <point x="1.31" y="1" z="0" />
@@ -148,7 +148,7 @@
                     </color>
                 </model>
             </models >
-        </group>
+        </group-->
     </group>
     <!-- Marte -->
     <group>
@@ -179,7 +179,7 @@
                 </color>
             </model>
         </models >
-        <group>
+        <!--group>
             <transform>
                 <translate time="200" align="True">
                     <point x="1.4" y="0.3" z="0" />
@@ -234,7 +234,7 @@
                     </color>
                 </model>
             </models >
-        </group>
+        </group-->
     </group>
     <!-- Júpiter -->
     <group>
@@ -265,7 +265,7 @@
                 </color>
             </model>
         </models >
-        <group>
+        <!--group>
             <transform>
                 <translate time="200" align="True">
                     <point x="2.0" y="0.3" z="0" />
@@ -404,7 +404,7 @@
                     </color>
                 </model>
             </models >
-        </group>
+        </group-->
     </group>
     <!-- Saturno -->
     <group>
@@ -435,10 +435,10 @@
                 </color>
             </model>
         </models >
-        <group>
+        <!--group>
             <transform>
                 <rotate angle="90" x="0" y="1" z="0"/>
-                <scale x="0.55" y="0.55" z="0.55"/>
+                <scale x="0.85" y="0.00001" z="0.85"/>
                 <color x="225" y="164" z="88"/>
             </transform>
             <models >
@@ -584,7 +584,7 @@
                     </color>
                 </model>
             </models >
-        </group>
+        </group-->
     </group>
     <!-- Urano -->
     <group>
@@ -603,7 +603,7 @@
             <scale x="0.15" y="0.15" z="0.15"/>
             <color x="100" y="149" z="237"/>
         </transform>
-        <models >
+        <models>
             <model file="sphere.3d">
                 <texture file="uranus.jpg"/>
                 <color>
@@ -615,7 +615,7 @@
                 </color>
             </model>
         </models >
-        <group>
+        <!--group>
             <transform>
                 <translate time="160" align="True">
                     <point x="1.11" y="0.3" z="0" />
@@ -754,7 +754,7 @@
                     </color>
                 </model>
             </models >
-        </group>
+        </group-->
     </group>
     <!-- Neptuno -->
     <group>
@@ -785,7 +785,7 @@
                 </color>
             </model>
         </models >
-        <group>
+        <!--group>
             <transform>
                 <translate time="160" align="True">
                     <point x="1.111" y="0.3" z="0" />
@@ -896,10 +896,10 @@
                     </color>
                 </model>
             </models >
-        </group>
+        </group-->
     </group>
     <!-- Cintura -->
-    <group>
+    <!--group>
         <transform>
             <scale x="0.03" y="0.03" z="0.03"/>
             <color x="112" y="128" z="144"/>
@@ -907,7 +907,7 @@
         <models>
             <model file="asteroids.3d"/>
         </models >
-    </group>
+    </group-->
     <!-- Cometa -->
     <!-- group>
         <transform>
