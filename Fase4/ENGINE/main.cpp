@@ -1,7 +1,6 @@
 ﻿#define  _USE_MATH_DEFINES
 #include <math.h>
 #include <stdlib.h>
-#include <IL/il.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -26,8 +25,10 @@
 #include <OpenGL/glext.h>
 #include <GLUT/glut.h>
 #include <unistd.h>
+#include <il.h>
 #elif _WIN32
 #include <direct.h>
+#include <IL/il.h>
 #include <io.h>
 #include <GL/glew.h>
 #include <GL/glut.h>
