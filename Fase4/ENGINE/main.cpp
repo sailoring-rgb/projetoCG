@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <map>
 #include <sstream>
 #include "tinyxml2.h"
 #include "Primitive.h"
@@ -44,7 +45,7 @@ vector<Group> groups;
 
 vector<Light> lights;
 
-unordered_map<string, GLuint> texturas;
+map<string, GLuint> texturas;
 
 string pathFile;
 
@@ -338,11 +339,22 @@ void drawPrimitives(Group g) {
             }
         }
         else {
-            //glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-            //glVertexPointer(3, GL_FLOAT, 0, 0);
-            //glDrawArrays(GL_TRIANGLES, vboZone, nrVertices);
+            float dif[4] = {p.getDifR(),p.getDifG(),p.getDifB(),1.0f};
+            glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, dif);
+            //glMaterialf(GL_FRONT, GL_SHININESS, 128);
 
-            //vboZone = vboZone + nrVertices;
+            float amb[4] = {p.getAmbR(),p.getAmbG(),p.getAmbB(),1.0f};
+            glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
+            //glMaterialf(GL_FRONT, GL_SHININESS, 128);
+
+            float spe[4] = { p.getSpeR(),p.getSpeG(),p.getSpeB(),1.0f};
+            glMaterialfv(GL_FRONT, GL_SPECULAR, spe);
+            //glMaterialf(GL_FRONT, GL_SHININESS, 128);
+
+            float emi[4] = { p.getEmiR(),p.getEmiG(),p.getEmiB(),1.0f};
+            glMaterialfv(GL_FRONT, GL_EMISSION, emi);
+            //glMaterialf(GL_FRONT, GL_SHININESS, 128);
+
             if (p.getTextura().compare("null") != 0) {
 
                 auto id = texturas.find(p.getTextura());
@@ -629,7 +641,7 @@ bool initGlut(int argc, char** argv) {
     // enable light
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    /*glEnable(GL_RESCALE_NORMAL);
+   /* glEnable(GL_RESCALE_NORMAL);
     glEnable(GL_TEXTURE_2D);*/
 
     //Create VBO
@@ -643,18 +655,15 @@ bool initGlut(int argc, char** argv) {
     glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * coordTextura.size(), &(coordTextura[0]), GL_STATIC_DRAW);
 
-    std::unordered_map<std::string, GLuint>::iterator it = texturas.begin();
-    cout << "cheguei aqui" << endl;
-    while (it != texturas.end()){
-        cout << "-----------------" << endl;
-        cout << "entrei no while" << endl;
+    std::map<std::string, GLuint>::iterator it = texturas.begin();
+
+    while (it != texturas.end())
+    {
         std::string file = it->first;
-        cout << file << endl;
         it->second = loadTextura(file);
-        cout << it->second << endl;
         it++;
     }
-    cout << "sai do while" << endl;
+
 
     // enter GLUT's main cycle
     glutMainLoop();
@@ -707,8 +716,7 @@ Group parseGroup(XMLElement* group, int father) {
                             
                             if (textura.size() != 0) {
                                 string pathImg = getTexturaPath(textura);
-                                cout << pathImg << endl;
-                                texturas.insert({ pathImg, -1 });
+                                texturas.insert(pair<string, GLuint>(pathImg, -1));
                                 primitive.setTextura(pathImg);
                             }
                             else primitive.setTextura("null");
@@ -937,9 +945,9 @@ void parseLights(XMLElement* light) {
             l.setType(type);    
             
             if (point.compare(type) == 0) {
-                float posX = stod(element->Attribute("posX"));
-                float posY = stod(element->Attribute("posY"));
-                float posZ = stod(element->Attribute("posZ"));
+                float posX = stod(element->Attribute("posx"));
+                float posY = stod(element->Attribute("posy"));
+                float posZ = stod(element->Attribute("posz"));
 
                 Point pos;
                 pos.setX(posX);
@@ -952,9 +960,9 @@ void parseLights(XMLElement* light) {
                 lights.push_back(l);
             }
             else if (directional.compare(type) == 0) {
-                float dirX = stod(element->Attribute("dirX"));
-                float dirY = stod(element->Attribute("dirY"));
-                float dirZ = stod(element->Attribute("dirZ"));
+                float dirX = stod(element->Attribute("dirx"));
+                float dirY = stod(element->Attribute("diry"));
+                float dirZ = stod(element->Attribute("dirz"));
 
                 Point dir;
                 dir.setX(dirX);
@@ -967,12 +975,12 @@ void parseLights(XMLElement* light) {
                 lights.push_back(l);
             }
             else if (spotlight.compare(type) == 0) {
-                float posX = stod(element->Attribute("posX"));
-                float posY = stod(element->Attribute("posY"));
-                float posZ = stod(element->Attribute("posZ"));
-                float dirX = stod(element->Attribute("dirX"));
-                float dirY = stod(element->Attribute("dirY"));
-                float dirZ = stod(element->Attribute("dirZ"));
+                float posX = stod(element->Attribute("posx"));
+                float posY = stod(element->Attribute("posy"));
+                float posZ = stod(element->Attribute("posz"));
+                float dirX = stod(element->Attribute("dirx"));
+                float dirY = stod(element->Attribute("diry"));
+                float dirZ = stod(element->Attribute("dirz"));
                 float cutoff = stod(element->Attribute("cutoff"));
                 
                 Point pos,dir;

@@ -6,10 +6,10 @@
         <projection fov="45" near="1" far="1000"/>
     </camera>
     <lights>
-        <light type="point" posX="0" posY="0" posZ="0"/>
-        <light type="directional" dirX="1" dirY="1" dirZ="1"/>
-        <light type="spotlight" posX="0" posY="10" posZ="0"
-                                dirX="1" dirY="1" dirZ="1"
+        <light type="point" posx="0" posy="0" posz="0"/>
+        <light type="directional" dirx="1" diry="1" dirz="1"/>
+        <light type="spotlight" posx="0" posy="10" posz="0"
+                                dirx="1" diry="1" dirz="1"
                                 cutoff="45"/>
     </lights>
     <!-- Sol -->
@@ -17,7 +17,7 @@
         <transform>
             <translate x="0" y="0" z="0"/>
             <scale x="1.1" y="1.1" z="1.1"/>
-            <color x="255" y="170" z="0"/>
+            <!--color x="255" y="170" z="0"/-->
         </transform>
         <models>
             <model file="sphere.3d">
@@ -47,7 +47,7 @@
             </translate>
             <rotate time="10" x="0" y="1" z="0"/>
             <scale x="0.05" y="0.05" z="0.05"/>
-            <color x="238" y="154" z="73"/>
+            <!--color x="238" y="154" z="73"/-->
         </transform>
         <models>
             <model file="sphere.3d">
@@ -76,7 +76,7 @@
                 <point x="1.060660171779821" y="0" z="-1.0606601717798214" />
             </translate>
             <scale x="0.09" y="0.09" z="0.09"/>
-            <color x="255" y="165" z="79"/>
+            <!--color x="255" y="165" z="79"/-->
         </transform>
         <models>
             <model file="sphere.3d">
@@ -106,7 +106,7 @@
             </translate>
             <rotate time="10" x="0" y="1" z="0"/>
             <scale x="0.10" y="0.10" z="0.10"/>	
-            <color x="0" y="0" z="205"/>
+            <!--color x="0" y="0" z="205"/-->
         </transform>
         <models >
             <model file="sphere.3d">
@@ -121,7 +121,7 @@
             </model>
         </models >
         <!-- LUA -->
-        <!--group>
+        <group>
             <transform>
                 <translate time="30" align="True">
                     <point x="1.31" y="1" z="0" />
@@ -134,11 +134,10 @@
                     <point x="0.926309883354377" y="1" z="-0.9263098833543775" />
                 </translate>
                 <scale x="0.3" y="0.3" z="0.3"/>	
-                <color x="150" y="150" z="150"/>
+                <!--color x="150" y="150" z="150"/-->
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -148,7 +147,7 @@
                     </color>
                 </model>
             </models >
-        </group-->
+        </group>
     </group>
     <!-- Marte -->
     <group>
@@ -165,7 +164,7 @@
             </translate>
             <rotate time="10" x="0" y="1" z="0"/>
             <scale x="0.07" y="0.07" z="0.07"/>
-            <color x="205" y="0" z="0"/>
+            <!--color x="205" y="0" z="0"/-->
         </transform>
         <models >
             <model file="sphere.3d">
@@ -179,7 +178,7 @@
                 </color>
             </model>
         </models >
-        <!--group>
+        <group>
             <transform>
                 <translate time="200" align="True">
                     <point x="1.4" y="0.3" z="0" />
@@ -196,7 +195,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -224,7 +223,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -234,7 +233,7 @@
                     </color>
                 </model>
             </models >
-        </group-->
+        </group>
     </group>
     <!-- Júpiter -->
     <group>
@@ -251,7 +250,7 @@
             </translate>
             <rotate time="10" x="0" y="1" z="0"/>
             <scale x="0.35" y="0.35" z="0.35"/>
-            <color x="245" y="222" z="179"/>
+            <!--color x="245" y="222" z="179"/-->
         </transform>
         <models >
             <model file="sphere.3d">
@@ -265,7 +264,7 @@
                 </color>
             </model>
         </models >
-        <!--group>
+        <group>
             <transform>
                 <translate time="200" align="True">
                     <point x="2.0" y="0.3" z="0" />
@@ -282,7 +281,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -310,7 +309,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -338,7 +337,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -366,7 +365,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -394,7 +393,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -404,7 +403,7 @@
                     </color>
                 </model>
             </models >
-        </group-->
+        </group>
     </group>
     <!-- Saturno -->
     <group>
@@ -421,7 +420,7 @@
             </translate>
             <rotate time="10" x="0" y="1" z="0"/>
             <scale x="0.3" y="0.3" z="0.3"/>
-            <color x="255" y="246" z="143"/>
+            <!--color x="255" y="246" z="143"/-->
         </transform>
         <models >
             <model file="sphere.3d">
@@ -435,7 +434,7 @@
                 </color>
             </model>
         </models >
-        <!--group>
+        <group>
             <transform>
                 <rotate angle="90" x="0" y="1" z="0"/>
                 <scale x="0.85" y="0.00001" z="0.85"/>
@@ -471,7 +470,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -499,7 +498,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -527,7 +526,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -555,7 +554,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -574,7 +573,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -584,7 +583,7 @@
                     </color>
                 </model>
             </models >
-        </group-->
+        </group>
     </group>
     <!-- Urano -->
     <group>
@@ -601,7 +600,7 @@
             </translate>
             <rotate time="10" x="0" y="1" z="0"/> 
             <scale x="0.15" y="0.15" z="0.15"/>
-            <color x="100" y="149" z="237"/>
+            <!--color x="100" y="149" z="237"/-->
         </transform>
         <models>
             <model file="sphere.3d">
@@ -615,7 +614,7 @@
                 </color>
             </model>
         </models >
-        <!--group>
+        <group>
             <transform>
                 <translate time="160" align="True">
                     <point x="1.11" y="0.3" z="0" />
@@ -632,7 +631,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -660,7 +659,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -688,7 +687,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -716,7 +715,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -744,7 +743,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -754,7 +753,7 @@
                     </color>
                 </model>
             </models >
-        </group-->
+        </group>
     </group>
     <!-- Neptuno -->
     <group>
@@ -771,7 +770,7 @@
             </translate>
             <rotate time="10" x="0" y="1" z="0"/>
             <scale x="0.15" y="0.15" z="0.15"/>
-            <color x="65" y="105" z="255"/>
+            <!--color x="65" y="105" z="255"/-->
         </transform>
         <models >
             <model file="sphere.3d">
@@ -785,7 +784,7 @@
                 </color>
             </model>
         </models >
-        <!--group>
+        <group>
             <transform>
                 <translate time="160" align="True">
                     <point x="1.111" y="0.3" z="0" />
@@ -802,7 +801,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -830,7 +829,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -858,7 +857,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -886,7 +885,7 @@
             </transform>
             <models >
                 <model file="sphere.3d">
-                    <texture file="moon.jpg"/>
+                    <!--texture file="moon.jpg"/-->
                     <color>
                         <diffuse R="200" G="200" B="200"/>
                         <ambient R="50" G="50" B="50"/>
@@ -896,7 +895,7 @@
                     </color>
                 </model>
             </models >
-        </group-->
+        </group>
     </group>
     <!-- Cintura -->
     <group>
