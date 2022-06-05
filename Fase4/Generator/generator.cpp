@@ -322,27 +322,34 @@ bool generatePlane(vector<string> params) {
 
     // string que guarda os pontos que estruturam a figura
     string res = to_string(6 * (int)(pow(divisions, 2))) + "\n";
+    double textRow = 1, textCol = 1;
 
     for (double row = -divisions / 2.0; row < divisions / 2.0; row++) {
         double tempR = row;
         double nextRow = tempR + 1;
+        double tempTextRow = textRow;
+        double nextTempRow = 1 - 1/divisions;
         for (double column = divisions / 2.0; column > -divisions / 2.0; column--) {
             double tempC = column;
             double nextColumn = tempC - 1;
+            double tempTextCol = textCol;
+            double nextTextCol = 1 - 1/divisions;
             p1 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "," +
                     to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "," +
-                    to_string(size) + "," + to_string(size) + "\n";
+                    to_string(tempTextCol) + "," + to_string(nextTempRow) + "\n";
             p2 = to_string(x * column) + "," + to_string(0.000000) + "," + to_string(z * row) + "," +
                     to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "," +
-                    to_string(size) + "," + to_string(size) + "\n";
+                    to_string(tempTextCol) + "," + to_string(tempTextRow) + "\n";
             p3 = to_string(x * (nextColumn)) + "," + to_string(0.000000) + "," + to_string(z * row) + "," +
                     to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "," +
-                    to_string(size) + "," + to_string(size) + "\n";
+                    to_string(nextTextCol) + "," + to_string(tempTextRow) + "\n";
             p4 = to_string(x * nextColumn) + "," + to_string(0.000000) + "," + to_string(z * nextRow) + "," +
                     to_string(pn[0]) + "," + to_string(pn[1]) + "," + to_string(pn[2]) + "," +
-                    to_string(size) + "," + to_string(size) + "\n";
+                    to_string(nextTextCol) + "," + to_string(nextTempRow) + "\n";
             res = res + p1 + p2 + p3 + p3 + p4 + p1;
+            textCol = 1 - 1/divisions;
         }
+        textRow = 1 - 1/divisions;
     }
 
     writeInFile(res, file);

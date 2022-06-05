@@ -16,12 +16,12 @@
     <group>
         <transform>
             <translate x="0" y="0" z="0"/>
-            <scale x="1.1" y="1.1" z="1.1"/>
+            <scale x="2" y="2" z="2"/>
             <color x="255" y="170" z="0"/>
         </transform>
         <models>
             <model file="plane.3d">
-                <texture file="relva.jpg"/>
+                <texture file="box.jpg"/>
                 <color>
                     <diffuse R="200" G="200" B="200"/>
                     <ambient R="50" G="50" B="50"/>
