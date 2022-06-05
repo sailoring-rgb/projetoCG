@@ -38,6 +38,10 @@ class Light::LightBuilder {
             this->id = id;
         }
 
+        GLenum getId() {
+            return this->id;
+        }
+
         void setType(std::string type) {
             this->type = type;
         }
@@ -117,4 +121,7 @@ void Light::setId(GLenum id) {
     lightBuilder->setId(id);
 }
 
+GLenum Light::getId() {
+    return lightBuilder->getId();
+}
 

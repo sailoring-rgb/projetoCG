@@ -427,16 +427,19 @@ void renderScene(void) {
         if (point.compare(lights[i].getType())) {
             pP = lights[i].getPos();
             float pos[4] = { pP.getX(), pP.getY(), pP.getZ(), 0.0 };
-            glLightfv(GL_LIGHT0, GL_POSITION, pos);
+            GLenum idP = lights[i].getId();
+            glLightfv(idP, GL_POSITION, pos);
         }
         else if (directional.compare(lights[i].getType())) {
             pD = lights[i].getDir();
             float dir[4] = { pD.getX(), pD.getY(), pD.getZ(), 1.0 };
-            glLightfv(GL_LIGHT0, GL_POSITION, dir);
+            GLenum idD = lights[i].getId();
+            glLightfv(idD, GL_POSITION, dir);
         }
         else if (spotlight.compare(lights[i].getType())) {
             pP = lights[i].getPos();
             pD = lights[i].getDir();
+            GLenum id = lights[i].getId();
             //float posS[3] = { p.getX(), p.getY(), p.getZ() };
             // place light
             //glLightfv(GL_LIGHT0, GL_SPOT_CUTOFF, posS);
@@ -961,6 +964,8 @@ void parseLights(XMLElement* light) {
                 l.setDir(p);
                 l.setCutoff(0.0);
 
+                l1 = l1 + 1;
+                l.setId(l1);
                 lights.push_back(l);
             }
             else if (directional.compare(type) == 0) {
@@ -976,6 +981,8 @@ void parseLights(XMLElement* light) {
                 l.setPos(p);
                 l.setCutoff(0.0);
 
+                l1 = l1 + 1;
+                l.setId(l1);
                 lights.push_back(l);
             }
             else if (spotlight.compare(type) == 0) {
@@ -998,6 +1005,8 @@ void parseLights(XMLElement* light) {
                 l.setDir(dir);
                 l.setCutoff(cutoff);
 
+                l1 = l1 + 1;
+                l.setId(l1);
                 lights.push_back(l);
             }
         }

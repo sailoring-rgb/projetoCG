@@ -41,6 +41,8 @@ public:
     Point getDir();
 
     void setId(GLenum id);
+
+    GLenum getId();
 };
 
 #endif
