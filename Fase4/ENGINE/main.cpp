@@ -192,8 +192,8 @@ Primitive readFile(string file) {
         coordTextura.push_back(0);
 
         primitive.addPoint(point);
-       // primitive.addNormal(normal);
-       // primitive.addCoordText(textura);
+        // primitive.addNormal(normal);
+        // primitive.addCoordText(textura);
     }
 
     MyReadFile.close();
@@ -422,30 +422,30 @@ void renderScene(void) {
     glRotatef(angle, 0.0, 1.0, 0.0);
     glRotatef(angle2, 1.0, 0.0, 0.0);
 
-    for (int i = 0; i < lights.size(); i++) {
-        Point pP, pD;
+    // for (int i = 0; i < lights.size(); i++) {
+    //     Point pP, pD;
 
-        if (point.compare(lights[i].getType())) {
-            pP = lights[i].getPos();
-            float pos[4] = { pP.getX(), pP.getY(), pP.getZ(), 0.0 };
-            GLenum idP = lights[i].getId();
-            glLightfv(idP, GL_POSITION, pos);
-        }
-        else if (directional.compare(lights[i].getType())) {
-            pD = lights[i].getDir();
-            float dir[4] = { pD.getX(), pD.getY(), pD.getZ(), 1.0 };
-            GLenum idD = lights[i].getId();
-            glLightfv(idD, GL_POSITION, dir);
-        }
-        else if (spotlight.compare(lights[i].getType())) {
-            pP = lights[i].getPos();
-            pD = lights[i].getDir();
-            GLenum id = lights[i].getId();
-            //float posS[3] = { p.getX(), p.getY(), p.getZ() };
-            // place light
-            //glLightfv(GL_LIGHT0, GL_SPOT_CUTOFF, posS);
-        }
-    }
+    //     if (point.compare(lights[i].getType())) {
+    //         pP = lights[i].getPos();
+    //         float pos[4] = { pP.getX(), pP.getY(), pP.getZ(), 0.0 };
+    //         GLenum idP = lights[i].getId();
+    //         glLightfv(idP, GL_POSITION, pos);
+    //     }
+    //     else if (directional.compare(lights[i].getType())) {
+    //         pD = lights[i].getDir();
+    //         float dir[4] = { pD.getX(), pD.getY(), pD.getZ(), 1.0 };
+    //         GLenum idD = lights[i].getId();
+    //         glLightfv(idD, GL_POSITION, dir);
+    //     }
+    //     else if (spotlight.compare(lights[i].getType())) {
+    //         pP = lights[i].getPos();
+    //         pD = lights[i].getDir();
+    //         GLenum id = lights[i].getId();
+    //         //float posS[3] = { p.getX(), p.getY(), p.getZ() };
+    //         // place light
+    //         //glLightfv(GL_LIGHT0, GL_SPOT_CUTOFF, posS);
+    //     }
+    // }
 
     /*
     //AXIS
