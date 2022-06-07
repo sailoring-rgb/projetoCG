@@ -88,19 +88,6 @@ void writeInFile(string res, string file) {
         ofstream File3D(path3D);
         File3D << res;
         File3D.close();
-
-        const char* c = file.c_str();
-
-        XMLDocument doc;
-        doc.LoadFile(tmp);
-        XMLNode* pRoot = doc.FirstChild();
-
-        XMLElement* pElement = doc.NewElement("model");
-        pElement->SetAttribute("file", c);
-
-        pRoot->InsertEndChild(pElement);
-
-        doc.SaveFile(tmp);
     }
 }
 
