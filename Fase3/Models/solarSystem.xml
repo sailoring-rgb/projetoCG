@@ -19,7 +19,7 @@
     <!-- Mercúrio -->
     <group>
         <transform>
-            <translate time="34" align="True">
+            <translate time="17" align="True">
                 <point x="1.3" y="0" z="0" />
                 <point x="0.9192388155425119" y="0" z="0.9192388155425117" />
                 <point x="0" y="0" z="1.3" />
@@ -40,7 +40,7 @@
     <!-- Vénus -->
     <group>
         <transform>
-            <translate time="60" align="True">
+            <translate time="30" align="True">
                 <point x="1.5" y="0" z="0" />
                 <point x="1.0606601717798214" y="0" z="1.0606601717798212" />
                 <point x="0" y="0" z="1.5" />
@@ -60,7 +60,7 @@
     <!-- Terra -->
     <group>
         <transform>
-            <translate time="100" align="True">
+            <translate time="50" align="True">
                 <point x="1.75" y="0" z="0" />
                 <point x="1.2374368670764582" y="0" z="1.237436867076458" />
                 <point x="0" y="0" z="1.75" />
@@ -101,7 +101,7 @@
     <!-- Marte -->
     <group>
         <transform>            
-            <translate time="140" align="True">
+            <translate time="70" align="True">
                 <point x="2.0" y="0" z="0" />
                 <point x="1.4142135623730951" y="0" z="1.414213562373095" />
                 <point x="0" y="0" z="2.0" />
@@ -120,7 +120,7 @@
         </models >
         <group>
             <transform>
-                <translate time="200" align="True">
+                <translate time="100" align="True">
                     <point x="1.4" y="0.3" z="0" />
                     <point x="0.9899494936611666" y="0.3" z="0.9899494936611666" />
                     <point x="0" y="0.3" z="1.4" />
@@ -160,7 +160,7 @@
     <!-- Júpiter -->
     <group>
         <transform>
-            <translate time="220" align="True">
+            <translate time="110" align="True">
                 <point x="3.3" y="0" z="0" />
                 <point x="2.3334523779156067" y="0" z="2.3334523779156067" />
                 <point x="0" y="0" z="3.3" />
@@ -217,7 +217,7 @@
         </group>
         <group>
             <transform>
-                <translate time="200" align="True">
+                <translate time="100" align="True">
                     <point x="1.61" y="0.7" z="0" />
                     <point x="1.1384419177103418" y="0.7" z="1.1384419177103418" />
                     <point x="0" y="0.7" z="1.61" />
@@ -236,7 +236,7 @@
         </group>
         <group>
             <transform>
-                <translate time="200" align="True">
+                <translate time="150" align="True">
                     <point x="1.0" y="0.7" z="0" />
                     <point x="0.7071067811865476" y="0.7" z="0.7071067811865476" />
                     <point x="0" y="0.7" z="1.0" />
@@ -276,7 +276,7 @@
     <!-- Saturno -->
     <group>
         <transform>
-            <translate time="320" align="True">
+            <translate time="180" align="True">
                 <point x="4.25" y="0" z="0" />
                 <point x="3.0052038200428273" y="0" z="3.005203820042827" />
                 <point x="0" y="0" z="4.25" />
@@ -324,7 +324,7 @@
         </group>
         <group>
             <transform>
-                <translate time="160" align="True">
+                <translate time="140" align="True">
                     <point x="1.41" y="0.3" z="0" />
                     <point x="0.997020561473032" y="0.3" z="0.997020561473032" />
                     <point x="0" y="0.3" z="1.41" />
@@ -362,7 +362,7 @@
         </group>
         <group>
             <transform>
-                <translate time="160" align="True">
+                <translate time="100" align="True">
                     <point x="1.41" y="0.3" z="0" />
                     <point x="0.997020561473032" y="0.3" z="0.997020561473032" />
                     <point x="0" y="0.3" z="1.41" />
@@ -393,7 +393,7 @@
     <!-- Urano -->
     <group>
         <transform>  
-            <translate time="460" align="True">
+            <translate time="230" align="True">
                 <point x="5.0" y="0" z="0" />
                 <point x="3.5355339059327378" y="0" z="3.5355339059327373" />
                 <point x="0" y="0" z="5.0" />
@@ -509,7 +509,7 @@
     <!-- Neptuno -->
     <group>
         <transform>                     
-            <translate time="500" align="True">
+            <translate time="250" align="True">
                 <point x="5.5" y="0" z="0" />
                 <point x="3.8890872965260117" y="0" z="3.889087296526011" />
                 <point x="0" y="0" z="5.5" />
@@ -616,7 +616,7 @@
     <!-- Cometa -->
     <group>
         <transform>
-            <translate time="125" align="True">
+            <translate time="5" align="True">
                 <point x="4.75" y="0" z="0" />
                 <point x="3.3587572106361008" y="0" z="3.3587572106361008" />
                 <point x="0" y="0" z="4.75" />

@@ -910,7 +910,7 @@
     <!-- Cometa -->
     <group>
         <transform>
-            <translate time="100" align="True">
+            <translate time="5" align="True">
                 <point x="4.75" y="0" z="0" />
                 <point x="3.3587572106361008" y="0" z="3.3587572106361008" />
                 <point x="0" y="0" z="4.75" />

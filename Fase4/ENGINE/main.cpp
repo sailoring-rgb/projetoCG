@@ -263,25 +263,28 @@ void drawPrimitives(Group g) {
                 float pos[3];
                 float deriv[3];
 
-                float timeT = -(glutGet(GLUT_ELAPSED_TIME) / 1000.f) / (float)(t.getTime());
+                float timeT = (glutGet(GLUT_ELAPSED_TIME) / 1000.f) / (float)(t.getTime());
                 CatmullRom::getGlobalCatmullRomPoint(g.getCatmullPoints(), timeT, (float*)pos, (float*)deriv);
 
-
-                glTranslatef(pos[0], pos[1], pos[2]);
+                glTranslatef(pos[0], pos[1], pos[2]);     
 
                 if (isAlign.compare(t.getAlign()) == 0) {
 
                     float m[4][4];
-                    float x[3], z[3];
+                    float x[3], y[3], z[3];
 
-                    CatmullRom::cross(deriv, prev_y, z);
-                    CatmullRom::cross(z, deriv, prev_y);
-                    CatmullRom::normalize(deriv);
-                    CatmullRom::normalize(prev_y);
+                    for (int i = 0; i < 3; i++)
+                        x[i] = deriv[i];
+                    CatmullRom::normalize(x);
+                    CatmullRom::cross(x, prev_y, z);
                     CatmullRom::normalize(z);
-                    CatmullRom::buildRotMatrix(deriv, prev_y, z, *m);
+                    CatmullRom::cross(z, x, y);
+                    CatmullRom::normalize(x);
+                    for (int i = 0; i < 3; i++)
+                        prev_y[i] = y[i]; 
+                    CatmullRom::buildRotMatrix(x, y, z, *m);
                     glMultMatrixf(*m);
-                }
+                }                
             }
             else if (t.getTime() == 0) {
                 glTranslatef(t.getX(), t.getY(), t.getZ());
