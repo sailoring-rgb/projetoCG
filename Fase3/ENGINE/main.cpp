@@ -402,7 +402,9 @@ bool initGlut(int argc, char** argv) {
     glutKeyboardFunc(polygonMode);
     glutSpecialFunc(rodar);
 
-    glewInit();  
+    #ifndef __APPLE__
+        glewInit();
+    #endif  
 
     //  OpenGL settings
     glEnableClientState(GL_VERTEX_ARRAY);

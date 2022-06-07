@@ -21,7 +21,7 @@
 				<scale x="0.5" y="0.5" z="0.5" />
 			</transform>
 			<models> 
-				<model file="bezier.3d" /> <!-- generator bezier teapot.patch 10 bezier.3d -->
+				<model file="bezier_test.3d" /> <!-- generator bezier teapot.patch 10 bezier_test.3d -->
 			</models>
 		</group>
  	</group>
