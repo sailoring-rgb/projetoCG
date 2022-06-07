@@ -16,7 +16,7 @@
 				<scale x="0.75" y="0.75" z="0.75" />
 			</transform>
 			<models> 
-				<model file="sphere.3d" /> <!-- generator sphere 8 8 1 sphere.3d -->
+				<model file="sphere_test2.3d" /> <!-- generator sphere 1 8 8 sphere_test2.3d -->
 			</models>
 		</group>
 		<group> 
@@ -28,7 +28,7 @@
 					<scale x="0.25" y="0.25" z="0.25" />
 				</transform>
 				<models> 
-					<model file="sphere.3d" /> <!-- generator sphere 8 8 1 sphere.3d -->
+					<model file="sphere_test2.3d" /> <!-- generator sphere 1 8 8 sphere_test2.3d -->
 				</models>
 			</group>
 			<group>
@@ -37,7 +37,7 @@
 					<scale x="0.1" y="0.3" z="0.1" />>
 				</transform>
 				<models> 
-					<model file="cone.3d" /> <!-- generator.exe cone 1 2 4 3 cone.3d -->
+					<model file="cone_test2.3d" /> <!-- generator.exe cone 1 2 4 3 cone_test2.3d -->
 				</models>
 			</group>
 		</group>

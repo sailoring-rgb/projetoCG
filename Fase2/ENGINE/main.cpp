@@ -231,7 +231,7 @@ void renderScene(void) {
     glRotatef(angle, 0.0, 1.0, 0.0);
     glRotatef(angle2, 1.0, 0.0, 0.0);
 
-    /*
+    
     //AXIS
     glBegin(GL_LINES);
     // X axis in red
@@ -246,7 +246,7 @@ void renderScene(void) {
     glColor3f(0.0f, 0.0f, 1.0f);
     glVertex3f(0.0f, 0.0f, -100.0f);
     glVertex3f(0.0f, 0.0f, 100.0f);
-    glEnd();*/
+    glEnd();
 
 
     //DRAW POINTS
