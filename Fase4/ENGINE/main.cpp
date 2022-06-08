@@ -142,7 +142,6 @@ Primitive readFile(string file) {
     getline(MyReadFile, myText);
     int vertices = stoi(myText);
 
-    //cout << myText << endl;
     Primitive primitive;
 
     //nós temos 3 pontos que equivale a 9 floats
@@ -192,8 +191,8 @@ Primitive readFile(string file) {
         coordTextura.push_back(0);
 
         primitive.addPoint(point);
-        primitive.addNormal(normal);
-        primitive.addCoordText(textura);
+        // primitive.addNormal(normal);
+        // primitive.addCoordText(textura);
     }
 
     MyReadFile.close();
@@ -421,30 +420,27 @@ void renderScene(void) {
     glRotatef(angle, 0.0, 1.0, 0.0);
     glRotatef(angle2, 1.0, 0.0, 0.0);
 
-    // for (int i = 0; i < lights.size(); i++) {
-    //     Point pP, pD;
+    for (int i = 0; i < lights.size(); i++) {
 
-    //     if (point.compare(lights[i].getType())) {
-    //         pP = lights[i].getPos();
-    //         float pos[4] = { pP.getX(), pP.getY(), pP.getZ(), 0.0 };
-    //         GLenum idP = lights[i].getId();
-    //         glLightfv(idP, GL_POSITION, pos);
-    //     }
-    //     else if (directional.compare(lights[i].getType())) {
-    //         pD = lights[i].getDir();
-    //         float dir[4] = { pD.getX(), pD.getY(), pD.getZ(), 1.0 };
-    //         GLenum idD = lights[i].getId();
-    //         glLightfv(idD, GL_POSITION, dir);
-    //     }
-    //     else if (spotlight.compare(lights[i].getType())) {
-    //         pP = lights[i].getPos();
-    //         pD = lights[i].getDir();
-    //         GLenum id = lights[i].getId();
-    //         //float posS[3] = { p.getX(), p.getY(), p.getZ() };
-    //         // place light
-    //         //glLightfv(GL_LIGHT0, GL_SPOT_CUTOFF, posS);
-    //     }
-    // }
+        if (point.compare(lights[i].getType()) == 0) {
+            float pos[4] = { lights[i].getPos().getX(), lights[i].getPos().getY(), lights[i].getPos().getZ(), 0.0 };
+            GLenum idP = lights[i].getId();
+            glLightfv(idP, GL_POSITION, pos);
+        }
+        else if (directional.compare(lights[i].getType()) == 0) {
+            float dir[4] = { lights[i].getDir().getX(), lights[i].getDir().getY(), lights[i].getDir().getZ(), 1.0 };
+            GLenum idD = lights[i].getId();
+            glLightfv(idD, GL_POSITION, dir);
+        }
+        else if (spotlight.compare(lights[i].getType()) == 0) {
+            // pP = lights[i].getPos();
+            // pD = lights[i].getDir();
+            // GLenum id = lights[i].getId();
+            //float posS[3] = { p.getX(), p.getY(), p.getZ() };
+            // place light
+            //glLightfv(GL_LIGHT0, GL_SPOT_CUTOFF, posS);
+        }
+    }
 
     /*
     //AXIS
@@ -646,8 +642,8 @@ bool initGlut(int argc, char** argv) {
     for (int i = 0; i < lights.size(); i++) {
         glEnable(GL_LIGHT0 + i);
     }
-   /* glEnable(GL_RESCALE_NORMAL);
-    glEnable(GL_TEXTURE_2D);*/
+    glEnable(GL_RESCALE_NORMAL);
+    glEnable(GL_TEXTURE_2D);
 
     //Create VBO
     glGenBuffers(3, buffers);
@@ -940,12 +936,14 @@ void parseLights(XMLElement* light) {
     p.setZ(0);
 
     XMLElement* element = light->FirstChildElement();
-    
+
+    int light_counter = 0;
+
     while (element != nullptr) {
                 
-        Light l = Light(); 
+        Light l = Light();
 
-        static GLenum l1 = GL_LIGHT0;
+        GLenum l1 = GL_LIGHT0 + light_counter;
 
         if (lig.compare(element->Name()) == 0) {
             string type = element->Attribute("type");
@@ -964,9 +962,9 @@ void parseLights(XMLElement* light) {
                 l.setDir(p);
                 l.setCutoff(0.0);
                 
-                l1 = l1 + 1;
                 l.setId(l1);
                 lights.push_back(l);
+                light_counter++;
             }
             else if (directional.compare(type) == 0) {
                 float dirX = stod(element->Attribute("dirx"));
@@ -981,9 +979,9 @@ void parseLights(XMLElement* light) {
                 l.setPos(p);
                 l.setCutoff(0.0);
 
-                l1 = l1 + 1;
                 l.setId(l1);
                 lights.push_back(l);
+                light_counter++;
             }
             else if (spotlight.compare(type) == 0) {
                 float posX = stod(element->Attribute("posx"));
@@ -1005,9 +1003,9 @@ void parseLights(XMLElement* light) {
                 l.setDir(dir);
                 l.setCutoff(cutoff);
 
-                l1 = l1 + 1;
                 l.setId(l1);
                 lights.push_back(l);
+                light_counter++;
             }
         }
         element = element->NextSiblingElement();
@@ -1036,7 +1034,6 @@ bool parseDocument() {
     cout << "Introduza o nome do ficheiro XML: " << endl;
     cin >> fileName;
     path = path + "Models/" + fileName + ".xml";
-    //cout << path << endl;
 
     strcpy(tmp, path.c_str());
 
