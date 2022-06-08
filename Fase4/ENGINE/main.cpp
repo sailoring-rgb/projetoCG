@@ -192,8 +192,8 @@ Primitive readFile(string file) {
         coordTextura.push_back(0);
 
         primitive.addPoint(point);
-        // primitive.addNormal(normal);
-        // primitive.addCoordText(textura);
+        primitive.addNormal(normal);
+        primitive.addCoordText(textura);
     }
 
     MyReadFile.close();
@@ -345,19 +345,19 @@ void drawPrimitives(Group g) {
         else {
             float dif[4] = {p.getDifR(),p.getDifG(),p.getDifB(),1.0f};
             glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, dif);
-            //glMaterialf(GL_FRONT, GL_SHININESS, 128);
+            glMaterialf(GL_FRONT, GL_SHININESS, p.getShininess());
 
             float amb[4] = {p.getAmbR(),p.getAmbG(),p.getAmbB(),1.0f};
             glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
-            //glMaterialf(GL_FRONT, GL_SHININESS, 128);
+            glMaterialf(GL_FRONT, GL_SHININESS, p.getShininess());
 
             float spe[4] = { p.getSpeR(),p.getSpeG(),p.getSpeB(),1.0f};
             glMaterialfv(GL_FRONT, GL_SPECULAR, spe);
-            //glMaterialf(GL_FRONT, GL_SHININESS, 128);
+            glMaterialf(GL_FRONT, GL_SHININESS, p.getShininess());
 
             float emi[4] = { p.getEmiR(),p.getEmiG(),p.getEmiB(),1.0f};
             glMaterialfv(GL_FRONT, GL_EMISSION, emi);
-            //glMaterialf(GL_FRONT, GL_SHININESS, 128);
+            glMaterialf(GL_FRONT, GL_SHININESS, p.getShininess());
 
             if (p.getTextura().compare("null") != 0) {
 
@@ -374,14 +374,11 @@ void drawPrimitives(Group g) {
                 glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
                 glTexCoordPointer(2, GL_FLOAT, 0, 0);
 
-                //glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
-                //glVertexPointer(3, GL_FLOAT, 0, 0);
                 glDrawArrays(GL_TRIANGLES, vboZone, nrVertices);
 
                 glBindTexture(GL_TEXTURE_2D, 0);
 
                 vboZone = vboZone + nrVertices;
-
             }
         }
     }
@@ -394,7 +391,6 @@ void drawPrimitives(Group g) {
 
 
 }
-
 
 /**
  * Function that creates a scene.
@@ -944,7 +940,7 @@ void parseLights(XMLElement* light) {
     p.setZ(0);
 
     XMLElement* element = light->FirstChildElement();
-
+    
     while (element != nullptr) {
                 
         Light l = Light(); 
@@ -967,7 +963,7 @@ void parseLights(XMLElement* light) {
                 l.setPos(pos);
                 l.setDir(p);
                 l.setCutoff(0.0);
-
+                
                 l1 = l1 + 1;
                 l.setId(l1);
                 lights.push_back(l);
@@ -1092,9 +1088,6 @@ int main(int argc, char** argv) {
 
     if (parseDocument()) {
         initGlut(argc, argv);
-        /*if (!initGlut(argc, argv)) {
-            cout << "3d File Invalid";
-        }*/
     }
     else {
         cout << "XML File Invalid";
