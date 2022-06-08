@@ -21,7 +21,7 @@
         </transform>
         <models>
             <model file="plane.3d">
-                <texture file="box.jpg"/>
+                <texture file="teapot.jpg"/>
                 <color>
                     <diffuse R="200" G="200" B="200"/>
                     <ambient R="50" G="50" B="50"/>

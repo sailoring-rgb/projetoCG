@@ -180,7 +180,7 @@
         </models >
         <group>
             <transform>
-                <translate time="200" align="True">
+                <translate time="100" align="True">
                     <point x="1.4" y="0.3" z="0" />
                     <point x="0.9899494936611666" y="0.3" z="0.9899494936611666" />
                     <point x="0" y="0.3" z="1.4" />
@@ -208,7 +208,7 @@
         </group>
         <group>
             <transform>
-                <translate time="200" align="True">
+                <translate time="50" align="True">
                     <point x="2.0" y="0.3" z="0" />
                     <point x="1.4142135623730951" y="0.3" z="1.4142135623730951" />
                     <point x="0" y="0.3" z="2.0" />
@@ -266,7 +266,7 @@
         </models >
         <group>
             <transform>
-                <translate time="200" align="True">
+                <translate time="50" align="True">
                     <point x="2.0" y="0.3" z="0" />
                     <point x="1.4142135623730951" y="0.3" z="1.4142135623730951" />
                     <point x="0" y="0.3" z="2.0" />
@@ -294,7 +294,7 @@
         </group>
         <group>
             <transform>
-                <translate time="200" align="True">
+                <translate time="25" align="True">
                     <point x="1.6" y="0.2" z="0" />
                     <point x="1.1313708498984762" y="0.2" z="1.1313708498984762" />
                     <point x="0" y="0.2" z="1.6" />
@@ -322,7 +322,7 @@
         </group>
         <group>
             <transform>
-                <translate time="200" align="True">
+                <translate time="75" align="True">
                     <point x="1.61" y="0.7" z="0" />
                     <point x="1.1384419177103418" y="0.7" z="1.1384419177103418" />
                     <point x="0" y="0.7" z="1.61" />
@@ -378,7 +378,7 @@
         </group>
         <group>
             <transform>
-                <translate time="200" align="True">
+                <translate time="10" align="True">
                     <point x="1.2" y="-0.4" z="0" />
                     <point x="0.848528137423857" y="-0.4" z="0.848528137423857" />
                     <point x="0" y="-0.4" z="1.2" />
@@ -483,7 +483,7 @@
         </group>
         <group>
             <transform>
-                <translate time="160" align="True">
+                <translate time="80" align="True">
                     <point x="1.41" y="0.3" z="0" />
                     <point x="0.997020561473032" y="0.3" z="0.997020561473032" />
                     <point x="0" y="0.3" z="1.41" />
@@ -511,7 +511,7 @@
         </group>
         <group>
             <transform>
-                <translate time="160" align="True">
+                <translate time="10" align="True">
                     <point x="1.21" y="0.35" z="0" />
                     <point x="0.8555992052357225" y="0.35" z="0.8555992052357225" />
                     <point x="0" y="0.35" z="1.21" />
@@ -539,7 +539,7 @@
         </group>
         <group>
             <transform>
-                <translate time="160" align="True">
+                <translate time="50" align="True">
                     <point x="1.41" y="0.3" z="0" />
                     <point x="0.997020561473032" y="0.3" z="0.997020561473032" />
                     <point x="0" y="0.3" z="1.41" />
@@ -644,7 +644,7 @@
         </group>
         <group>
             <transform>
-                <translate time="160" align="True">
+                <translate time="80" align="True">
                     <point x="1.25" y="0.3" z="0" />
                     <point x="0.8838834764831844" y="0.3" z="0.8838834764831844" />
                     <point x="0" y="0.3" z="1.25" />
@@ -672,7 +672,7 @@
         </group>
         <group>
             <transform>
-                <translate time="160" align="True">
+                <translate time="500" align="True">
                     <point x="1.8" y="0.3" z="0" />
                     <point x="1.2727922061357857" y="0.3" z="1.2727922061357857" />
                     <point x="0" y="0.3" z="1.8" />
@@ -700,7 +700,7 @@
         </group>
         <group>
             <transform>
-                <translate time="160" align="True">
+                <translate time="100" align="True">
                     <point x="0.9" y="0.5" z="0" />
                     <point x="0.6363961030678928" y="0.5" z="0.6363961030678928" />
                     <point x="0" y="0.5" z="0.9" />
@@ -728,7 +728,7 @@
         </group>
         <group>
             <transform>
-               <translate time="160" align="True">
+               <translate time="180" align="True">
                     <point x="1.0" y="0.5" z="0" />
                     <point x="0.7071067811865476" y="0.5" z="0.7071067811865476" />
                     <point x="0" y="0.5" z="1.0" />
@@ -814,7 +814,7 @@
         </group>
         <group>
             <transform>
-                <translate time="160" align="True">
+                <translate time="100" align="True">
                     <point x="1.251" y="0.3" z="0" />
                     <point x="0.8845905832643709" y="0.3" z="0.8845905832643709" />
                     <point x="0" y="0.3" z="1.251" />
@@ -842,7 +842,7 @@
         </group>
         <group>
             <transform>
-                <translate time="160" align="True">
+                <translate time="80" align="True">
                     <point x="0.91" y="0.5" z="0" />
                     <point x="0.6434671708797584" y="0.5" z="0.6434671708797584" />
                     <point x="0" y="0.5" z="0.91" />
@@ -910,7 +910,7 @@
     <!-- Cometa -->
     <group>
         <transform>
-            <translate time="5" align="True">
+            <translate time="10" align="True">
                 <point x="4.75" y="0" z="0" />
                 <point x="3.3587572106361008" y="0" z="3.3587572106361008" />
                 <point x="0" y="0" z="4.75" />
