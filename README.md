@@ -2,7 +2,7 @@
 
 Projetos de Computação Gráfica 21/22
 
-Classificação Final: .../20
+Classificação Final: 15/20
 
 # Autores
 
